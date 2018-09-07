@@ -2,6 +2,7 @@ package com.swt.service;
 
 import com.swt.dao.SysGeneratorDao;
 import com.swt.utils.GenUtils;
+import com.swt.utils.RRException;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,6 +32,10 @@ public class SysGeneratorService {
         return sysGeneratorDao.queryTotal(map);
     }
 
+    public int queryMenuCount(String menuName) {
+        return sysGeneratorDao.queryMenuCount(menuName);
+    }
+
     public Map<String, String> queryTable(String tableName) {
         return sysGeneratorDao.queryTable(tableName);
     }
@@ -43,7 +48,7 @@ public class SysGeneratorService {
         return sysGeneratorDao.queryExample(tableName);
     }
 
-    public byte[] generatorCode(String[] tableNamesWithTableComments) {
+    public byte[] generatorZipCode(String[] tableNamesWithTableComments) {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         ZipOutputStream zip = new ZipOutputStream(outputStream);
 
@@ -51,6 +56,9 @@ public class SysGeneratorService {
             String[] split = tableNamesWithTableComment.split("\\|");
             String tableName = split[0];
             String tableComment = split[1];
+            if(queryMenuCount(tableComment+"管理") > 0){
+                throw new RRException("菜单已存在");
+            }
             //查询表信息
             Map<String, String> table = queryTable(tableName);
             table.put("tableComment", tableComment);
@@ -59,12 +67,35 @@ public class SysGeneratorService {
             //获取示例
             Map<String, String> map = queryExample(tableName);
             //生成代码
-            String sql = GenUtils.generatorCode(table, columns,map, zip);
+            GenUtils.generatorCode(table, columns,map, zip);
+        }
+        IOUtils.closeQuietly(zip);
+        return outputStream.toByteArray();
+    }
+
+    public byte[] generatorCode(String[] tableNamesWithTableComments) {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+
+        for (String tableNamesWithTableComment : tableNamesWithTableComments) {
+            String[] split = tableNamesWithTableComment.split("\\|");
+            String tableName = split[0];
+            String tableComment = split[1];
+            if(queryMenuCount(tableComment+"管理") > 0){
+                throw new RRException("菜单已存在");
+            }
+            //查询表信息
+            Map<String, String> table = queryTable(tableName);
+            table.put("tableComment", tableComment);
+            //查询列信息
+            List<Map<String, String>> columns = queryColumns(tableName);
+            //获取示例
+            Map<String, String> map = queryExample(tableName);
+            //生成代码
+            String sql = GenUtils.generatorCode(table, columns,map, null);
             if(sql != null){
                 sysGeneratorDao.excuteSQL(sql);
             }
         }
-        IOUtils.closeQuietly(zip);
         return outputStream.toByteArray();
     }
 }

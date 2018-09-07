@@ -26,4 +26,6 @@ public interface SysGeneratorDao {
 	void excuteSQL(String sql);
 
     Map<String, String> queryExample(String tableName);
+
+    int queryMenuCount(String menuName);
 }

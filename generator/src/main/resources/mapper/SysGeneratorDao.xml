@@ -14,7 +14,7 @@
 		</if>
 	</select>
 	<select id = "excuteSQL" parameterType="String">
-		${sql}
+		${_parameter}
 	</select>
 	<select id="queryTotal" resultType="int">
 		select count(*) from information_schema.tables where table_schema = (select database())
@@ -35,5 +35,8 @@
 
 	<select id="queryExample" resultType="map">
 		select * from ${_parameter} limit 1
+	</select>
+	<select id="queryMenuCount" resultType="int">
+		SELECT count(1) from sys_menu where name = #{menuName}
 	</select>
 </mapper>
