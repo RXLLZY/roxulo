@@ -48,9 +48,9 @@ public class SysGeneratorController {
 	/**
 	 * 生成代码
 	 */
-	@RequestMapping("/code")
-	public void code(String tables, HttpServletResponse response) throws IOException{
-		byte[] data = sysGeneratorService.generatorCode(tables.split(","));
+	@RequestMapping("/export")
+	public void export(String tables, HttpServletResponse response) throws IOException{
+		byte[] data = sysGeneratorService.generatorZipCode(tables.split(","));
 		
 		response.reset();  
         response.setHeader("Content-Disposition", "attachment; filename=\"swt.zip\"");
@@ -58,5 +58,15 @@ public class SysGeneratorController {
         response.setContentType("application/octet-stream; charset=UTF-8");  
   
         IOUtils.write(data, response.getOutputStream());  
+	}
+
+	/**
+	 * 生成代码
+	 */
+	@ResponseBody
+	@RequestMapping("/code")
+	public R code(String tables, HttpServletResponse response) throws IOException{
+		sysGeneratorService.generatorCode(tables.split(","));
+		return R.ok().put("msg","生成代码成功");
 	}
 }

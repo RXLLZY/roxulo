@@ -51,13 +51,22 @@ var vm = new Vue({
                 page:1 
             }).trigger("reloadGrid");
 		},
-		generator: function() {
-			var tableNames = getSelectedRows();
-			if(tableNames == null){
-				return ;
-			}
-            location.href = "sys/generator/code?tables=" + tableNames.join();
-		}
+        generator: function() {
+            var tableNames = getSelectedRows();
+            if(tableNames == null){
+                return ;
+            }
+            $.get("sys/generator/code?tables=" + tableNames.join(),function (data) {
+                alert(data.msg);
+            })
+        },
+        zipExport: function() {
+            var tableNames = getSelectedRows();
+            if(tableNames == null){
+                return ;
+            }
+            location.href = "sys/generator/export?tables=" + tableNames.join();
+        }
 	}
 });
 

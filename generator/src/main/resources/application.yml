@@ -13,7 +13,7 @@ spring:
     datasource:
         type: com.alibaba.druid.pool.DruidDataSource
         driverClassName: com.mysql.jdbc.Driver
-        url: jdbc:mysql://192.168.0.182:3306/fast?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true
+        url: jdbc:mysql://192.168.0.182:3306/security?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true
         username: root
         password: root
     jackson:

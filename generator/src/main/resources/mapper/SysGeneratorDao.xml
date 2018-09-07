@@ -37,6 +37,6 @@
 		select * from ${_parameter} limit 1
 	</select>
 	<select id="queryMenuCount" resultType="int">
-		SELECT count(1) from sys_menu where name = #{menuName}
+		SELECT count(1) from sys_menu where url like '%${_parameter}'
 	</select>
 </mapper>

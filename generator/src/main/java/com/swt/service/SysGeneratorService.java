@@ -32,8 +32,8 @@ public class SysGeneratorService {
         return sysGeneratorDao.queryTotal(map);
     }
 
-    public int queryMenuCount(String menuName) {
-        return sysGeneratorDao.queryMenuCount(menuName);
+    public int queryMenuCount(String url) {
+        return sysGeneratorDao.queryMenuCount(url);
     }
 
     public Map<String, String> queryTable(String tableName) {
@@ -56,9 +56,10 @@ public class SysGeneratorService {
             String[] split = tableNamesWithTableComment.split("\\|");
             String tableName = split[0];
             String tableComment = split[1];
-            if(queryMenuCount(tableComment+"管理") > 0){
-                throw new RRException("菜单已存在");
-            }
+//            String url = "/"+tableName.toLowerCase().replaceAll("_","")+".html";
+//            if(queryMenuCount(url) > 0){
+//                throw new RRException("菜单已存在");
+//            }
             //查询表信息
             Map<String, String> table = queryTable(tableName);
             table.put("tableComment", tableComment);
@@ -80,7 +81,8 @@ public class SysGeneratorService {
             String[] split = tableNamesWithTableComment.split("\\|");
             String tableName = split[0];
             String tableComment = split[1];
-            if(queryMenuCount(tableComment+"管理") > 0){
+            String url = "/"+tableName.toLowerCase().replaceAll("_","")+".html";
+            if(queryMenuCount(url) > 0){
                 throw new RRException("菜单已存在");
             }
             //查询表信息

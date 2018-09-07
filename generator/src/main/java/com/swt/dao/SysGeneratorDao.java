@@ -27,5 +27,5 @@ public interface SysGeneratorDao {
 
     Map<String, String> queryExample(String tableName);
 
-    int queryMenuCount(String menuName);
+    int queryMenuCount(String url);
 }
