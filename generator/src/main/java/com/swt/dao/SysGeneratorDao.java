@@ -25,7 +25,24 @@ public interface SysGeneratorDao {
 
 	void excuteSQL(String sql);
 
+	/**
+	 * 查询新建表的一条记录
+	 * @param tableName
+	 * @return
+	 */
     Map<String, String> queryExample(String tableName);
 
-    int queryMenuCount(String url);
+	/**
+	 * 查询是否存在菜单
+	 * @param url 菜单的html地址
+	 * @return
+	 */
+	int queryMenuCount(String url);
+
+	/**
+	 * 删除数据库的菜单
+	 * @param url 菜单的html地址
+	 * @return
+	 */
+	void deleteMenu(String url);
 }

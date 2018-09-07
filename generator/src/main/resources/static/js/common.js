@@ -95,3 +95,23 @@ function getSelectedRows() {
     }
     return tableArr;
 }
+
+//获取多条记录的表名
+function getSelectedTableRows() {
+    var grid = $("#jqGrid");
+    var rowKey = grid.getGridParam("selrow");
+    if(!rowKey){
+        alert("请选择一条记录");
+        return ;
+    }
+    var tableArr = [];
+    var ids = grid.getGridParam("selarrrow");
+    for (var i = 0; i < ids.length; i++) {
+        var rowData = grid.jqGrid("getRowData",ids[i]);
+        //选中行的表名
+        var tableName = rowData.tableName;
+        //建一个数组，把选中行的时间添加到这个数组中去。
+        tableArr[i] = tableName;
+    }
+    return tableArr;
+}

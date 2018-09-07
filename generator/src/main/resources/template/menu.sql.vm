@@ -4,10 +4,10 @@ INSERT INTO `sys_menu` (`parent_id`, `name`, `url`, `perms`, `type`, `icon`, `or
 
 -- 菜单对应按钮SQL
 INSERT INTO `sys_menu` (`parent_id`, `name`, `url`, `perms`, `type`, `icon`, `order_num`)
-    VALUES ((SELECT parent_id from (SELECT parent_id from sys_menu where name = '${api}') as a), '查看', null, '${moduleName}:${pathName}:list,${moduleName}:${pathName}:info', '2', null, '6');
+    VALUES ((SELECT menu_id from (SELECT menu_id from sys_menu where url = 'modules/${moduleName}/${pathName}.html') as a), '查看', null, '${moduleName}:${pathName}:list,${moduleName}:${pathName}:info', '2', null, '6');
 INSERT INTO `sys_menu` (`parent_id`, `name`, `url`, `perms`, `type`, `icon`, `order_num`)
-    VALUES ((SELECT parent_id from (SELECT parent_id from sys_menu where name = '${api}') as a), '新增', null, '${moduleName}:${pathName}:save', '2', null, '6');
+    VALUES ((SELECT menu_id from (SELECT menu_id from sys_menu where url = 'modules/${moduleName}/${pathName}.html') as a), '新增', null, '${moduleName}:${pathName}:save', '2', null, '6');
 INSERT INTO `sys_menu` (`parent_id`, `name`, `url`, `perms`, `type`, `icon`, `order_num`)
-    VALUES ((SELECT parent_id from (SELECT parent_id from sys_menu where name = '${api}') as a), '修改', null, '${moduleName}:${pathName}:update', '2', null, '6');
+    VALUES ((SELECT menu_id from (SELECT menu_id from sys_menu where url = 'modules/${moduleName}/${pathName}.html') as a), '修改', null, '${moduleName}:${pathName}:update', '2', null, '6');
 INSERT INTO `sys_menu` (`parent_id`, `name`, `url`, `perms`, `type`, `icon`, `order_num`)
-    VALUES ((SELECT parent_id from (SELECT parent_id from sys_menu where name = '${api}') as a), '删除', null, '${moduleName}:${pathName}:delete', '2', null, '6');
+    VALUES ((SELECT menu_id from (SELECT menu_id from sys_menu where url = 'modules/${moduleName}/${pathName}.html') as a), '删除', null, '${moduleName}:${pathName}:delete', '2', null, '6');

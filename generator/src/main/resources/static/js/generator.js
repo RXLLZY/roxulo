@@ -66,6 +66,15 @@ var vm = new Vue({
                 return ;
             }
             location.href = "sys/generator/export?tables=" + tableNames.join();
+        },
+        deleteCode: function() {
+            var tableNames = getSelectedTableRows();
+            if(tableNames == null){
+                return ;
+            }
+            $.get("sys/generator/deleteCode?tables=" + tableNames.join(),function (data) {
+                alert(data.msg);
+            })
         }
 	}
 });

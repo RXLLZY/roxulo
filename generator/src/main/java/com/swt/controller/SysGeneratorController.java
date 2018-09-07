@@ -5,6 +5,7 @@ import com.swt.utils.PageUtils;
 import com.swt.utils.Query;
 import com.swt.utils.R;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -60,6 +61,7 @@ public class SysGeneratorController {
         IOUtils.write(data, response.getOutputStream());  
 	}
 
+
 	/**
 	 * 生成代码
 	 */
@@ -68,5 +70,15 @@ public class SysGeneratorController {
 	public R code(String tables, HttpServletResponse response) throws IOException{
 		sysGeneratorService.generatorCode(tables.split(","));
 		return R.ok().put("msg","生成代码成功");
+	}
+
+	/**
+	 * 删除代码
+	 */
+	@ResponseBody
+	@RequestMapping("/deleteCode")
+	public R deleteCode(String tables, HttpServletResponse response) throws IOException{
+		List<String> strings = sysGeneratorService.deleteCode(tables.split(","));
+		return R.ok().put("msg","成功删除如下文件：<br/>"+ StringUtils.join(strings,"<br/>"));
 	}
 }

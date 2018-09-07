@@ -1,16 +1,21 @@
 package com.swt.service;
 
 import com.swt.dao.SysGeneratorDao;
+import com.swt.utils.FileUtils;
 import com.swt.utils.GenUtils;
 import com.swt.utils.RRException;
+import org.apache.commons.configuration.Configuration;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.zip.ZipOutputStream;
+
+import static com.swt.utils.GenUtils.getConfig;
 
 /**
  * 代码生成器
@@ -34,6 +39,10 @@ public class SysGeneratorService {
 
     public int queryMenuCount(String url) {
         return sysGeneratorDao.queryMenuCount(url);
+    }
+
+    public void deleteMenu(String url) {
+        sysGeneratorDao.deleteMenu(url);
     }
 
     public Map<String, String> queryTable(String tableName) {
@@ -68,21 +77,19 @@ public class SysGeneratorService {
             //获取示例
             Map<String, String> map = queryExample(tableName);
             //生成代码
-            GenUtils.generatorCode(table, columns,map, zip);
+            GenUtils.generatorCode(table, columns, map, zip);
         }
         IOUtils.closeQuietly(zip);
         return outputStream.toByteArray();
     }
 
-    public byte[] generatorCode(String[] tableNamesWithTableComments) {
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-
+    public void generatorCode(String[] tableNamesWithTableComments) {
         for (String tableNamesWithTableComment : tableNamesWithTableComments) {
             String[] split = tableNamesWithTableComment.split("\\|");
             String tableName = split[0];
             String tableComment = split[1];
-            String url = "/"+tableName.toLowerCase().replaceAll("_","")+".html";
-            if(queryMenuCount(url) > 0){
+            String url = "/" + tableName.toLowerCase().replaceAll("_", "") + ".html";
+            if (queryMenuCount(url) > 0) {
                 throw new RRException("菜单已存在");
             }
             //查询表信息
@@ -93,11 +100,24 @@ public class SysGeneratorService {
             //获取示例
             Map<String, String> map = queryExample(tableName);
             //生成代码
-            String sql = GenUtils.generatorCode(table, columns,map, null);
-            if(sql != null){
+            String sql = GenUtils.generatorCode(table, columns, map, null);
+            if (sql != null) {
                 sysGeneratorDao.excuteSQL(sql);
             }
         }
-        return outputStream.toByteArray();
+    }
+
+    public List<String> deleteCode(String[] tableNames) {
+        List<String> fileNames = new ArrayList<>();
+        for (String tableName : tableNames) {
+            String fileName = tableName.replaceAll("_", "");
+            String url = "/" + fileName.toLowerCase() + ".html";
+            //删除菜单栏
+            deleteMenu(url);
+            //配置java文件和html文件
+            String path = getConfig().getString("mainDirectory");
+            fileNames.addAll(FileUtils.delTargetFile(path, fileName));
+        }
+        return fileNames;
     }
 }
