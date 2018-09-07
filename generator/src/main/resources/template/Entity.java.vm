@@ -1,0 +1,57 @@
+package ${package}.${moduleName}.entity;
+
+import com.baomidou.mybatisplus.annotations.TableId;
+import com.baomidou.mybatisplus.annotations.TableName;
+
+#if(${hasBigDecimal})
+import java.math.BigDecimal;
+#end
+import java.io.Serializable;
+import java.util.Date;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import javax.validation.constraints.NotBlank;
+
+/**
+ * ${comments}
+ * 
+ * @author ${author}
+ * @email ${email}
+ * @date ${datetime}
+ */
+@TableName("${tableName}")
+@ApiModel(value="${comments}")
+public class ${className}Entity implements Serializable {
+	private static final long serialVersionUID = 1L;
+
+#foreach ($column in $columns)
+	/**
+	 * $column.comments
+	 */
+#if($column.columnName == $pk.columnName)
+	@TableId
+	@ApiModelProperty(value="主键。新增不需要，编辑需要", example="$column.example", hidden=true)
+#else
+#if($column.nullAble == "NO")
+	@NotBlank(message="${column.comments}不能为空")
+#end
+	@ApiModelProperty(value="$column.comments", example="$column.example" #if($column.nullAble == "NO"),required=true#end)
+#end
+	private $column.attrType $column.attrname;
+#end
+
+#foreach ($column in $columns)
+	/**
+	 * 设置：${column.comments}
+	 */
+	public void set${column.attrName}($column.attrType $column.attrname) {
+		this.$column.attrname = $column.attrname;
+	}
+	/**
+	 * 获取：${column.comments}
+	 */
+	public $column.attrType get${column.attrName}() {
+		return $column.attrname;
+	}
+#end
+}

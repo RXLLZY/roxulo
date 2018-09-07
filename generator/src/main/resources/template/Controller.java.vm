@@ -1,0 +1,105 @@
+package ${package}.${moduleName}.controller;
+
+import java.util.Arrays;
+import java.util.Map;
+
+import com.swt.common.annotation.SysLog;
+import com.swt.common.validator.ValidatorUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+import io.swagger.annotations.*;
+
+import ${package}.${moduleName}.entity.${className}Entity;
+import ${package}.${moduleName}.service.${className}Service;
+import ${mainPath}.common.utils.PageUtils;
+import ${mainPath}.common.utils.R;
+
+
+
+/**
+ * ${api}
+ *
+ * @author ${author}
+ * @email ${email}
+ * @date ${datetime}
+ */
+@RestController
+@RequestMapping("${moduleName}/${pathName}")
+@Api(tags = "${api}",description="${comments} Controller")
+public class ${className}Controller {
+    @Autowired
+    private ${className}Service ${classname}Service;
+
+    /**
+     * 列表
+     */
+    @GetMapping
+    @ApiOperation(value = "列表", notes = "分页查询${comments}",produces="application/json")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "page", value = "页码", required = false, paramType = "query", dataType = "int", defaultValue = "1"),
+            @ApiImplicitParam(name = "limit", value = "每页条数", required = false, paramType = "query", dataType = "int", defaultValue = "10"),
+            @ApiImplicitParam(name = "sidx", value = "页码", required = false, paramType = "query", dataType = "string"),
+            @ApiImplicitParam(name = "order", value = "页码", required = false, paramType = "query", dataType = "string", defaultValue = "asc"),
+    })
+    public R list(@RequestParam @ApiParam(hidden = true) Map<String, Object> params) {
+        PageUtils page = ${classname}Service.queryPage(params);
+
+        return R.ok().put("page", page);
+    }
+
+
+    /**
+     * 记录
+     */
+    @GetMapping("/{${pk.attrname}}")
+    @ApiOperation(value = "记录", notes = "根据ID查询单条${comments}详情",produces="application/json")
+    @ApiImplicitParam(name = "${pk.attrname}", value = "${comments}ID", required = true,paramType = "path", dataType = "${pk.attrType}", defaultValue="${pk.example}")
+    public R info(@PathVariable("${pk.attrname}") ${pk.attrType} ${pk.attrname}){
+        ${className}Entity ${classname} = ${classname}Service.selectById(${pk.attrname});
+
+        return R.ok().put("${classname}", ${classname});
+    }
+
+    /**
+     * 记录
+     */
+    @SysLog("新增${comments}")
+    @PostMapping
+    @ApiOperation(value = "新增", notes = "新增${comments}",produces="application/json")
+    public R save(@RequestBody ${className}Entity ${classname}){
+        ValidatorUtils.validateEntity(${classname});
+        ${classname}Service.insert(${classname});
+
+        return R.ok();
+    }
+
+    /**
+     * 修改
+     */
+    @SysLog("修改${comments}")
+    @PutMapping("/{${pk.attrname}}")
+    @ApiOperation(value = "修改", notes = "修改${comments}",produces="application/json")
+    @ApiImplicitParam(name = "${pk.attrname}", value = "${comments}ID", required = true,paramType = "path", dataType = "${pk.attrType}", defaultValue="${pk.example}")
+    public R update(@PathVariable("${pk.attrname}") ${pk.attrType} ${pk.attrname},@RequestBody ${className}Entity ${classname}){
+        ${classname}.set${pk.attrName}(${pk.attrname});
+        ValidatorUtils.validateEntity(${classname});
+        //全部更新
+        ${classname}Service.updateAllColumnById(${classname});
+        
+        return R.ok();
+    }
+
+    /**
+     * 删除
+     */
+    @SysLog("删除${comments}")
+    @DeleteMapping
+    @ApiOperation(value = "删除", notes = "删除${comments}",produces="application/json")
+    @ApiImplicitParam(name = "${pk.attrname}s", value = "${comments}ID", required = true,paramType = "body", dataType = "${pk.attrType}[]", defaultValue="[${pk.example}]")
+    public R delete(@RequestBody ${pk.attrType}[] ${pk.attrname}s){
+        ${classname}Service.deleteBatchIds(Arrays.asList(${pk.attrname}s));
+
+        return R.ok();
+    }
+
+}
