@@ -1,7 +1,8 @@
-package ${package}.${moduleName}.entity;
+package ${package}.modules.${moduleName}.entity;
 
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
+import com.baomidou.mybatisplus.annotations.TableField;
 
 #if(${hasBigDecimal})
 import java.math.BigDecimal;
@@ -32,10 +33,13 @@ public class ${className}Entity implements Serializable {
 	@TableId
 	@ApiModelProperty(value="主键。新增不需要，编辑需要", example="$column.example", hidden=true)
 #else
-#if($column.nullAble == "NO")
+#if($column.nullAble)
 	@NotBlank(message="${column.comments}不能为空")
 #end
-	@ApiModelProperty(value="$column.comments", example="$column.example" #if($column.nullAble == "NO"),required=true#end)
+	@ApiModelProperty(value="$column.comments", example="$column.example", hidden=${column.hidden},required=$column.nullAble)
+#if($column.attrType == "Boolean")
+    @TableField("${column.columnName}")
+#end
 #end
 	private $column.attrType $column.attrname;
 #end

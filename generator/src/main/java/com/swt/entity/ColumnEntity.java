@@ -24,9 +24,12 @@ public class ColumnEntity {
     //auto_increment
     private String extra;
     //是否为空
-    private String nullAble;
+    private Boolean nullAble;
 	//示例
 	private String example;
+	//是否隐藏
+	private Boolean hidden;
+
 	public String getColumnName() {
 		return columnName;
 	}
@@ -69,11 +72,15 @@ public class ColumnEntity {
 	public void setExtra(String extra) {
 		this.extra = extra;
 	}
-	public String getNullAble() {
+	public Boolean getNullAble() {
 		return nullAble;
 	}
 	public void setNullAble(String nullAble) {
-		this.nullAble = nullAble;
+		if("NO".equals(nullAble)){
+			this.nullAble = true;
+		}else{
+			this.nullAble = false;
+		}
 	}
 
 	public String getExample() {
@@ -82,5 +89,13 @@ public class ColumnEntity {
 
 	public void setExample(String example) {
 		this.example = example;
+	}
+
+	public Boolean getHidden() {
+		return hidden;
+	}
+
+	public void setHidden(Boolean hidden) {
+		this.hidden = hidden;
 	}
 }

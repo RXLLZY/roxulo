@@ -65,10 +65,6 @@ public class SysGeneratorService {
             String[] split = tableNamesWithTableComment.split("\\|");
             String tableName = split[0];
             String tableComment = split[1];
-//            String url = "/"+tableName.toLowerCase().replaceAll("_","")+".html";
-//            if(queryMenuCount(url) > 0){
-//                throw new RRException("菜单已存在");
-//            }
             //查询表信息
             Map<String, String> table = queryTable(tableName);
             table.put("tableComment", tableComment);
@@ -84,11 +80,13 @@ public class SysGeneratorService {
     }
 
     public void generatorCode(String[] tableNamesWithTableComments) {
+        //配置信息
+        Configuration config = getConfig();
         for (String tableNamesWithTableComment : tableNamesWithTableComments) {
             String[] split = tableNamesWithTableComment.split("\\|");
             String tableName = split[0];
             String tableComment = split[1];
-            String url = "/" + tableName.toLowerCase().replaceAll("_", "") + ".html";
+            String url = "/" + tableName.replace(config.getString("tablePrefix"),"").toLowerCase().replaceAll("_", "") + ".html";
             if (queryMenuCount(url) > 0) {
                 throw new RRException("菜单已存在");
             }
@@ -109,8 +107,10 @@ public class SysGeneratorService {
 
     public List<String> deleteCode(String[] tableNames) {
         List<String> fileNames = new ArrayList<>();
+        //配置信息
+        Configuration config = getConfig();
         for (String tableName : tableNames) {
-            String fileName = tableName.replaceAll("_", "");
+            String fileName = tableName.replace(config.getString("tablePrefix"),"").replaceAll("_", "");
             String url = "/" + fileName.toLowerCase() + ".html";
             //删除菜单栏
             deleteMenu(url);

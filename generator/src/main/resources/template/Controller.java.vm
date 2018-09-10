@@ -1,7 +1,8 @@
-package ${package}.${moduleName}.controller;
+package ${package}.modules.${moduleName}.controller;
 
 import java.util.Arrays;
 import java.util.Map;
+import java.util.Date;
 
 import com.swt.common.annotation.SysLog;
 import com.swt.common.validator.ValidatorUtils;
@@ -9,10 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.annotations.*;
 
-import ${package}.${moduleName}.entity.${className}Entity;
-import ${package}.${moduleName}.service.${className}Service;
-import ${mainPath}.common.utils.PageUtils;
-import ${mainPath}.common.utils.R;
+import ${package}.modules.${moduleName}.entity.${className}Entity;
+import ${package}.modules.${moduleName}.service.${className}Service;
+import ${package}.common.utils.PageUtils;
+import ${package}.common.utils.R;
+import ${package}.common.controller.AbstractController;
 
 
 
@@ -26,7 +28,7 @@ import ${mainPath}.common.utils.R;
 @RestController
 @RequestMapping("${moduleName}/${pathName}")
 @Api(tags = "${api}",description="${comments} Controller")
-public class ${className}Controller {
+public class ${className}Controller extends AbstractController{
     @Autowired
     private ${className}Service ${classname}Service;
 
@@ -67,6 +69,15 @@ public class ${className}Controller {
     @PostMapping
     @ApiOperation(value = "新增", notes = "新增${comments}",produces="application/json")
     public R save(@RequestBody ${className}Entity ${classname}){
+#if($CrtUserId != '')
+        //添加用户名
+        ${classname}.set${CrtUserId}(getUserId());
+#end
+#if($CrtTime != '')
+        //添加创建时间
+        ${classname}.set${CrtTime}(new Date());
+#end
+        //校验
         ValidatorUtils.validateEntity(${classname});
         ${classname}Service.insert(${classname});
 
@@ -81,7 +92,16 @@ public class ${className}Controller {
     @ApiOperation(value = "修改", notes = "修改${comments}",produces="application/json")
     @ApiImplicitParam(name = "${pk.attrname}", value = "${comments}ID", required = true,paramType = "path", dataType = "${pk.attrType}", defaultValue="${pk.example}")
     public R update(@PathVariable("${pk.attrname}") ${pk.attrType} ${pk.attrname},@RequestBody ${className}Entity ${classname}){
+#if($OptUserId != '')
+    //添加用户名
+        ${classname}.set${OptUserId}(getUserId());
+#end
+#if($OptTime != '')
+        //添加创建时间
+        ${classname}.set${OptTime}(new Date());
+#end
         ${classname}.set${pk.attrName}(${pk.attrname});
+        //校验
         ValidatorUtils.validateEntity(${classname});
         //全部更新
         ${classname}Service.updateAllColumnById(${classname});

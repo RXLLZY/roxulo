@@ -66,22 +66,39 @@ var vm = new Vue({
             vm.getInfo(${pk.attrname})
 		},
 		saveOrUpdate: function (event) {
-			var type = vm.${classname}.${pk.attrname} == null ? "POST" : "PUT";
-			$.ajax({
-				type: type,
-			    url: baseURL + "${moduleName}/${pathName}" ,
-                contentType: "application/json",
-			    data: JSON.stringify(vm.${classname}),
-			    success: function(r){
-			    	if(r.code === 0){
-						alert('操作成功', function(index){
-							vm.reload();
-						});
-					}else{
-						alert(r.msg);
-					}
-				}
-			});
+			if(vm.${classname}.${pk.attrname} == null) {
+                $.ajax({
+                    type: "POST",
+                    url: baseURL + "${moduleName}/${pathName}",
+                    contentType: "application/json",
+                    data: JSON.stringify(vm.${classname}),
+                    success: function (r) {
+                        if (r.code === 0) {
+                            alert('操作成功', function (index) {
+                                vm.reload();
+                            });
+                        } else {
+                            alert(r.msg);
+                        }
+                    }
+                });
+            }else{
+                $.ajax({
+                    type: "PUT",
+                    url: baseURL + "${moduleName}/${pathName}/" + vm.${classname}.${pk.attrname},
+                    contentType: "application/json",
+                    data: JSON.stringify(vm.${classname}),
+                    success: function (r) {
+                        if (r.code === 0) {
+                            alert('操作成功', function (index) {
+                                vm.reload();
+                            });
+                        } else {
+                            alert(r.msg);
+                        }
+                    }
+                });
+			}
 		},
 		del: function (event) {
 			var ${pk.attrname}s = getSelectedRows();
