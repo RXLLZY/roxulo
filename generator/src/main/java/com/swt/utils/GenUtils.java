@@ -118,6 +118,7 @@ public class GenUtils {
             }
             //是否主键
             if ("PRI".equalsIgnoreCase(column.get("columnKey")) && tableEntity.getPk() == null) {
+                columnEntity.setHidden(true);
                 tableEntity.setPk(columnEntity);
             }
 

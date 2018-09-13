@@ -31,7 +31,7 @@ public class ${className}Entity implements Serializable {
 	 */
 #if($column.columnName == $pk.columnName)
 	@TableId
-	@ApiModelProperty(value="主键。新增不需要，编辑需要", example="$column.example", hidden=true)
+	@ApiModelProperty(value="主键", example="$column.example", hidden=true)
 #else
 #if($column.nullAble)
 	@NotBlank(message="${column.comments}不能为空")

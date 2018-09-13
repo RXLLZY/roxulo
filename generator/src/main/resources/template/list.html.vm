@@ -31,11 +31,15 @@
         <div class="panel-heading">{{title}}</div>
         <form class="form-horizontal">
 			#foreach($column in $columns)
-				#if($column.columnName != $pk.columnName)
+				#if(!$column.hidden)
                     <div class="form-group">
                         <div class="col-sm-2 control-label">${column.comments}</div>
                         <div class="col-sm-10">
+                    #if($column.dataType == 'text'|| $column.dataType == 'mediumtext'|| $column.dataType == 'longtext')
+                            <input type="textarea" class="form-control" v-model="${classname}.${column.attrname}" placeholder="${column.comments}"/>
+                    #else
                             <input type="text" class="form-control" v-model="${classname}.${column.attrname}" placeholder="${column.comments}"/>
+                    #end
                         </div>
                     </div>
 				#end
