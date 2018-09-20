@@ -26,11 +26,13 @@ import com.swt.common.validator.ValidatorUtils;
 import com.swt.common.validator.group.AddGroup;
 import com.swt.common.validator.group.UpdateGroup;
 import com.swt.modules.sys.entity.SysUserEntity;
+import com.swt.modules.sys.form.PasswordForm;
 import com.swt.modules.sys.service.SysUserRoleService;
 import com.swt.modules.sys.service.SysUserService;
 import com.swt.modules.sys.shiro.ShiroUtils;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.apache.shiro.crypto.hash.Sha256Hash;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -77,20 +79,20 @@ public class SysUserController extends AbstractController {
 	 */
 	@SysLog("修改密码")
 	@RequestMapping("/password")
-	public R password(String password, String newPassword){
-		Assert.isBlank(newPassword, "新密码不为能空");
+	public R password(@RequestBody PasswordForm form){
+		Assert.isBlank(form.getNewPassword(), "新密码不为能空");
 
-		//原密码
-		password = ShiroUtils.sha256(password, getUser().getSalt());
-		//新密码
-		newPassword = ShiroUtils.sha256(newPassword, getUser().getSalt());
-				
+		//sha256加密
+		String password = new Sha256Hash(form.getPassword(), getUser().getSalt()).toHex();
+		//sha256加密
+		String newPassword = new Sha256Hash(form.getNewPassword(), getUser().getSalt()).toHex();
+
 		//更新密码
 		boolean flag = sysUserService.updatePassword(getUserId(), password, newPassword);
 		if(!flag){
 			return R.error("原密码不正确");
 		}
-		
+
 		return R.ok();
 	}
 	

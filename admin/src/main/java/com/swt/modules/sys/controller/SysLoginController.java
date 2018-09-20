@@ -20,14 +20,15 @@ package com.swt.modules.sys.controller;
 import com.google.code.kaptcha.Constants;
 import com.google.code.kaptcha.Producer;
 import com.swt.common.utils.R;
+import com.swt.common.validator.ValidatorUtils;
+import com.swt.modules.sys.form.SysLoginForm;
 import com.swt.modules.sys.shiro.ShiroUtils;
+import io.swagger.annotations.*;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.imageio.ImageIO;
 import javax.servlet.ServletOutputStream;
@@ -43,11 +44,13 @@ import java.io.IOException;
  * @date 2016年11月10日 下午1:15:31
  */
 @Controller
+@Api(tags = "用户登陆",description="用户登陆")
 public class SysLoginController {
 	@Autowired
 	private Producer producer;
-	
-	@RequestMapping("captcha.jpg")
+
+	@GetMapping("captcha.jpg")
+	@ApiOperation(value = "生成验证码", notes = "随机生成验证码",produces="image/jpeg")
 	public void captcha(HttpServletResponse response)throws IOException {
         response.setHeader("Cache-Control", "no-store, no-cache");
         response.setContentType("image/jpeg");
@@ -68,15 +71,17 @@ public class SysLoginController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/sys/login", method = RequestMethod.POST)
-	public R login(String username, String password, String captcha) {
-		String kaptcha = ShiroUtils.getKaptcha(Constants.KAPTCHA_SESSION_KEY);
-//		if(!captcha.equalsIgnoreCase(kaptcha)){
+	@ApiOperation("登录")
+	public R login(@RequestBody SysLoginForm form) {
+//		String kaptcha = ShiroUtils.getKaptcha(Constants.KAPTCHA_SESSION_KEY);
+//		if(!captcha.equalsIgnoreCase(form.getCaptcha())){
 //			return R.error("验证码不正确");
 //		}
-		
+		//表单校验
+		ValidatorUtils.validateEntity(form);
 		try{
 			Subject subject = ShiroUtils.getSubject();
-			UsernamePasswordToken token = new UsernamePasswordToken(username, password);
+			UsernamePasswordToken token = new UsernamePasswordToken(form.getUsername(), form.getPassword());
 			subject.login(token);
 		}catch (UnknownAccountException e) {
 			return R.error(e.getMessage());
@@ -95,6 +100,7 @@ public class SysLoginController {
 	 * 退出
 	 */
 	@RequestMapping(value = "logout", method = RequestMethod.GET)
+	@ApiOperation(value = "退出登陆", notes = "退出登陆")
 	public String logout() {
 		ShiroUtils.logout();
 		return "redirect:login.html";

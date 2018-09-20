@@ -269,7 +269,7 @@ public class GenUtils {
         }
 
         if (template.contains("Dao.xml.vm")) {
-            return packagePath + config.getString("mapper")  + File.separator + className + "Dao.xml";
+            return "main" + File.separator + "resources" + File.separator  + config.getString("mapper")  + File.separator + className + "Dao.xml";
         }
 
         if (template.contains("list.html.vm")) {
