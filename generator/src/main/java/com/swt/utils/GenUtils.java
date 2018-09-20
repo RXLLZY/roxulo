@@ -152,6 +152,10 @@ public class GenUtils {
         map.put("hasBigDecimal", hasBigDecimal);
         map.put("package", config.getString("package"));
         map.put("moduleName", config.getString("moduleName"));
+        map.put("controller", config.getString("controller"));
+        map.put("service", config.getString("service"));
+        map.put("entity", config.getString("entity"));
+        map.put("mapper", config.getString("mapper"));
         map.put("author", config.getString("author"));
         map.put("email", config.getString("email"));
         map.put("datetime", DateUtils.format(new Date(), DateUtils.DATE_TIME_PATTERN));
@@ -170,7 +174,7 @@ public class GenUtils {
             Template tpl = Velocity.getTemplate(template, "UTF-8");
             tpl.merge(context, sw);
             try {
-                String fileName = getFileName(template, tableEntity.getClassName(), config.getString("package")+".modules", config.getString("moduleName"));
+                String fileName = getFileName(template, tableEntity.getClassName(), config);
                 if (zip == null) {
                     if (template.endsWith("menu.sql.vm")) {
                         //写数据库
@@ -236,34 +240,36 @@ public class GenUtils {
     /**
      * 获取文件名
      */
-    public static String getFileName(String template, String className, String packageName, String moduleName) {
+    public static String getFileName(String template, String className,Configuration config) {
         String packagePath = "main" + File.separator + "java" + File.separator;
+        String packageName = config.getString("package");
+        String moduleName = config.getString("moduleName");
         if (StringUtils.isNotBlank(packageName)) {
-            packagePath += packageName.replace(".", File.separator) + File.separator + moduleName + File.separator;
+            packagePath += packageName.replace(".", File.separator) + File.separator + config.getString("modules") + File.separator + moduleName + File.separator;
         }
 
         if (template.contains("Entity.java.vm")) {
-            return packagePath + "entity" + File.separator + className + "Entity.java";
+            return packagePath + config.getString("entity") + File.separator + className + "Entity.java";
         }
 
         if (template.contains("Dao.java.vm")) {
-            return packagePath + "dao" + File.separator + className + "Dao.java";
+            return packagePath + config.getString("dao") + File.separator + className + "Dao.java";
         }
 
         if (template.contains("Service.java.vm")) {
-            return packagePath + "service" + File.separator + className + "Service.java";
+            return packagePath + config.getString("service") + File.separator + className + "Service.java";
         }
 
         if (template.contains("ServiceImpl.java.vm")) {
-            return packagePath + "service" + File.separator + "impl" + File.separator + className + "ServiceImpl.java";
+            return packagePath + config.getString("service") + File.separator + "impl" + File.separator + className + "ServiceImpl.java";
         }
 
         if (template.contains("Controller.java.vm")) {
-            return packagePath + "controller" + File.separator + className + "Controller.java";
+            return packagePath + config.getString("controller") + File.separator + className + "Controller.java";
         }
 
         if (template.contains("Dao.xml.vm")) {
-            return "main" + File.separator + "resources" + File.separator + "mapper" + File.separator + moduleName + File.separator + className + "Dao.xml";
+            return packagePath + config.getString("mapper")  + File.separator + className + "Dao.xml";
         }
 
         if (template.contains("list.html.vm")) {

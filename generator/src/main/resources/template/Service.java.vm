@@ -1,8 +1,8 @@
-package ${package}.modules.${moduleName}.service;
+package ${package}.modules.${moduleName}.${service};
 
 import com.baomidou.mybatisplus.service.IService;
 import ${package}.common.utils.PageUtils;
-import ${package}.modules.${moduleName}.entity.${className}Entity;
+import ${package}.modules.${moduleName}.${entity}.${className}Entity;
 
 import java.util.Map;
 
