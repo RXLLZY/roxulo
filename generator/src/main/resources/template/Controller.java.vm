@@ -8,15 +8,14 @@ import com.swt.common.annotation.SysLog;
 import com.swt.common.validator.ValidatorUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+#if(${swagger})
 import io.swagger.annotations.*;
-
+#end
 import ${package}.modules.${moduleName}.${entity}.${className}Entity;
 import ${package}.modules.${moduleName}.${service}.${className}Service;
 import ${package}.common.utils.PageUtils;
 import ${package}.common.utils.R;
 import ${package}.common.controller.AbstractController;
-
-
 
 /**
  * ${api}
@@ -27,7 +26,9 @@ import ${package}.common.controller.AbstractController;
  */
 @RestController
 @RequestMapping("${moduleName}/${pathName}")
+#if(${swagger})
 @Api(tags = "${api}",description="${comments} Controller")
+#end
 public class ${className}Controller extends AbstractController{
     @Autowired
     private ${className}Service ${classname}Service;
@@ -36,14 +37,17 @@ public class ${className}Controller extends AbstractController{
      * 列表
      */
     @GetMapping
+#if(${swagger})
     @ApiOperation(value = "列表", notes = "分页查询${comments}",produces="application/json")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "page", value = "页码", required = false, paramType = "query", dataType = "int", defaultValue = "1"),
             @ApiImplicitParam(name = "limit", value = "每页条数", required = false, paramType = "query", dataType = "int", defaultValue = "10"),
             @ApiImplicitParam(name = "sidx", value = "页码", required = false, paramType = "query", dataType = "string"),
-            @ApiImplicitParam(name = "order", value = "页码", required = false, paramType = "query", dataType = "string", defaultValue = "asc"),
+            @ApiImplicitParam(name = "order", value = "排序", required = false, paramType = "query", dataType = "string", defaultValue = "asc"),
+            @ApiImplicitParam(name = "params", value = "参数", hidden = true)
     })
-    public R list(@RequestParam @ApiParam(hidden = true) Map<String, Object> params) {
+#end
+    public R list(@RequestParam #if(${swagger})@ApiParam(hidden = true)#end Map<String, Object> params) {
         PageUtils page = ${classname}Service.queryPage(params);
 
         return R.ok().put("page", page);
@@ -54,8 +58,10 @@ public class ${className}Controller extends AbstractController{
      * 记录
      */
     @GetMapping("/{${pk.attrname}}")
+#if(${swagger})
     @ApiOperation(value = "记录", notes = "根据ID查询单条${comments}详情",produces="application/json")
     @ApiImplicitParam(name = "${pk.attrname}", value = "${comments}ID", required = true,paramType = "path", dataType = "${pk.attrType}", defaultValue="${pk.example}")
+#end
     public R info(@PathVariable("${pk.attrname}") ${pk.attrType} ${pk.attrname}){
         ${className}Entity ${classname} = ${classname}Service.selectById(${pk.attrname});
 
@@ -67,7 +73,9 @@ public class ${className}Controller extends AbstractController{
      */
     @SysLog("新增${comments}")
     @PostMapping
+#if(${swagger})
     @ApiOperation(value = "新增", notes = "新增${comments}",produces="application/json")
+#end
     public R save(@RequestBody ${className}Entity ${classname}){
 #if($CrtUserId != '')
         //添加用户名
@@ -89,8 +97,10 @@ public class ${className}Controller extends AbstractController{
      */
     @SysLog("修改${comments}")
     @PutMapping("/{${pk.attrname}}")
+#if(${swagger})
     @ApiOperation(value = "修改", notes = "修改${comments}",produces="application/json")
     @ApiImplicitParam(name = "${pk.attrname}", value = "${comments}ID", required = true,paramType = "path", dataType = "${pk.attrType}", defaultValue="${pk.example}")
+#end
     public R update(@PathVariable("${pk.attrname}") ${pk.attrType} ${pk.attrname},@RequestBody ${className}Entity ${classname}){
 #if($OptUserId != '')
     //添加用户名
@@ -114,8 +124,10 @@ public class ${className}Controller extends AbstractController{
      */
     @SysLog("删除${comments}")
     @DeleteMapping
+#if(${swagger})
     @ApiOperation(value = "删除", notes = "删除${comments}",produces="application/json")
     @ApiImplicitParam(name = "${pk.attrname}s", value = "${comments}ID", required = true,paramType = "body", dataType = "${pk.attrType}[]", defaultValue="[${pk.example}]")
+#end
     public R delete(@RequestBody ${pk.attrType}[] ${pk.attrname}s){
         ${classname}Service.deleteBatchIds(Arrays.asList(${pk.attrname}s));
 

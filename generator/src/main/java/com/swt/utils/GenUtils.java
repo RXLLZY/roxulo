@@ -150,12 +150,17 @@ public class GenUtils {
         map.put("pathName", tableEntity.getClassname().toLowerCase());
         map.put("columns", tableEntity.getColumns());
         map.put("hasBigDecimal", hasBigDecimal);
+        //包路径配置
         map.put("package", config.getString("package"));
         map.put("moduleName", config.getString("moduleName"));
         map.put("controller", config.getString("controller"));
         map.put("service", config.getString("service"));
         map.put("entity", config.getString("entity"));
-        map.put("mapper", config.getString("mapper"));
+
+        //是否生成swagger
+        map.put("author", config.getBoolean("swagger",false));
+
+        //作者信息配置
         map.put("author", config.getString("author"));
         map.put("email", config.getString("email"));
         map.put("datetime", DateUtils.format(new Date(), DateUtils.DATE_TIME_PATTERN));
