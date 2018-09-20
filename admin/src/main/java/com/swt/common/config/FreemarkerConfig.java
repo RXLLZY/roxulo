@@ -28,7 +28,7 @@ import java.util.Properties;
 /**
  * Freemarker配置
  *
- * @author Mark sunlightcs@gmail.com
+ * @author Mark @shuweitech.com
  * @since 3.0.0 2017-09-28
  */
 @Configuration

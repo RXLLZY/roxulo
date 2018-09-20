@@ -16,10 +16,13 @@
 
 package com.swt.common.utils;
 
+import com.swt.modules.sys.entity.SysFileEntity;
+import org.springframework.beans.factory.annotation.Value;
+
 /**
  * 系统参数相关Key
  *
- * @author Mark sunlightcs@gmail.com
+ * @author Mark @shuweitech.com
  * @since 1.2.0 2017-03-26
  */
 public class ConfigConstant {
@@ -27,4 +30,14 @@ public class ConfigConstant {
      * 云存储配置KEY
      */
     public final static String CLOUD_STORAGE_CONFIG_KEY = "CLOUD_STORAGE_CONFIG_KEY";
+
+    /**
+     * 项目路径
+     */
+    public static final String CONTENT_PATH = SysFileEntity.class.getResource("/").getPath();
+
+    /**
+     * 资源路径
+     */
+    public static final String RESOURCE_PATH = "/statics/img/";
 }

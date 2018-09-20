@@ -19,7 +19,7 @@ package com.swt.common.utils;
 /**
  * 常量
  *
- * @author Mark sunlightcs@gmail.com
+ * @author Mark @shuweitech.com
  * @since 1.0.0 2016-11-15
  */
 public class Constant {

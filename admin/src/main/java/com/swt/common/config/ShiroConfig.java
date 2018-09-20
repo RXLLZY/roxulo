@@ -36,7 +36,7 @@ import java.util.Map;
 /**
  * Shiro的配置文件
  *
- * @author Mark sunlightcs@gmail.com
+ * @author Mark @shuweitech.com
  * @since 3.0.0 2017-09-27
  */
 @Configuration
@@ -87,6 +87,7 @@ public class ShiroConfig {
         filterMap.put("/login.html", "anon");
         filterMap.put("/sys/login", "anon");
         filterMap.put("/favicon.ico", "anon");
+        filterMap.put("/upload", "anon");
         filterMap.put("/captcha.jpg", "anon");
         filterMap.put("/**", "authc");
         shiroFilter.setFilterChainDefinitionMap(filterMap);

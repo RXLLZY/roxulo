@@ -22,8 +22,8 @@ import com.swt.modules.sys.entity.SysRoleEntity;
 /**
  * 角色管理
  * 
- * @author chenshun
- * @email sunlightcs@gmail.com
+ * @author RoXuLo
+ * @email @shuweitech.com
  * @date 2016年9月18日 上午9:33:33
  */
 public interface SysRoleDao extends BaseMapper<SysRoleEntity> {

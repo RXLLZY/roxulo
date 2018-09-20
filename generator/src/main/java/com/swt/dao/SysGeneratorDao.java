@@ -8,8 +8,8 @@ import java.util.Map;
 /**
  * 代码生成器
  * 
- * @author chenshun
- * @email sunlightcs@gmail.com
+ * @author RoXuLo
+ * @email @shuweitech.com
  * @date 2016年12月19日 下午3:32:04
  */
 @Mapper
