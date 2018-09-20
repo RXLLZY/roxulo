@@ -16,6 +16,7 @@
 
 package com.swt.modules.sys.controller;
 
+import com.swt.common.controller.AbstractController;
 import com.swt.common.utils.Constant;
 import com.swt.common.utils.R;
 import com.swt.modules.sys.entity.SysDeptEntity;

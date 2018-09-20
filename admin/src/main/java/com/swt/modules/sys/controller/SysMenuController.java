@@ -17,6 +17,7 @@
 package com.swt.modules.sys.controller;
 
 import com.swt.common.annotation.SysLog;
+import com.swt.common.controller.AbstractController;
 import com.swt.common.exception.RRException;
 import com.swt.common.utils.Constant;
 import com.swt.common.utils.R;

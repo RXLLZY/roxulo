@@ -17,6 +17,7 @@
 package com.swt.modules.sys.controller;
 
 import com.swt.common.annotation.SysLog;
+import com.swt.common.controller.AbstractController;
 import com.swt.common.utils.PageUtils;
 import com.swt.common.utils.R;
 import com.swt.common.validator.ValidatorUtils;
