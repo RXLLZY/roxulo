@@ -43,7 +43,8 @@ public class SysFileController extends AbstractController{
      * 上传文件
      */
     @ResponseBody
-    @RequestMapping("/upload")
+    @PostMapping("/upload")
+    @ApiOperation(value = "uploadFile", notes = "上传文件",consumes="multipart/form-data",produces="application/json")
     public R upload(@RequestParam("file") MultipartFile file){
         String name = file.getOriginalFilename();
         String filePath;

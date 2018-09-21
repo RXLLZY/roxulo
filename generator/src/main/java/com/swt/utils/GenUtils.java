@@ -153,9 +153,10 @@ public class GenUtils {
         //包路径配置
         map.put("package", config.getString("package"));
         map.put("moduleName", config.getString("moduleName"));
-        map.put("controller", config.getString("controller"));
-        map.put("service", config.getString("service"));
-        map.put("entity", config.getString("entity"));
+        map.put("controller", config.getString("controller","controller"));
+        map.put("service", config.getString("service","service"));
+        map.put("dao", config.getString("dao","dao"));
+        map.put("entity", config.getString("entity","entity"));
 
         //是否生成swagger
         map.put("author", config.getBoolean("swagger",false));
@@ -247,34 +248,34 @@ public class GenUtils {
      */
     public static String getFileName(String template, String className,Configuration config) {
         String packagePath = "main" + File.separator + "java" + File.separator;
-        String packageName = config.getString("package");
-        String moduleName = config.getString("moduleName");
+        String packageName = config.getString("package","package");
+        String moduleName = config.getString("moduleName","moduleName");
         if (StringUtils.isNotBlank(packageName)) {
             packagePath += packageName.replace(".", File.separator) + File.separator + config.getString("modules") + File.separator + moduleName + File.separator;
         }
 
         if (template.contains("Entity.java.vm")) {
-            return packagePath + config.getString("entity") + File.separator + className + "Entity.java";
+            return packagePath + config.getString("entity","entity") + File.separator + className + "Entity.java";
         }
 
         if (template.contains("Dao.java.vm")) {
-            return packagePath + config.getString("dao") + File.separator + className + "Dao.java";
+            return packagePath + config.getString("dao","dao") + File.separator + className + "Dao.java";
         }
 
         if (template.contains("Service.java.vm")) {
-            return packagePath + config.getString("service") + File.separator + className + "Service.java";
+            return packagePath + config.getString("service","service") + File.separator + className + "Service.java";
         }
 
         if (template.contains("ServiceImpl.java.vm")) {
-            return packagePath + config.getString("service") + File.separator + "impl" + File.separator + className + "ServiceImpl.java";
+            return packagePath + config.getString("service","service") + File.separator + "impl" + File.separator + className + "ServiceImpl.java";
         }
 
         if (template.contains("Controller.java.vm")) {
-            return packagePath + config.getString("controller") + File.separator + className + "Controller.java";
+            return packagePath + config.getString("controller","controller") + File.separator + className + "Controller.java";
         }
 
         if (template.contains("Dao.xml.vm")) {
-            return "main" + File.separator + "resources" + File.separator  + config.getString("mapper")  + File.separator + className + "Dao.xml";
+            return "main" + File.separator + "resources" + File.separator  + config.getString("mapper","mapper")  + File.separator + className + "Dao.xml";
         }
 
         if (template.contains("list.html.vm")) {
