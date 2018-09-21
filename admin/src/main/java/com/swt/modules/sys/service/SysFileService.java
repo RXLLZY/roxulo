@@ -3,6 +3,7 @@ package com.swt.modules.sys.service;
 import com.baomidou.mybatisplus.service.IService;
 import com.swt.common.utils.PageUtils;
 import com.swt.modules.sys.entity.SysFileEntity;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Map;
 
@@ -16,5 +17,9 @@ import java.util.Map;
 public interface SysFileService extends IService<SysFileEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
+
+    SysFileEntity upload(MultipartFile file);
+
+    SysFileEntity uploadAndAdd(MultipartFile file);
 }
 

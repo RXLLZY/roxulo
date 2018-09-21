@@ -47,19 +47,18 @@ $(function () {
         autoSubmit:true,
         responseType:"json",
         onSubmit:function(file, extension){
-            if (!(extension && /^(jpg|jpeg|png|gif)$/.test(extension.toLowerCase()))){
-                alert('只支持jpg、png、gif格式的图片！');
-                return false;
-            }
+            // if (!(extension && /^(jpg|jpeg|png|gif)$/.test(extension.toLowerCase()))){
+            //     alert('只支持jpg、png、gif格式的图片！');
+            //     return false;
+            // }
         },
         onComplete : function(file, r){
             if(r.code == 200){
-                console.log(r);
                 alert(r.sysFile.originalName + "上传成功");
-                vm.sysFile.OriginalFilename = vm.sysFile.OriginalFilename;
-                vm.sysFile.setContentType = vm.sysFile.setContentType;
-                vm.sysFile.setPath = vm.sysFile.setPath;
-                vm.sysFile.setSize = vm.sysFile.setSize;
+                vm.sysFile.originalName = r.sysFile.originalName;
+                vm.sysFile.contentType = r.sysFile.contentType;
+                vm.sysFile.path = r.sysFile.path;
+                vm.sysFile.size = r.sysFile.size;
             }else{
                 alert(r.msg);
             }
