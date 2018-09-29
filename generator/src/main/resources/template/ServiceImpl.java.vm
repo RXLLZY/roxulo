@@ -26,7 +26,11 @@ public class ${className}ServiceImpl extends ServiceImpl<${className}Dao, ${clas
                 new Query<${className}Entity>(params).getPage(),
                 new EntityWrapper<${className}Entity>()
 #if(${search})
+    #if($searchColumn.attrType == "Integer")
+                    .eq(StringUtils.isNotBlank(${searchColumn.attrname}),"${searchColumn.columnName}", ${searchColumn.attrname})
+    #else
                     .like(StringUtils.isNotBlank(${searchColumn.attrname}),"${searchColumn.columnName}", ${searchColumn.attrname})
+    #end
 #end
         );
 

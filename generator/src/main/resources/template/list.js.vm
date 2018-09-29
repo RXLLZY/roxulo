@@ -37,13 +37,39 @@ $(function () {
         	$("#jqGrid").closest(".ui-jqgrid-bdiv").css({ "overflow-x" : "hidden" }); 
         }
     });
+
+
+#foreach($column in $columns)
+#if($column.resource)
+    new AjaxUpload('#${column.attrname}', {
+        action: baseURL + "sys/file/uploadAndAdd",
+        name: 'file',
+        autoSubmit:true,
+        responseType:"json",
+        onSubmit:function(file, extension){
+            // if (!(extension && /^(jpg|jpeg|png|gif)$/.test(extension.toLowerCase()))){
+            //     alert('只支持jpg、png、gif格式的图片！');
+            //     return false;
+            // }
+        },
+        onComplete : function(file, r){
+            if(r.code == 200){
+                alert(r.sysFile.originalName + "上传成功");
+                vm.${classname}.${column.attrname} = r.sysFile.originalName;
+            }else{
+                alert(r.msg);
+            }
+        }
+    });
+#end
+#end
 });
 
 var vm = new Vue({
 	el:'#rrapp',
 	data:{
 #if(${search})
-         q:{
+        q:{
             ${searchColumn.attrname}: null
         },
 #end

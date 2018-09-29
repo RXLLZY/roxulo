@@ -118,6 +118,9 @@ public class SysGeneratorService {
             String path = getConfig().getString("mainDirectory");
             fileNames.addAll(FileUtils.delTargetFile(path, fileName));
         }
+        if(fileNames.size() == 0 ){
+            throw new RRException( "项目不存在相关代码文件,无需删除", 500);
+        }
         return fileNames;
     }
 }

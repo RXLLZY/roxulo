@@ -82,6 +82,10 @@ public class GenUtils {
         List<ColumnEntity> columsList = new ArrayList<>();
         //列名
         List<String> attrNamesList = new ArrayList<>();
+        //查询关键词
+        String[] searchKey = config.getStringArray("searchKey");
+        //资源关键词
+        String[] resourceKey = config.getStringArray("resourceKey");
         for (Map<String, String> column : columns) {
             ColumnEntity columnEntity = new ColumnEntity();
             String columnName = column.get("columnName");
@@ -120,10 +124,20 @@ public class GenUtils {
                 columnEntity.setHidden(true);
                 tableEntity.setPk(columnEntity);
             }
-            //判断名字是否包含name或者title。
+            //判断名字是否包含name或者title。搜索用
             if(tableEntity.getSearchColumn() == null){
-                if(columnName.indexOf("name") > -1 ||columnName.indexOf("title") > -1){
-                    tableEntity.setSearchColumn(columnEntity);
+                for (String s : searchKey) {
+                    if(columnName.indexOf(s) > -1 ){
+                        tableEntity.setSearchColumn(columnEntity);
+                        break;
+                    }
+                }
+            }
+            //资源路径判断
+            for (String s : resourceKey) {
+                if(columnName.indexOf(s) > -1){
+                    columnEntity.setResource(true);
+                    break;
                 }
             }
             columsList.add(columnEntity);
@@ -148,7 +162,9 @@ public class GenUtils {
         map.put("tableName", tableEntity.getTableName());
         map.put("comments", tableEntity.getComments());
         map.put("api", api);
+        //主键字段
         map.put("pk", tableEntity.getPk());
+        //查询字段
         map.put("searchColumn", tableEntity.getSearchColumn());
         map.put("className", tableEntity.getClassName());
         map.put("classname", tableEntity.getClassname());
@@ -283,7 +299,8 @@ public class GenUtils {
         }
 
         if (template.contains("Dao.xml.vm")) {
-            return "main" + File.separator + "resources" + File.separator  + config.getString("mapper","mapper")  + File.separator + className + "Dao.xml";
+//          return "main" + File.separator + "resources" + File.separator  + config.getString("mapper","mapper")  + File.separator + className + "Dao.xml";
+            return "main" + File.separator + "resources" + File.separator + "mapper" + File.separator + moduleName + File.separator + className + "Dao.xml";
         }
 
         if (template.contains("list.html.vm")) {

@@ -31,6 +31,8 @@ public class ColumnEntity {
 	private Boolean hidden;
 	//是否可被搜索
 	private Boolean search;
+	//是否是资源
+	private Boolean resource;
 
 	public String getColumnName() {
 		return columnName;
@@ -110,5 +112,13 @@ public class ColumnEntity {
 
 	public void setSearch(Boolean search) {
 		this.search = search;
+	}
+
+	public Boolean getResource() {
+		return resource;
+	}
+
+	public void setResource(Boolean resource) {
+		this.resource = resource;
 	}
 }

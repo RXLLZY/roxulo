@@ -39,5 +39,5 @@ public class ConfigConstant {
     /**
      * 资源路径
      */
-    public static final String RESOURCE_PATH = "/statics/img/";
+    public static final String RESOURCE_PATH = "/statics/";
 }

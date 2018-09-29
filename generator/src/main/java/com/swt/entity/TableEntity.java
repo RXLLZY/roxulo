@@ -1,5 +1,6 @@
 package com.swt.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -24,7 +25,8 @@ public class TableEntity {
 	//类名(第一个字母小写)，如：sys_user => sysUser
 	private String classname;
 	//表的查询字段
-	private ColumnEntity SearchColumn;
+	private ColumnEntity searchColumn;
+
 	public String getTableName() {
 		return tableName;
 	}
@@ -63,10 +65,10 @@ public class TableEntity {
 	}
 
 	public ColumnEntity getSearchColumn() {
-		return SearchColumn;
+		return searchColumn;
 	}
 
 	public void setSearchColumn(ColumnEntity searchColumn) {
-		SearchColumn = searchColumn;
+		this.searchColumn = searchColumn;
 	}
 }

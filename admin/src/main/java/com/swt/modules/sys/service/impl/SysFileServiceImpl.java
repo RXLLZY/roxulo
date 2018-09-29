@@ -48,7 +48,7 @@ public class SysFileServiceImpl extends ServiceImpl<SysFileDao, SysFileEntity> i
         String filePath;
         String frontPath;
         try {
-            frontPath = ConfigConstant.RESOURCE_PATH + simpleDateFormat.format(new Date()) + name.substring(name.lastIndexOf(".") - 1);
+            frontPath = ConfigConstant.RESOURCE_PATH + file.getContentType().split("/")[0] + "/" +simpleDateFormat.format(new Date()) + name.substring(name.lastIndexOf("."));
             filePath = ConfigConstant.CONTENT_PATH + frontPath;
         }catch (Exception e){
             throw  new RRException("文件名不合法");
