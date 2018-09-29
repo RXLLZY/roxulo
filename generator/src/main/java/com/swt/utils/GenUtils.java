@@ -77,7 +77,6 @@ public class GenUtils {
         String className = tableToJava(tableEntity.getTableName(), config.getString("tablePrefix"));
         tableEntity.setClassName(className);
         tableEntity.setClassname(StringUtils.uncapitalize(className));
-
         //列信息
         List<Object> hidden = config.getList("hidden");
         List<ColumnEntity> columsList = new ArrayList<>();
@@ -121,7 +120,12 @@ public class GenUtils {
                 columnEntity.setHidden(true);
                 tableEntity.setPk(columnEntity);
             }
-
+            //判断名字是否包含name或者title。
+            if(tableEntity.getSearchColumn() == null){
+                if(columnName.indexOf("name") > -1 ||columnName.indexOf("title") > -1){
+                    tableEntity.setSearchColumn(columnEntity);
+                }
+            }
             columsList.add(columnEntity);
         }
         tableEntity.setColumns(columsList);
@@ -145,6 +149,7 @@ public class GenUtils {
         map.put("comments", tableEntity.getComments());
         map.put("api", api);
         map.put("pk", tableEntity.getPk());
+        map.put("searchColumn", tableEntity.getSearchColumn());
         map.put("className", tableEntity.getClassName());
         map.put("classname", tableEntity.getClassname());
         map.put("pathName", tableEntity.getClassname().toLowerCase());
@@ -159,7 +164,10 @@ public class GenUtils {
         map.put("entity", config.getString("entity","entity"));
 
         //是否生成swagger
-        map.put("author", config.getBoolean("swagger",false));
+        map.put("swagger", config.getBoolean("swagger",false));
+
+        //是否添加查询字段
+        map.put("search", config.getBoolean("search",false));
 
         //作者信息配置
         map.put("author", config.getString("author"));

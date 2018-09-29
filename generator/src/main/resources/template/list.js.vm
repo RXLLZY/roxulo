@@ -42,6 +42,11 @@ $(function () {
 var vm = new Vue({
 	el:'#rrapp',
 	data:{
+#if(${search})
+         q:{
+            ${searchColumn.attrname}: null
+        },
+#end
 		showList: true,
 		title: null,
 		${classname}: {}
@@ -132,7 +137,10 @@ var vm = new Vue({
 		reload: function (event) {
 			vm.showList = true;
 			var page = $("#jqGrid").jqGrid('getGridParam','page');
-			$("#jqGrid").jqGrid('setGridParam',{ 
+			$("#jqGrid").jqGrid('setGridParam',{
+#if(${search})
+                postData:{'${searchColumn.attrname}': vm.q.${searchColumn.attrname}},
+#end
                 page:page
             }).trigger("reloadGrid");
 		}

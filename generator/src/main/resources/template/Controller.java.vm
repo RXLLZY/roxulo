@@ -40,11 +40,13 @@ public class ${className}Controller extends AbstractController{
 #if(${swagger})
     @ApiOperation(value = "列表", notes = "分页查询${comments}",produces="application/json")
     @ApiImplicitParams({
+#if(${search})
+            @ApiImplicitParam(name = "${searchColumn.attrname}", value = "${searchColumn.comments}", required = false, paramType = "query", dataType = "${searchColumn.dataType}"),
+#end
             @ApiImplicitParam(name = "page", value = "页码", required = false, paramType = "query", dataType = "int", defaultValue = "1"),
             @ApiImplicitParam(name = "limit", value = "每页条数", required = false, paramType = "query", dataType = "int", defaultValue = "10"),
             @ApiImplicitParam(name = "sidx", value = "页码", required = false, paramType = "query", dataType = "string"),
-            @ApiImplicitParam(name = "order", value = "排序", required = false, paramType = "query", dataType = "string", defaultValue = "asc"),
-            @ApiImplicitParam(name = "params", value = "参数", hidden = true)
+            @ApiImplicitParam(name = "order", value = "排序", required = false, paramType = "query", dataType = "string", defaultValue = "asc")
     })
 #end
     public R list(@RequestParam #if(${swagger})@ApiParam(hidden = true)#end Map<String, Object> params) {

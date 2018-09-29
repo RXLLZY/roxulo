@@ -29,6 +29,8 @@ public class ColumnEntity {
 	private String example;
 	//是否隐藏
 	private Boolean hidden;
+	//是否可被搜索
+	private Boolean search;
 
 	public String getColumnName() {
 		return columnName;
@@ -97,5 +99,16 @@ public class ColumnEntity {
 
 	public void setHidden(Boolean hidden) {
 		this.hidden = hidden;
+	}
+
+	public Boolean getSearch() {
+		if(search == null){
+			search = false;
+		}
+		return search;
+	}
+
+	public void setSearch(Boolean search) {
+		this.search = search;
 	}
 }

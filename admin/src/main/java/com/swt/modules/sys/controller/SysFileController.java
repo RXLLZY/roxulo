@@ -37,6 +37,8 @@ public class SysFileController extends AbstractController{
     @Autowired
     private SysFileService sysFileService;
 
+    private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMddHHmmssSSS");
+
     /**
      * 上传文件
      */
@@ -44,24 +46,38 @@ public class SysFileController extends AbstractController{
     @PostMapping("/upload")
     @ApiOperation(value = "uploadFile", notes = "上传文件",consumes="multipart/form-data",produces="application/json")
     public R upload(@RequestParam("file") MultipartFile file){
-
-        SysFileEntity sysFileEntity = sysFileService.upload(file);
-
+        String name = file.getOriginalFilename();
+        String filePath;
+        String frontPath;
+        try {
+            frontPath = ConfigConstant.RESOURCE_PATH + file.getContentType().split("/")[0] + "/" +simpleDateFormat.format(new Date()) + name.substring(name.lastIndexOf("."));
+            filePath = ConfigConstant.CONTENT_PATH + frontPath;
+        }catch (Exception e){
+            throw  new RRException("文件名不合法");
+        }
+        File saveFile = new File(filePath);
+        OutputStream os = null;
+        try {
+            FileUtils.touch(saveFile);
+            os = new FileOutputStream(saveFile);
+            IOUtils.copy(file.getInputStream(),os);
+        } catch (FileNotFoundException e) {
+            return R.error(500,"路径不合法");
+        }catch (IOException e) {
+            logger.error(e.getMessage());
+            throw  new RRException("IO异常");
+        }finally {
+            IOUtils.closeQuietly(os);
+        }
+        SysFileEntity sysFileEntity = new SysFileEntity();
+        sysFileEntity.setOriginalName(file.getOriginalFilename());
+        sysFileEntity.setContentType(file.getContentType());
+        sysFileEntity.setPath(frontPath);
+        String size = FileUtils.byteCountToDisplaySize(file.getSize());
+        sysFileEntity.setSize(size);
         return R.ok().put("sysFile", sysFileEntity);
     }
 
-    /**
-     * 上传文件
-     */
-    @ResponseBody
-    @PostMapping("/uploadAndAdd")
-    @ApiOperation(value = "uploadFile", notes = "上传文件",consumes="multipart/form-data",produces="application/json")
-    public R uploadAndAdd(@RequestParam("file") MultipartFile file){
-
-        SysFileEntity sysFileEntity = sysFileService.uploadAndAdd(file);
-
-        return R.ok().put("sysFile", sysFileEntity);
-    }
     /**
      * 列表
      */

@@ -5,6 +5,7 @@ import com.swt.common.utils.ConfigConstant;
 import com.swt.common.utils.R;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
@@ -31,9 +32,11 @@ public class SysFileServiceImpl extends ServiceImpl<SysFileDao, SysFileEntity> i
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
+        String originalName = (String)params.get("originalName");
         Page<SysFileEntity> page = this.selectPage(
                 new Query<SysFileEntity>(params).getPage(),
                 new EntityWrapper<SysFileEntity>()
+                        .like(StringUtils.isNotBlank(originalName),"original_name", originalName)
         );
 
         return new PageUtils(page);
@@ -76,6 +79,7 @@ public class SysFileServiceImpl extends ServiceImpl<SysFileDao, SysFileEntity> i
     public SysFileEntity uploadAndAdd(MultipartFile file) {
         SysFileEntity sysFileEntity = upload(file);
         insert(sysFileEntity);
+
         return sysFileEntity;
     }
 

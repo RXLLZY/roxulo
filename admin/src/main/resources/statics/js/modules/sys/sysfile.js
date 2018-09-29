@@ -12,7 +12,23 @@ $(function () {
 			{ label: '创建者', name: 'crtUserId', index: 'crt_user_id', width: 80 }, 			
 			{ label: '创建时间', name: 'crtTime', index: 'crt_time', width: 80 },
             { label: '预览', name: 'path', index: 'path', width: 80 ,formatter:function(cellvalue, options, rowObject){;
-                    return '<img src="' + baseURL + cellvalue + '" style = "height: 20px;">';
+                    var contentType = rowObject.contentType;
+                    var url = baseURL + cellvalue;
+                    var html;
+                    if(contentType.indexOf("image") > -1){
+                        html = '<img src="' + url + '" style = "height: 20px;">';
+                    }else if(contentType.indexOf("auto") > -1){
+                        html = '<audio src="' + url + '" controls>您的浏览器不支持 audio 元素。</audio>';
+                    }else if(contentType.indexOf("video") > -1){
+                        html = '<video src="' + url + '" controls="controls" width="60" height="40">\n' +
+                            'rowObject.originalName\n' +
+                            '</video>';
+                    }else if(contentType.indexOf("application") > -1){
+                        html = '<a href="' + url + '" class="tit" target="_blank"> rowObject.originalName</a>';
+                    }else{
+                        html = '<a href="' + url + '" class="tit" target="_blank"> rowObject.originalName</a>';
+                    }
+                    return html;
                 }}
         ],
 		viewrecords: true,
@@ -69,6 +85,9 @@ $(function () {
 var vm = new Vue({
 	el:'#rrapp',
 	data:{
+        q:{
+            originalName: null
+        },
 		showList: true,
 		title: null,
 		sysFile: {}
@@ -160,7 +179,8 @@ var vm = new Vue({
 		reload: function (event) {
 			vm.showList = true;
 			var page = $("#jqGrid").jqGrid('getGridParam','page');
-			$("#jqGrid").jqGrid('setGridParam',{ 
+			$("#jqGrid").jqGrid('setGridParam',{
+                postData:{'originalName': vm.q.originalName},
                 page:page
             }).trigger("reloadGrid");
 		}

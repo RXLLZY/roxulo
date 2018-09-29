@@ -23,7 +23,8 @@ public class TableEntity {
 	private String className;
 	//类名(第一个字母小写)，如：sys_user => sysUser
 	private String classname;
-	
+	//表的查询字段
+	private ColumnEntity SearchColumn;
 	public String getTableName() {
 		return tableName;
 	}
@@ -59,5 +60,13 @@ public class TableEntity {
 	}
 	public void setClassname(String classname) {
 		this.classname = classname;
+	}
+
+	public ColumnEntity getSearchColumn() {
+		return SearchColumn;
+	}
+
+	public void setSearchColumn(ColumnEntity searchColumn) {
+		SearchColumn = searchColumn;
 	}
 }
