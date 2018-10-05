@@ -22,7 +22,9 @@ public abstract class AbstractController {
 	protected Long getUserId() {
 		return getUser().getUserId();
 	}
-
+	protected Integer getUserIntId() {
+		return Integer.valueOf(getUser().getUserId().toString());
+	}
 	protected Long getDeptId() {
 		return getUser().getDeptId();
 	}

@@ -36,3 +36,14 @@ spring:
         wall:
           config:
             multi-statement-allow: true
+
+map:
+  file:
+    local-dir: ./upload/file
+    hdfs-dir: /data/csvType/upload
+    err-data-dir: ./upload/err
+    valid-data-dir: ./upload/valid
+    date-type: yyyyMMdd HH:mm:ss,yyyyMMdd,yyyy-MM-dd HH:mm:ss,yyyy-MM-dd,yyyy-MM-dd HH:mm:ss,yyyy-MM-dd,yyyy/MM/dd HH:mm:ss,yyyy/MM/dd,MM/dd/yyyy,MM/dd/yyyy HH:mm:ss,yyyy\u5E74MM\u6708dd\u65E5HH\u65F6mm\u5206ss\u79D2,yyyy\u5E74MM\u6708dd\u65E5
+  es:
+    host: http://192.168.0.170
+    port: 9200
