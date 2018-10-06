@@ -69,6 +69,7 @@ public class GenUtils {
         String sql = null;
         String mainDirectory = config.getString("mainDirectory") + "//";
         boolean hasBigDecimal = false;
+        boolean search = false;
         //表信息
         TableEntity tableEntity = new TableEntity();
         tableEntity.setTableName(table.get("tableName"));
@@ -129,6 +130,7 @@ public class GenUtils {
                 for (String s : searchKey) {
                     if(columnName.indexOf(s) > -1 ){
                         tableEntity.setSearchColumn(columnEntity);
+                        search = true;
                         break;
                     }
                 }
@@ -183,7 +185,7 @@ public class GenUtils {
         map.put("swagger", config.getBoolean("swagger",false));
 
         //是否添加查询字段
-        map.put("search", config.getBoolean("search",false));
+        map.put("search", search&&config.getBoolean("search",false));
 
         //作者信息配置
         map.put("author", config.getString("author"));
