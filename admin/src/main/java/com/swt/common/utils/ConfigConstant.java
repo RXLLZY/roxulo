@@ -19,6 +19,8 @@ package com.swt.common.utils;
 import com.swt.modules.sys.entity.SysFileEntity;
 import org.springframework.beans.factory.annotation.Value;
 
+import java.time.format.DateTimeFormatter;
+
 /**
  * 系统参数相关Key
  *
@@ -26,10 +28,6 @@ import org.springframework.beans.factory.annotation.Value;
  * @since 1.2.0 2017-03-26
  */
 public class ConfigConstant {
-    /**
-     * 云存储配置KEY
-     */
-    public final static String CLOUD_STORAGE_CONFIG_KEY = "CLOUD_STORAGE_CONFIG_KEY";
 
     /**
      * 项目路径
@@ -40,4 +38,14 @@ public class ConfigConstant {
      * 资源路径
      */
     public static final String RESOURCE_PATH = "/statics/";
+
+    /**
+     * 时间格式
+     */
+    public static DateTimeFormatter time = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmssSSS");
+
+    /**
+     * 时间格式
+     */
+    public static DateTimeFormatter time2 = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 }
