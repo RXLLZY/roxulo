@@ -22,6 +22,7 @@ import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.WordUtils;
 import org.apache.velocity.Template;
@@ -73,7 +74,7 @@ public class GenUtils {
         //表信息
         TableEntity tableEntity = new TableEntity();
         tableEntity.setTableName(table.get("tableName"));
-        tableEntity.setComments(table.get("tableComment"));
+        tableEntity.setComments(StringEscapeUtils.escapeJava(table.get("tableComment")));
         //表名转换成Java类名
         String className = tableToJava(tableEntity.getTableName(), config.getString("tablePrefix"));
         tableEntity.setClassName(className);
@@ -92,7 +93,7 @@ public class GenUtils {
             String columnName = column.get("columnName");
             columnEntity.setColumnName(columnName);
             columnEntity.setDataType(column.get("dataType"));
-            columnEntity.setComments(column.get("columnComment"));
+            columnEntity.setComments(StringEscapeUtils.escapeJava(column.get("columnComment")));
             columnEntity.setExtra(column.get("extra"));
             columnEntity.setNullAble(column.get("nullAble"));
             if(hidden.contains(columnName)){
@@ -116,7 +117,7 @@ public class GenUtils {
             }
             //添加示例
             if (exampleMap != null && exampleMap.get(columnName) != null) {
-                columnEntity.setExample(String.valueOf(exampleMap.get(columnName)));
+                columnEntity.setExample(StringEscapeUtils.escapeJava(String.valueOf(exampleMap.get(columnName))));
             } else {
                 columnEntity.setExample(attrType);
             }
@@ -192,6 +193,7 @@ public class GenUtils {
         map.put("email", config.getString("email"));
         map.put("datetime", DateUtils.format(new Date(), DateUtils.DATE_TIME_PATTERN));
 
+        //用户信息
         map.put("CrtUserId", attrNamesList.contains(config.getString("crt_user_id"))?columnToJava(config.getString("crt_user_id")):"");
         map.put("OptUserId", attrNamesList.contains(config.getString("opt_user_id"))?columnToJava(config.getString("opt_user_id")):"");
         map.put("CrtTime", attrNamesList.contains(config.getString("crt_time"))?columnToJava(config.getString("crt_time")):"");

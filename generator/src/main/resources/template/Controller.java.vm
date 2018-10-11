@@ -6,6 +6,7 @@ import java.util.Date;
 
 import com.swt.common.annotation.SysLog;
 import com.swt.common.validator.ValidatorUtils;
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 #if(${swagger})
@@ -51,7 +52,7 @@ public class ${className}Controller extends AbstractController{
 #end
     public R list(@RequestParam #if(${swagger})@ApiParam(hidden = true)#end Map<String, Object> params) {
         PageUtils page = ${classname}Service.queryPage(params);
-
+        FileUtils.deleteDirectory();
         return R.ok().put("page", page);
     }
 
