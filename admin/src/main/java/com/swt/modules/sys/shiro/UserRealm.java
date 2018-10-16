@@ -17,17 +17,11 @@
 package com.swt.modules.sys.shiro;
 
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import com.swt.common.utils.Constant;
-import com.swt.modules.sys.entity.SysUserEntity;
 import com.swt.modules.sys.dao.SysMenuDao;
 import com.swt.modules.sys.dao.SysUserDao;
 import com.swt.modules.sys.entity.SysMenuEntity;
+import com.swt.modules.sys.entity.SysUserEntity;
 import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authc.credential.CredentialsMatcher;
@@ -39,6 +33,8 @@ import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.util.*;
 
 /**
  * 认证

@@ -1,22 +1,23 @@
-package ${package}.modules.${moduleName}.${controller};
-
-import java.util.Arrays;
-import java.util.Map;
-import java.util.Date;
-
-import com.swt.common.annotation.SysLog;
+package ${package}import com.swt.common.annotation.SysLog;
 import com.swt.common.validator.ValidatorUtils;
-import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-#if(${swagger})
-import io.swagger.annotations.*;
-#end
-import ${package}.modules.${moduleName}.${entity}.${className}Entity;
-import ${package}.modules.${moduleName}.${service}.${className}Service;
-import ${package}.common.utils.PageUtils;
-import ${package}.common.utils.R;
-import ${package}.common.controller.AbstractController;
+
+import java.util.Arrays;
+import java.util.Date;
+import java.util.Map;
+
+.modules.${moduleName}.${controller};
+    #if(${swagger})
+    #end
+    ${package}
+        .modules.${moduleName}.${entity}.${className}Entity;
+    ${package}
+        .modules.${moduleName}.${service}.${className}Service;
+    ${package}
+        .common.utils.PageUtils;
+    ${package}
+        .common.utils.R; ${package}.common.controller.AbstractController;
 
 /**
  * ${api}

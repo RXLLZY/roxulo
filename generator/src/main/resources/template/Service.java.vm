@@ -1,10 +1,12 @@
-package ${package}.modules.${moduleName}.${service};
-
-import com.baomidou.mybatisplus.service.IService;
-import ${package}.common.utils.PageUtils;
-import ${package}.modules.${moduleName}.${entity}.${className}Entity;
+package ${package}import com.baomidou.mybatisplus.service.IService;
 
 import java.util.Map;
+
+.modules.${moduleName}.${service};
+    ${package}
+        .common.utils.PageUtils;
+    ${package}
+        .modules.${moduleName}.${entity}.${className}Entity;
 
 /**
  * ${comments}

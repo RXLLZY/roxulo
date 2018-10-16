@@ -73,7 +73,7 @@ public class GenUtils {
         //表信息
         TableEntity tableEntity = new TableEntity();
         tableEntity.setTableName(table.get("tableName"));
-        tableEntity.setComments(table.get("tableComment"));
+        tableEntity.setComments(commentToJava(table.get("tableComment")));
         //表名转换成Java类名
         String className = tableToJava(tableEntity.getTableName(), config.getString("tablePrefix"));
         tableEntity.setClassName(className);
@@ -92,7 +92,7 @@ public class GenUtils {
             String columnName = column.get("columnName");
             columnEntity.setColumnName(columnName);
             columnEntity.setDataType(column.get("dataType"));
-            columnEntity.setComments(column.get("columnComment"));
+            columnEntity.setComments(commentToJava(column.get("columnComment")));
             columnEntity.setExtra(column.get("extra"));
             columnEntity.setNullAble(column.get("nullAble"));
             if(hidden.contains(columnName)){
@@ -116,7 +116,7 @@ public class GenUtils {
             }
             //添加示例
             if (exampleMap != null && exampleMap.get(columnName) != null) {
-                columnEntity.setExample(String.valueOf(exampleMap.get(columnName)));
+                columnEntity.setExample(commentToJava(String.valueOf(exampleMap.get(columnName))));
             } else {
                 columnEntity.setExample(attrType);
             }
@@ -246,6 +246,13 @@ public class GenUtils {
             columnName = columnName.substring(2);
         }
         return WordUtils.capitalizeFully(columnName, new char[]{'_'}).replace("_", "");
+    }
+
+    /**
+     * 注释转换成Java类型
+     */
+    public static String commentToJava(String comment) {
+        return comment.replaceAll("\\\\","\\\\\\\\").replaceAll("\\\"","\\\\\"");
     }
 
     /**

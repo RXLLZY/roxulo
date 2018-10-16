@@ -17,7 +17,6 @@
 package com.swt.common.utils;
 
 import com.swt.modules.sys.entity.SysFileEntity;
-import org.springframework.beans.factory.annotation.Value;
 
 /**
  * 系统参数相关Key

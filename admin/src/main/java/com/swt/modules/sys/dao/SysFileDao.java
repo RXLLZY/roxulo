@@ -1,7 +1,7 @@
 package com.swt.modules.sys.dao;
 
-import com.swt.modules.sys.entity.SysFileEntity;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
+import com.swt.modules.sys.entity.SysFileEntity;
 import org.apache.ibatis.annotations.Mapper;
 
 /**

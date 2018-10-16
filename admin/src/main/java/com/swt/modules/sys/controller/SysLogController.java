@@ -16,9 +16,9 @@
 
 package com.swt.modules.sys.controller;
 
-import com.swt.modules.sys.service.SysLogService;
 import com.swt.common.utils.PageUtils;
 import com.swt.common.utils.R;
+import com.swt.modules.sys.service.SysLogService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

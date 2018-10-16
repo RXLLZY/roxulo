@@ -17,15 +17,12 @@
 package com.swt.common.aspect;
 
 import com.google.gson.Gson;
-
-
 import com.swt.common.annotation.SysLog;
+import com.swt.common.utils.HttpContextUtils;
+import com.swt.common.utils.IPUtils;
 import com.swt.modules.sys.entity.SysLogEntity;
 import com.swt.modules.sys.entity.SysUserEntity;
 import com.swt.modules.sys.service.SysLogService;
-import com.swt.common.utils.HttpContextUtils;
-import com.swt.common.utils.IPUtils;
-
 import org.apache.shiro.SecurityUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;

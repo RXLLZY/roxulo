@@ -1,6 +1,5 @@
 package com.swt.entity;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**

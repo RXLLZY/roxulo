@@ -29,7 +29,6 @@ import com.swt.modules.sys.entity.SysUserEntity;
 import com.swt.modules.sys.form.PasswordForm;
 import com.swt.modules.sys.service.SysUserRoleService;
 import com.swt.modules.sys.service.SysUserService;
-import com.swt.modules.sys.shiro.ShiroUtils;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.crypto.hash.Sha256Hash;

@@ -1,27 +1,25 @@
 package com.swt.modules.sys.service.impl;
 
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.baomidou.mybatisplus.plugins.Page;
+import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.swt.common.exception.RRException;
 import com.swt.common.utils.ConfigConstant;
-import com.swt.common.utils.R;
+import com.swt.common.utils.PageUtils;
+import com.swt.common.utils.Query;
+import com.swt.modules.sys.dao.SysFileDao;
+import com.swt.modules.sys.entity.SysFileEntity;
+import com.swt.modules.sys.service.SysFileService;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import com.baomidou.mybatisplus.plugins.Page;
-import com.baomidou.mybatisplus.service.impl.ServiceImpl;
-import com.swt.common.utils.PageUtils;
-import com.swt.common.utils.Query;
-
-import com.swt.modules.sys.dao.SysFileDao;
-import com.swt.modules.sys.entity.SysFileEntity;
-import com.swt.modules.sys.service.SysFileService;
-import org.springframework.web.multipart.MultipartFile;
 
 
 @Service("sysFileService")
