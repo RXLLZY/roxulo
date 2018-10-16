@@ -52,7 +52,6 @@ public class ${className}Controller extends AbstractController{
 #end
     public R list(@RequestParam #if(${swagger})@ApiParam(hidden = true)#end Map<String, Object> params) {
         PageUtils page = ${classname}Service.queryPage(params);
-        FileUtils.deleteDirectory();
         return R.ok().put("page", page);
     }
 

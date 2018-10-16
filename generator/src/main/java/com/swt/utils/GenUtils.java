@@ -22,7 +22,6 @@ import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.WordUtils;
 import org.apache.velocity.Template;
@@ -74,7 +73,7 @@ public class GenUtils {
         //表信息
         TableEntity tableEntity = new TableEntity();
         tableEntity.setTableName(table.get("tableName"));
-        tableEntity.setComments(StringEscapeUtils.escapeJava(table.get("tableComment")));
+        tableEntity.setComments(table.get("tableComment"));
         //表名转换成Java类名
         String className = tableToJava(tableEntity.getTableName(), config.getString("tablePrefix"));
         tableEntity.setClassName(className);
@@ -93,7 +92,7 @@ public class GenUtils {
             String columnName = column.get("columnName");
             columnEntity.setColumnName(columnName);
             columnEntity.setDataType(column.get("dataType"));
-            columnEntity.setComments(StringEscapeUtils.escapeJava(column.get("columnComment")));
+            columnEntity.setComments(column.get("columnComment"));
             columnEntity.setExtra(column.get("extra"));
             columnEntity.setNullAble(column.get("nullAble"));
             if(hidden.contains(columnName)){
@@ -117,7 +116,7 @@ public class GenUtils {
             }
             //添加示例
             if (exampleMap != null && exampleMap.get(columnName) != null) {
-                columnEntity.setExample(StringEscapeUtils.escapeJava(String.valueOf(exampleMap.get(columnName))));
+                columnEntity.setExample(String.valueOf(exampleMap.get(columnName)));
             } else {
                 columnEntity.setExample(attrType);
             }
@@ -237,7 +236,6 @@ public class GenUtils {
         }
         return sql;
     }
-
 
     /**
      * 列名转换成Java属性名
