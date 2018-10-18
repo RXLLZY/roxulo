@@ -3,12 +3,9 @@ package com.swt.datasources.aspect;
 import com.swt.datasources.DataSourceNames;
 import com.swt.datasources.DynamicDataSource;
 import org.aspectj.lang.annotation.After;
-import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.core.annotation.Order;
-import org.springframework.stereotype.Component;
 
 /**
  * desc: 数据源切面配置 指定文件
@@ -19,7 +16,7 @@ import org.springframework.stereotype.Component;
 //@Component
 public class DataSourceAop {
 
-    Logger log = LoggerFactory.getLogger(this.getClass());
+    private Logger log = LoggerFactory.getLogger(this.getClass());
 
     @Before("execution(* com.swt.modules.*.service..*.*(..))")
     public void setCenterUserDataSourceType() {
@@ -34,7 +31,7 @@ public class DataSourceAop {
 //    }
 
     @After("execution(* com.swt.modules.*.service.*..*.*(..)) ")
-    public void afterReturning() throws Throwable {
+    public void afterReturning(){
         DynamicDataSource.clearDataSource();
         log.info("=====> clear dataSource aop ");
     }
