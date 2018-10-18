@@ -55,7 +55,7 @@ $(function () {
         onComplete : function(file, r){
             if(r.code == 200){
                 alert(r.sysFile.originalName + "上传成功");
-                vm.${classname}.${column.attrname} = r.sysFile.originalName;
+                vm.${classname}.${column.attrname} = r.sysFile.path;
             }else{
                 alert(r.msg);
             }

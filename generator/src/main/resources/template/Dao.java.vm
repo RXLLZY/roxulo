@@ -1,9 +1,8 @@
-package ${package}import com.baomidou.mybatisplus.mapper.BaseMapper;
-import org.apache.ibatis.annotations.Mapper;
+package ${package}.modules.${moduleName}.dao;
 
-.modules.${moduleName}.dao;
-    ${package}
-        .modules.${moduleName}.${entity}.${className}Entity;
+import ${package}.modules.${moduleName}.${entity}.${className}Entity;
+import com.baomidou.mybatisplus.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Mapper;
 
 /**
  * ${comments}
