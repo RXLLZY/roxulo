@@ -45,6 +45,8 @@
                     <input type="file" class="btn btn-primary " name="file"  id = "${column.attrname}" placeholder="上传"/>
 #elseif($column.dataType == 'text'|| $column.dataType == 'mediumtext'|| $column.dataType == 'longtext')
                     <textarea class="form-control" v-model="${classname}.${column.attrname}" placeholder="${column.comments}"></textarea>
+#elseif($column.dataType == 'date'|| $column.dataType == 'datetime')
+                    <input type="date" class="form-control" v-model="${classname}.${column.attrname}" placeholder="${column.comments}"/>
 #else
                     <input type="text" class="form-control" v-model="${classname}.${column.attrname}" placeholder="${column.comments}"/>
 #end
