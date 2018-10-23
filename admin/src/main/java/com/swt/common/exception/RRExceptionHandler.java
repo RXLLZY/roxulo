@@ -24,6 +24,8 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.io.FileNotFoundException;
+
 /**
  * 异常处理器
  *
@@ -56,6 +58,36 @@ public class RRExceptionHandler {
 	public R handleAuthorizationException(AuthorizationException e){
 		logger.error(e.getMessage(), e);
 		return R.error("没有权限，请联系管理员授权");
+	}
+
+	@ExceptionHandler(NullPointerException.class)
+	public R handleNullPointerException(NullPointerException e){
+		logger.error(e.getMessage(), e);
+		return R.error("空指针异常");
+	}
+
+	@ExceptionHandler(IndexOutOfBoundsException.class)
+	public R handleIndexOutOfBoundsException(IndexOutOfBoundsException e){
+		logger.error(e.getMessage(), e);
+		return R.error("数组越界");
+	}
+
+	@ExceptionHandler(IllegalArgumentException.class)
+	public R handleIllegalArgumentException(IllegalArgumentException e){
+		logger.error(e.getMessage(), e);
+		return R.error("不合法参数");
+	}
+
+	@ExceptionHandler(ClassCastException.class)
+	public R handleIllegalArgumentException(ClassCastException e){
+		logger.error(e.getMessage(), e);
+		return R.error("类型转换异常");
+	}
+
+	@ExceptionHandler(FileNotFoundException.class)
+	public R handleFileNotFoundException(FileNotFoundException e){
+		logger.error(e.getMessage(), e);
+		return R.error("文件不存在");
 	}
 
 	@ExceptionHandler(Exception.class)

@@ -67,8 +67,8 @@ public class SysFileController extends AbstractController{
     @ApiImplicitParams({
             @ApiImplicitParam(name = "page", value = "页码", required = false, paramType = "query", dataType = "int", defaultValue = "1"),
             @ApiImplicitParam(name = "limit", value = "每页条数", required = false, paramType = "query", dataType = "int", defaultValue = "10"),
-            @ApiImplicitParam(name = "sidx", value = "页码", required = false, paramType = "query", dataType = "string"),
-            @ApiImplicitParam(name = "order", value = "页码", required = false, paramType = "query", dataType = "string", defaultValue = "asc"),
+            @ApiImplicitParam(name = "sidx", value = "排序字段", required = false, paramType = "query", dataType = "string"),
+            @ApiImplicitParam(name = "order", value = "升降序", required = false, paramType = "query", dataType = "string", defaultValue = "asc"),
     })
     public R list(@RequestParam @ApiParam(hidden = true) Map<String, Object> params) {
         PageUtils page = sysFileService.queryPage(params);

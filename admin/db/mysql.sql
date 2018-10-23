@@ -1,19 +1,3 @@
-/*
- Navicat Premium Data Transfer
-
- Source Server         : 192.168.0.182
- Source Server Type    : MySQL
- Source Server Version : 50521
- Source Host           : 192.168.0.182:3306
- Source Schema         : generator
-
- Target Server Type    : MySQL
- Target Server Version : 50521
- File Encoding         : 65001
-
- Date: 20/09/2018 11:57:37
-*/
-
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
 
@@ -32,11 +16,6 @@ CREATE TABLE `sys_config`  (
 ) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '系统配置信息表' ROW_FORMAT = Compact;
 
 -- ----------------------------
--- Records of sys_config
--- ----------------------------
-INSERT INTO `sys_config` VALUES (1, 'CLOUD_STORAGE_CONFIG_KEY', '{\"aliyunAccessKeyId\":\"\",\"aliyunAccessKeySecret\":\"\",\"aliyunBucketName\":\"\",\"aliyunDomain\":\"\",\"aliyunEndPoint\":\"\",\"aliyunPrefix\":\"\",\"qcloudBucketName\":\"\",\"qcloudDomain\":\"\",\"qcloudPrefix\":\"\",\"qcloudSecretId\":\"\",\"qcloudSecretKey\":\"\",\"qiniuAccessKey\":\"NrgMfABZxWLo5B-YYSjoE8-AZ1EISdi1Z3ubLOeZ\",\"qiniuBucketName\":\"ios-app\",\"qiniuDomain\":\"http://7xqbwh.dl1.z0.glb.clouddn.com\",\"qiniuPrefix\":\"upload\",\"qiniuSecretKey\":\"uIwJHevMRWU0VLxFvgy0tAcOdGqasdtVlJkdy6vV\",\"type\":1}', 0, '云存储配置信息');
-
--- ----------------------------
 -- Table structure for sys_dept
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_dept`;
@@ -52,7 +31,7 @@ CREATE TABLE `sys_dept`  (
 -- ----------------------------
 -- Records of sys_dept
 -- ----------------------------
-INSERT INTO `sys_dept` VALUES (1, 0, '人人开源集团', 0, 0);
+INSERT INTO `sys_dept` VALUES (1, 0, 'XX集团', 0, 0);
 INSERT INTO `sys_dept` VALUES (2, 1, '长沙分公司', 1, 0);
 INSERT INTO `sys_dept` VALUES (3, 1, '上海分公司', 2, 0);
 INSERT INTO `sys_dept` VALUES (4, 3, '技术部', 0, 0);
@@ -96,7 +75,7 @@ CREATE TABLE `sys_file`  (
   `crt_user_id` bigint(11) DEFAULT NULL COMMENT '创建者',
   `crt_time` datetime DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of sys_file
@@ -104,6 +83,11 @@ CREATE TABLE `sys_file`  (
 INSERT INTO `sys_file` VALUES (1, '1.png', '/static/img201809201010279161.png', 'image/png', '121', '测试123', 1, '2018-09-20 10:10:42');
 INSERT INTO `sys_file` VALUES (2, '1.png', '/static/img/201809201117447831.png', 'image/png', '121 bytes', '1', 1, '2018-09-20 11:19:04');
 INSERT INTO `sys_file` VALUES (5, '1.png', '/statics/img/201809201140493291.png', 'image/png', '121 bytes', NULL, 1, '2018-09-20 11:40:52');
+INSERT INTO `sys_file` VALUES (6, '1_timer_task.kjb', '/statics/img/20180929113014976k.kjb', 'application/octet-stream', '32 KB', NULL, NULL, NULL);
+INSERT INTO `sys_file` VALUES (7, '1_timer_task.kjb', '/statics/img/20180929113036168k.kjb', 'application/octet-stream', '32 KB', NULL, NULL, NULL);
+INSERT INTO `sys_file` VALUES (8, '1_timer_task.kjb', '/statics/img/20180929113225337k.kjb', 'application/octet-stream', '32 KB', NULL, NULL, NULL);
+INSERT INTO `sys_file` VALUES (9, '1_timer_task.kjb', '/statics/img/20180929113235399k.kjb', 'application/octet-stream', '32 KB', NULL, NULL, NULL);
+INSERT INTO `sys_file` VALUES (10, '1_timer_task.kjb', '/statics/img/20180929114122538k.kjb', 'application/octet-stream', '32 KB', NULL, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for sys_log
@@ -119,7 +103,7 @@ CREATE TABLE `sys_log`  (
   `ip` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT 'IP地址',
   `create_date` datetime DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 22 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '系统日志' ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 25 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '系统日志' ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of sys_log
@@ -145,6 +129,9 @@ INSERT INTO `sys_log` VALUES (18, 'admin', '新增静态资源', 'com.swt.module
 INSERT INTO `sys_log` VALUES (19, 'admin', '删除静态资源', 'com.swt.modules.sys.controller.SysFileController.delete()', '[4]', 26, '0:0:0:0:0:0:0:1', '2018-09-20 11:40:30');
 INSERT INTO `sys_log` VALUES (20, 'admin', '新增静态资源', 'com.swt.modules.sys.controller.SysFileController.save()', '{\"id\":5,\"originalName\":\"1.png\",\"path\":\"/statics/img/201809201140493291.png\",\"contentType\":\"image/png\",\"size\":\"121 bytes\",\"crtUserId\":1,\"crtTime\":\"Sep 20, 2018 11:40:52 AM\"}', 29, '0:0:0:0:0:0:0:1', '2018-09-20 11:40:52');
 INSERT INTO `sys_log` VALUES (21, 'admin', '修改静态资源', 'com.swt.modules.sys.controller.SysFileController.update()', '2', 60, '0:0:0:0:0:0:0:1', '2018-09-20 11:56:38');
+INSERT INTO `sys_log` VALUES (22, 'admin', '新增化学品类名', 'com.swt.modules.data.controller.ChemicalsClassController.save()', '{\"chemicalClassId\":84,\"chemicalClassName\":\"1\",\"crtUserId\":1,\"crtTime\":\"Sep 29, 2018 11:23:33 AM\"}', 21, '0:0:0:0:0:0:0:1', '2018-09-29 11:23:33');
+INSERT INTO `sys_log` VALUES (23, 'admin', '新增化学品类名', 'com.swt.modules.data.controller.ChemicalsClassController.save()', '{\"chemicalClassId\":85,\"chemicalClassName\":\"123\",\"crtUserId\":1,\"crtTime\":\"Sep 29, 2018 11:41:25 AM\",\"videoPath\":\"1_timer_task.kjb\"}', 43, '0:0:0:0:0:0:0:1', '2018-09-29 11:41:25');
+INSERT INTO `sys_log` VALUES (24, 'admin', '新增化学品类名', 'com.swt.modules.data.controller.ChemicalsClassController.save()', '{\"chemicalClassId\":86,\"chemicalClassName\":\"123\",\"crtUserId\":1,\"crtTime\":\"Sep 29, 2018 11:41:25 AM\",\"videoPath\":\"1_timer_task.kjb\"}', 17, '0:0:0:0:0:0:0:1', '2018-09-29 11:41:25');
 
 -- ----------------------------
 -- Table structure for sys_menu
@@ -159,8 +146,9 @@ CREATE TABLE `sys_menu`  (
   `type` int(11) DEFAULT NULL COMMENT '类型   0：目录   1：菜单   2：按钮',
   `icon` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '菜单图标',
   `order_num` int(11) DEFAULT NULL COMMENT '排序',
-  PRIMARY KEY (`menu_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 212 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '菜单管理' ROW_FORMAT = Compact;
+  PRIMARY KEY (`menu_id`) USING BTREE,
+  UNIQUE INDEX `parent_id`(`parent_id`, `name`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 287 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '菜单管理' ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of sys_menu
@@ -278,5 +266,29 @@ CREATE TABLE `sys_user_role`  (
   `role_id` bigint(20) DEFAULT NULL COMMENT '角色ID',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户与角色对应关系' ROW_FORMAT = Compact;
+
+-- ----------------------------
+-- Table structure for test_template
+-- ----------------------------
+DROP TABLE IF EXISTS `test_template`;
+CREATE TABLE `test_template`  (
+  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `search_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '查询名称',
+  `crt_user_id` bigint(11) DEFAULT NULL COMMENT '创建者',
+  `crt_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `opt_user_id` bigint(11) DEFAULT NULL COMMENT '更新者',
+  `opt_time` datetime DEFAULT NULL COMMENT '更新时间',
+  `video_path` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '视频路径',
+  `regex_test` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '[\\w!#$%&\'*+/=?^_`{|}~-]+(?:\\.[\\w!#$%&\'*+/=?^_`{|}~-]+)*@(?:[\\w](?:[\\w-]*[\\w])?\\.)+[\\w](?:[\\w-]*[\\w])?',
+  `is_active` bit(1) DEFAULT NULL COMMENT '是否有效',
+  `test_text` text CHARACTER SET utf8 COLLATE utf8_general_ci COMMENT '大文本',
+  `test_time` datetime DEFAULT NULL COMMENT '时间',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 87 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+
+-- ----------------------------
+-- Records of test_template
+-- ----------------------------
+INSERT INTO `test_template` VALUES (1, '烷烃', NULL, NULL, NULL, NULL, NULL, '[\\w!#$%&\'*+/=?^_`{|}~-]+(?:\\.[\\w!#$%&\'*+/=?^_`{|}~-]+)*@(?:[\\w](?:[\\w-]*[\\w])?\\.)+[\\w](?:[\\w-]*[\\w])?', NULL, NULL, NULL);
 
 SET FOREIGN_KEY_CHECKS = 1;
