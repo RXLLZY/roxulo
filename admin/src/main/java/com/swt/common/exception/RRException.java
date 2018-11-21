@@ -26,45 +26,45 @@ package com.swt.common.exception;
 public class RRException extends RuntimeException {
 	private static final long serialVersionUID = 1L;
 	
-    private String msg;
-    private int code = 500;
+    private String message;
+    private int status = 500;
     
-    public RRException(String msg) {
-		super(msg);
-		this.msg = msg;
+    public RRException(String message) {
+		super(message);
+		this.message = message;
 	}
 	
-	public RRException(String msg, Throwable e) {
-		super(msg, e);
-		this.msg = msg;
+	public RRException(String message, Throwable e) {
+		super(message, e);
+		this.message = message;
 	}
 	
-	public RRException(String msg, int code) {
-		super(msg);
-		this.msg = msg;
-		this.code = code;
+	public RRException(String message, int status) {
+		super(message);
+		this.message = message;
+		this.status = status;
 	}
 	
-	public RRException(String msg, int code, Throwable e) {
-		super(msg, e);
-		this.msg = msg;
-		this.code = code;
+	public RRException(String message, int status, Throwable e) {
+		super(message, e);
+		this.message = message;
+		this.status = status;
 	}
 
-	public String getMsg() {
-		return msg;
+	public String getmessage() {
+		return message;
 	}
 
-	public void setMsg(String msg) {
-		this.msg = msg;
+	public void setmessage(String message) {
+		this.message = message;
 	}
 
-	public int getCode() {
-		return code;
+	public int getstatus() {
+		return status;
 	}
 
-	public void setCode(int code) {
-		this.code = code;
+	public void setstatus(int status) {
+		this.status = status;
 	}
 	
 	
