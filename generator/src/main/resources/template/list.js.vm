@@ -53,11 +53,11 @@ $(function () {
             // }
         },
         onComplete : function(file, r){
-            if(r.code == 200){
+            if(r.status == 200){
                 alert(r.sysFile.originalName + "上传成功");
                 vm.${classname}.${column.attrname} = r.sysFile.path;
             }else{
-                alert(r.msg);
+                alert(r.message);
             }
         }
     });
@@ -104,12 +104,12 @@ var vm = new Vue({
                     contentType: "application/json",
                     data: JSON.stringify(vm.${classname}),
                     success: function (r) {
-                        if (r.code === 200) {
+                        if (r.status === 200) {
                             alert('操作成功', function (index) {
                                 vm.reload();
                             });
                         } else {
-                            alert(r.msg);
+                            alert(r.message);
                         }
                     }
                 });
@@ -120,12 +120,12 @@ var vm = new Vue({
                     contentType: "application/json",
                     data: JSON.stringify(vm.${classname}),
                     success: function (r) {
-                        if (r.code === 200) {
+                        if (r.status === 200) {
                             alert('操作成功', function (index) {
                                 vm.reload();
                             });
                         } else {
-                            alert(r.msg);
+                            alert(r.message);
                         }
                     }
                 });
@@ -144,12 +144,12 @@ var vm = new Vue({
                     contentType: "application/json",
 				    data: JSON.stringify(${pk.attrname}s),
 				    success: function(r){
-						if(r.code == 200){
+						if(r.status == 200){
 							alert('操作成功', function(index){
 								$("#jqGrid").trigger("reloadGrid");
 							});
 						}else{
-							alert(r.msg);
+							alert(r.message);
 						}
 					}
 				});

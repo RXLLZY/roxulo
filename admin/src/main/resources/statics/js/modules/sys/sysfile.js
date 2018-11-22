@@ -69,14 +69,14 @@ $(function () {
             // }
         },
         onComplete : function(file, r){
-            if(r.code == 200){
+            if(r.status == 200){
                 alert(r.sysFile.originalName + "上传成功");
                 vm.sysFile.originalName = r.sysFile.originalName;
                 vm.sysFile.contentType = r.sysFile.contentType;
                 vm.sysFile.path = r.sysFile.path;
                 vm.sysFile.size = r.sysFile.size;
             }else{
-                alert(r.msg);
+                alert(r.message);
             }
         }
     });
@@ -119,12 +119,12 @@ var vm = new Vue({
                     contentType: "application/json",
                     data: JSON.stringify(vm.sysFile),
                     success: function (r) {
-                        if (r.code === 200) {
+                        if (r.status === 200) {
                             alert('操作成功', function (index) {
                                 vm.reload();
                             });
                         } else {
-                            alert(r.msg);
+                            alert(r.message);
                         }
                     }
                 });
@@ -135,12 +135,12 @@ var vm = new Vue({
                     contentType: "application/json",
                     data: JSON.stringify(vm.sysFile),
                     success: function (r) {
-                        if (r.code === 200) {
+                        if (r.status === 200) {
                             alert('操作成功', function (index) {
                                 vm.reload();
                             });
                         } else {
-                            alert(r.msg);
+                            alert(r.message);
                         }
                     }
                 });
@@ -159,12 +159,12 @@ var vm = new Vue({
                     contentType: "application/json",
 				    data: JSON.stringify(ids),
 				    success: function(r){
-						if(r.code == 200){
+						if(r.status == 200){
 							alert('操作成功', function(index){
 								$("#jqGrid").trigger("reloadGrid");
 							});
 						}else{
-							alert(r.msg);
+							alert(r.message);
 						}
 					}
 				});

@@ -23,6 +23,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.NoHandlerFoundException;
 
 import java.io.FileNotFoundException;
 
@@ -42,15 +43,21 @@ public class RRExceptionHandler {
 	@ExceptionHandler(RRException.class)
 	public R handleRRException(RRException e){
 		R r = new R();
-		r.put("status", e.getstatus());
+		r.put("status", e.getStatus());
 		r.put("message", e.getMessage());
 		return r;
 	}
 
+	@ExceptionHandler(NoHandlerFoundException.class)
+	public R handlerNoFoundException(Exception e) {
+		logger.error(e.getMessage(), e);
+		return R.error(404, "访问地址不存在，请确认后重新请求!");
+	}
 	@ExceptionHandler(DuplicateKeyException.class)
 	public R handleDuplicateKeyException(DuplicateKeyException e){
 		logger.error(e.getMessage(), e);
-		return R.error("数据库中已存在该记录");
+		String message = e.getMessage().split(" key ")[1].split("\r\n")[0];
+		return R.error(message + "不能重复");
 	}
 
 	@ExceptionHandler(AuthorizationException.class)
@@ -78,7 +85,7 @@ public class RRExceptionHandler {
 	}
 
 	@ExceptionHandler(ClassCastException.class)
-	public R handleIllegalArgumentException(ClassCastException e){
+	public R handleClassCastException(ClassCastException e){
 		logger.error(e.getMessage(), e);
 		return R.error("类型转换异常");
 	}
@@ -86,7 +93,7 @@ public class RRExceptionHandler {
 	@ExceptionHandler(FileNotFoundException.class)
 	public R handleFileNotFoundException(FileNotFoundException e){
 		logger.error(e.getMessage(), e);
-		return R.error("文件不存在");
+		return R.error("资源不存在");
 	}
 
 	@ExceptionHandler(Exception.class)

@@ -74,7 +74,6 @@ public class DataFilterAspect {
 
             return ;
         }
-
         throw new RRException("数据权限接口，只能是Map类型参数，且不能为NULL");
     }
 

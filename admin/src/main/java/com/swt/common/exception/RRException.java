@@ -51,19 +51,20 @@ public class RRException extends RuntimeException {
 		this.status = status;
 	}
 
-	public String getmessage() {
+	@Override
+	public String getMessage() {
 		return message;
 	}
 
-	public void setmessage(String message) {
+	public void setMessage(String message) {
 		this.message = message;
 	}
 
-	public int getstatus() {
+	public int getStatus() {
 		return status;
 	}
 
-	public void setstatus(int status) {
+	public void setStatus(int status) {
 		this.status = status;
 	}
 	

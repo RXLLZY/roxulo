@@ -45,14 +45,14 @@ public class SwaggerConfig{
             //加了ApiOperation注解的类，生成接口文档
             .apis(RequestHandlerSelectors.withMethodAnnotation(ApiOperation.class))
             //包下的类，生成接口文档
-            //.apis(RequestHandlerSelectors.basePackage("com.swt.modules.job.controller"))
+            //.apis(RequestHandlerSelectors.basePackage("com.swt.modules.*.controller"))
             .paths(PathSelectors.any())
             .build();
     }
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-            .title("资源管理平台")
+            .title("快速开发平台")
             .description("开发文档")
             .termsOfServiceUrl("http://www.shuweitech.com")
             .version("3.2.0")

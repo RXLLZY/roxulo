@@ -57,7 +57,7 @@ var vm = new Vue({
                 return ;
             }
             $.get("sys/generator/code?tables=" + tableNames.join(),function (data) {
-                alert(data.msg);
+                alert(data.message)
             })
         },
         zipExport: function() {
@@ -73,7 +73,7 @@ var vm = new Vue({
                 return ;
             }
             $.get("sys/generator/deleteCode?tables=" + tableNames.join(),function (data) {
-                alert(data.msg);
+                alert(data.message)
             })
         }
 	}
