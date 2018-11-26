@@ -16,6 +16,7 @@
 
 package com.swt.common.exception;
 
+import com.mysql.jdbc.exceptions.MySQLSyntaxErrorException;
 import com.swt.common.utils.R;
 import org.apache.shiro.authz.AuthorizationException;
 import org.slf4j.Logger;
@@ -58,6 +59,12 @@ public class RRExceptionHandler {
 		logger.error(e.getMessage(), e);
 		String message = e.getMessage().split(" key ")[1].split("\r\n")[0];
 		return R.error(message + "不能重复");
+	}
+
+	@ExceptionHandler(MySQLSyntaxErrorException.class)
+	public R handleDuplicateKeyException(MySQLSyntaxErrorException e){
+		logger.error(e.getMessage(), e);
+		return R.error("SQL语法错误");
 	}
 
 	@ExceptionHandler(AuthorizationException.class)
