@@ -55,7 +55,7 @@ public class SwaggerConfig{
             .title("快速开发平台")
             .description("开发文档")
             .termsOfServiceUrl("http://www.shuweitech.com")
-            .version("3.2.0")
+            .version("1.0.0")
             .build();
     }
 

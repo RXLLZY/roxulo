@@ -16,6 +16,7 @@
 
 package com.swt.common.exception;
 
+import com.fasterxml.jackson.core.JsonParseException;
 import com.mysql.jdbc.exceptions.MySQLSyntaxErrorException;
 import com.swt.common.utils.R;
 import org.apache.shiro.authz.AuthorizationException;
@@ -73,6 +74,11 @@ public class RRExceptionHandler {
 		return R.error("没有权限，请联系管理员授权");
 	}
 
+	@ExceptionHandler(JsonParseException.class)
+	public R handleNullPointerException(JsonParseException e){
+		logger.error(e.getMessage(), e);
+		return R.error("请求参数json不合法");
+	}
 	@ExceptionHandler(NullPointerException.class)
 	public R handleNullPointerException(NullPointerException e){
 		logger.error(e.getMessage(), e);

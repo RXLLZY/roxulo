@@ -33,11 +33,24 @@ public class R extends HashMap<String, Object> {
 		put("status", 200);
 		put("message", "success");
 	}
-	
+
+	public static R create() {
+		R r = new R();
+		r.put("status", 201);
+		r.put("message", "创建成功");
+		return r;
+	}
+
+	public static R delete() {
+		R r = new R();
+		r.put("status", 204);
+		r.put("message", "删除成功");
+		return r;
+	}
 	public static R error() {
 		return error(500, "未知异常，请联系管理员");
 	}
-	
+
 	public static R error(String message) {
 		return error(500, message);
 	}

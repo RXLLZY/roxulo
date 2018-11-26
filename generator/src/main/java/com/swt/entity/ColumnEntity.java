@@ -21,6 +21,8 @@ public class ColumnEntity {
     private String attrname;
     //属性类型
     private String attrType;
+	//属性类型小写
+	private String attrtype;
     //auto_increment
     private String extra;
     //是否为空
@@ -120,5 +122,13 @@ public class ColumnEntity {
 
 	public void setResource(Boolean resource) {
 		this.resource = resource;
+	}
+
+	public String getAttrtype() {
+		return attrtype;
+	}
+
+	public void setAttrtype(String attrtype) {
+		this.attrtype = attrtype;
 	}
 }

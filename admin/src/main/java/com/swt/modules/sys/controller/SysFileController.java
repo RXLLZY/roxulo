@@ -82,7 +82,7 @@ public class SysFileController extends AbstractController{
      */
     @GetMapping("/{id}")
     @ApiOperation(value = "记录", notes = "根据ID查询单条静态资源详情",produces="application/json")
-    @ApiImplicitParam(name = "id", value = "静态资源ID", required = true,paramType = "path", dataType = "Integer", defaultValue="Integer")
+    @ApiImplicitParam(name = "id", value = "静态资源ID", required = true,paramType = "path", dataType = "integer", defaultValue="1")
     public R info(@PathVariable("id") Integer id){
         SysFileEntity sysFile = sysFileService.selectById(id);
 
@@ -113,7 +113,7 @@ public class SysFileController extends AbstractController{
     @SysLog("修改静态资源")
     @PutMapping("/{id}")
     @ApiOperation(value = "修改", notes = "修改静态资源",produces="application/json")
-    @ApiImplicitParam(name = "id", value = "静态资源ID", required = true,paramType = "path", dataType = "Integer", defaultValue="Integer")
+    @ApiImplicitParam(name = "id", value = "静态资源ID", required = true,paramType = "path", dataType = "integer", defaultValue="1")
     public R update(@PathVariable("id") Integer id,@RequestBody SysFileEntity sysFile){
         sysFile.setId(id);
         //校验
@@ -130,7 +130,7 @@ public class SysFileController extends AbstractController{
     @SysLog("删除静态资源")
     @DeleteMapping
     @ApiOperation(value = "删除", notes = "删除静态资源",produces="application/json")
-    @ApiImplicitParam(name = "ids", value = "静态资源ID", required = true,paramType = "body", dataType = "Integer[]", defaultValue="[Integer]")
+    @ApiImplicitParam(name = "ids", value = "静态资源ID", required = true,paramType = "body", dataType = "integer[]", defaultValue="[1]")
     public R delete(@RequestBody Integer[] ids){
         for (int i = 0; i < ids.length; i++) {
             SysFileEntity sysFileEntity = sysFileService.selectById(ids[i]);

@@ -28,7 +28,7 @@ import ${package}.common.controller.AbstractController;
 @RestController
 @RequestMapping("${moduleName}/${pathName}")
 #if(${swagger})
-@Api(tags = "${api}",description="${comments} Controller")
+@Api(tags = "${api}",description="${api}")
 #end
 public class ${className}Controller extends AbstractController{
     @Autowired
@@ -42,12 +42,15 @@ public class ${className}Controller extends AbstractController{
     @ApiOperation(value = "列表", notes = "分页查询${comments}",produces="application/json")
     @ApiImplicitParams({
 #if(${search})
-            @ApiImplicitParam(name = "${searchColumn.attrname}", value = "${searchColumn.comments}", required = false, paramType = "query", dataType = "${searchColumn.dataType}"),
+            @ApiImplicitParam(name = "${searchColumn.attrname}", value = "${searchColumn.comments}", required = false, paramType = "query", dataType = "${searchColumn.attrtype}"),
 #end
             @ApiImplicitParam(name = "page", value = "页码", required = false, paramType = "query", dataType = "int", defaultValue = "1"),
             @ApiImplicitParam(name = "limit", value = "每页条数", required = false, paramType = "query", dataType = "int", defaultValue = "10"),
             @ApiImplicitParam(name = "sidx", value = "排序字段", required = false, paramType = "query", dataType = "string"),
             @ApiImplicitParam(name = "order", value = "升降序", required = false, paramType = "query", dataType = "string", defaultValue = "asc")
+    })
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "success")
     })
 #end
     public R list(@RequestParam #if(${swagger})@ApiParam(hidden = true)#end Map<String, Object> params) {
@@ -62,7 +65,10 @@ public class ${className}Controller extends AbstractController{
     @GetMapping("/{${pk.attrname}}")
 #if(${swagger})
     @ApiOperation(value = "记录", notes = "根据ID查询单条${comments}详情",produces="application/json")
-    @ApiImplicitParam(name = "${pk.attrname}", value = "${comments}ID", required = true,paramType = "path", dataType = "${pk.attrType}", defaultValue="${pk.example}")
+    @ApiImplicitParam(name = "${pk.attrname}", value = "${comments}ID", required = true,paramType = "path", dataType = "${pk.attrtype}", defaultValue="${pk.example}")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "success")
+    })
 #end
     public R info(@PathVariable("${pk.attrname}") ${pk.attrType} ${pk.attrname}){
         ${className}Entity ${classname} = ${classname}Service.selectById(${pk.attrname});
@@ -71,12 +77,16 @@ public class ${className}Controller extends AbstractController{
     }
 
     /**
-     * 记录
+     * 新增
      */
     @SysLog("新增${comments}")
     @PostMapping
 #if(${swagger})
     @ApiOperation(value = "新增", notes = "新增${comments}",produces="application/json")
+    @ApiResponses({
+            @ApiResponse(code = 201, message = "创建成功"),
+            @ApiResponse(code = 422, message = "参数校验失败")
+    })
 #end
     public R save(@RequestBody ${className}Entity ${classname}){
 #if($CrtUserId != '')
@@ -101,7 +111,11 @@ public class ${className}Controller extends AbstractController{
     @PutMapping("/{${pk.attrname}}")
 #if(${swagger})
     @ApiOperation(value = "修改", notes = "修改${comments}",produces="application/json")
-    @ApiImplicitParam(name = "${pk.attrname}", value = "${comments}ID", required = true,paramType = "path", dataType = "${pk.attrType}", defaultValue="${pk.example}")
+    @ApiImplicitParam(name = "${pk.attrname}", value = "${comments}ID", required = true,paramType = "path", dataType = "${pk.attrtype}", defaultValue="${pk.example}")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "修改成功"),
+            @ApiResponse(code = 422, message = "参数校验失败")
+    })
 #end
     public R update(@PathVariable("${pk.attrname}") ${pk.attrType} ${pk.attrname},@RequestBody ${className}Entity ${classname}){
 #if($OptUserId != '')
@@ -116,7 +130,7 @@ public class ${className}Controller extends AbstractController{
         //校验
         ValidatorUtils.validateEntity(${classname});
         //全部更新
-        ${classname}Service.updateAllColumnById(${classname});
+        ${classname}Service.updateById(${classname});
         
         return R.ok();
     }
@@ -128,12 +142,15 @@ public class ${className}Controller extends AbstractController{
     @DeleteMapping
 #if(${swagger})
     @ApiOperation(value = "删除", notes = "删除${comments}",produces="application/json")
-    @ApiImplicitParam(name = "${pk.attrname}s", value = "${comments}ID", required = true,paramType = "body", dataType = "${pk.attrType}[]", defaultValue="[${pk.example}]")
+    @ApiImplicitParam(name = "${pk.attrname}s", value = "${comments}ID", required = true,paramType = "body", dataType = "${pk.attrtype}[]", defaultValue="[${pk.example}]")
+    @ApiResponses({
+            @ApiResponse(code = 204, message = "删除成功")
+    })
 #end
     public R delete(@RequestBody ${pk.attrType}[] ${pk.attrname}s){
         ${classname}Service.deleteBatchIds(Arrays.asList(${pk.attrname}s));
 
-        return R.ok();
+        return R.delete();
     }
 
 }
