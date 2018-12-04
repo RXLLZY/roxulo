@@ -24,7 +24,7 @@ public class TableEntity {
 	//类名(第一个字母小写)，如：sys_user => sysUser
 	private String classname;
 	//表的查询字段
-	private ColumnEntity searchColumn;
+	private List<ColumnEntity> searchColumns;
 
 	public String getTableName() {
 		return tableName;
@@ -63,11 +63,11 @@ public class TableEntity {
 		this.classname = classname;
 	}
 
-	public ColumnEntity getSearchColumn() {
-		return searchColumn;
+	public List<ColumnEntity> getSearchColumns() {
+		return searchColumns;
 	}
 
-	public void setSearchColumn(ColumnEntity searchColumn) {
-		this.searchColumn = searchColumn;
+	public void setSearchColumns(List<ColumnEntity> searchColumns) {
+		this.searchColumns = searchColumns;
 	}
 }

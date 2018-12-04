@@ -13,24 +13,30 @@ import ${package}.modules.${moduleName}.dao.${className}Dao;
 import ${package}.modules.${moduleName}.${entity}.${className}Entity;
 import ${package}.modules.${moduleName}.${service}.${className}Service;
 
-
+/**
+ * ${comments} 实现
+ *
+ * @author ${author}
+ * @email ${email}
+ * @date ${datetime}
+ */
 @Service("${classname}Service")
 public class ${className}ServiceImpl extends ServiceImpl<${className}Dao, ${className}Entity> implements ${className}Service {
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
-#if(${search})
-    String ${searchColumn.attrname} = (String)params.get("${searchColumn.attrname}");
+#foreach ($searchColumn in $searchColumns)
+        String ${searchColumn.attrname} = (String) params.get("${searchColumn.attrname}");
 #end
         Page<${className}Entity> page = this.selectPage(
                 new Query<${className}Entity>(params).getPage(),
                 new EntityWrapper<${className}Entity>()
-#if(${search})
-    #if($searchColumn.attrType == "Integer")
-                    .eq(StringUtils.isNotBlank(${searchColumn.attrname}),"${searchColumn.columnName}", ${searchColumn.attrname})
-    #else
-                    .like(StringUtils.isNotBlank(${searchColumn.attrname}),"${searchColumn.columnName}", ${searchColumn.attrname})
-    #end
+#foreach ($searchColumn in $searchColumns)
+#if($searchColumn.attrType == "Integer")
+                        .eq(StringUtils.isNotBlank(${searchColumn.attrname}), "${searchColumn.columnName}", ${searchColumn.attrname})
+#else
+                        .like(StringUtils.isNotBlank(${searchColumn.attrname}), "${searchColumn.columnName}", ${searchColumn.attrname})
+#end
 #end
         );
 

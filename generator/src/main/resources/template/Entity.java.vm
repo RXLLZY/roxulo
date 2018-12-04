@@ -9,11 +9,14 @@ import java.math.BigDecimal;
 #end
 import java.io.Serializable;
 import java.util.Date;
+
 #if(${swagger})
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 #end
+
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 /**
  * ${comments}
@@ -24,7 +27,7 @@ import javax.validation.constraints.NotBlank;
  */
 @TableName("${tableName}")
 #if(${swagger})
-@ApiModel(value="${comments}")
+@ApiModel(value = "${comments}")
 #end
 public class ${className}Entity implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -36,14 +39,18 @@ public class ${className}Entity implements Serializable {
 #if($column.columnName == $pk.columnName)
 	@TableId
 #if(${swagger})
-	@ApiModelProperty(value="主键", example="$column.example", hidden=true)
+	@ApiModelProperty(value = "主键", example = "$column.example", hidden = true)
 #end
 #else
 #if($column.nullAble)
-	@NotBlank(message="${column.comments}不能为空")
+#if($column.attrType == "String")
+	@NotBlank(message = "${column.comments}不能为空")
+#else
+	@NotNull(message = "${column.comments}不能为空")
+#end
 #end
 #if(${swagger})
-	@ApiModelProperty(value="$column.comments", example="$column.example", hidden=${column.hidden},required=$column.nullAble)
+	@ApiModelProperty(value = "$column.comments", example = "$column.example", hidden = ${column.hidden}, required = $column.nullAble)
 #end
 #if($column.attrType == "Boolean")
     @TableField("${column.columnName}")
@@ -53,12 +60,14 @@ public class ${className}Entity implements Serializable {
 #end
 
 #foreach ($column in $columns)
+
 	/**
 	 * 设置：${column.comments}
 	 */
 	public void set${column.attrName}($column.attrType $column.attrname) {
 		this.$column.attrname = $column.attrname;
 	}
+
 	/**
 	 * 获取：${column.comments}
 	 */

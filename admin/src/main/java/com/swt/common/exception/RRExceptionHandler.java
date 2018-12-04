@@ -23,6 +23,8 @@ import org.apache.shiro.authz.AuthorizationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.NoHandlerFoundException;
@@ -107,6 +109,17 @@ public class RRExceptionHandler {
 	public R handleFileNotFoundException(FileNotFoundException e){
 		logger.error(e.getMessage(), e);
 		return R.error("资源不存在");
+	}
+	@ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+	public R handleFileNotFoundException(HttpRequestMethodNotSupportedException e){
+		logger.error(e.getMessage(), e);
+		return R.error("不支持的方法类型");
+	}
+
+	@ExceptionHandler(HttpMessageNotReadableException.class)
+	public R handleFileNotFoundException(HttpMessageNotReadableException e){
+		logger.error(e.getMessage(), e);
+		return R.error("请求体参数为空");
 	}
 
 	@ExceptionHandler(Exception.class)

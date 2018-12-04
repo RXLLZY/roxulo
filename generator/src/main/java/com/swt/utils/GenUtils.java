@@ -87,6 +87,8 @@ public class GenUtils {
         String[] searchKey = config.getStringArray("searchKey");
         //资源关键词
         String[] resourceKey = config.getStringArray("resourceKey");
+        //搜索列
+        List<ColumnEntity> searchs = new ArrayList<>(16);
         for (Map<String, String> column : columns) {
             ColumnEntity columnEntity = new ColumnEntity();
             String columnName = column.get("columnName");
@@ -127,13 +129,10 @@ public class GenUtils {
                 tableEntity.setPk(columnEntity);
             }
             //判断名字是否包含name或者title。搜索用
-            if(tableEntity.getSearchColumn() == null){
-                for (String s : searchKey) {
-                    if(columnName.indexOf(s) > -1 ){
-                        tableEntity.setSearchColumn(columnEntity);
-                        search = true;
-                        break;
-                    }
+            for (String s : searchKey) {
+                if(columnName.indexOf(s) > -1 ){
+                    searchs.add(columnEntity);
+                    break;
                 }
             }
             //资源路径判断
@@ -160,6 +159,8 @@ public class GenUtils {
         if (!api.endsWith("管理")) {
             api += "管理";
         }
+        //保存搜索列
+        tableEntity.setSearchColumns(searchs);
         //封装模板数据
         Map<String, Object> map = new HashMap<>();
         map.put("tableName", tableEntity.getTableName());
@@ -168,7 +169,7 @@ public class GenUtils {
         //主键字段
         map.put("pk", tableEntity.getPk());
         //查询字段
-        map.put("searchColumn", tableEntity.getSearchColumn());
+        map.put("searchColumns", tableEntity.getSearchColumns());
         map.put("className", tableEntity.getClassName());
         map.put("classname", tableEntity.getClassname());
         map.put("pathName", tableEntity.getClassname().toLowerCase());

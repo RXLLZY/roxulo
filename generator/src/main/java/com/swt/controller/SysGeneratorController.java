@@ -69,7 +69,7 @@ public class SysGeneratorController {
 	@RequestMapping("/code")
 	public R code(String tables, HttpServletResponse response) throws IOException{
 		sysGeneratorService.generatorCode(tables.split(","));
-		return R.ok().put("msg","生成代码成功");
+		return R.ok("生成代码成功");
 	}
 
 	/**
@@ -79,6 +79,6 @@ public class SysGeneratorController {
 	@RequestMapping("/deleteCode")
 	public R deleteCode(String tables, HttpServletResponse response) throws IOException{
 		List<String> strings = sysGeneratorService.deleteCode(tables.split(","));
-		return R.ok().put("msg","成功删除如下文件：<br/>"+ StringUtils.join(strings,"<br/>"));
+		return R.ok("成功删除如下文件：<br/>"+ StringUtils.join(strings,"<br/>"));
 	}
 }
