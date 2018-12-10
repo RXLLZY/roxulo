@@ -136,18 +136,36 @@ public class ${className}Controller extends AbstractController {
     }
 
     /**
-     * 删除
+     * 删除单个
      */
-    @SysLog("删除${comments}")
+    @SysLog("删除单个${comments}")
+    @DeleteMapping("/${pk.attrname}")
+        #if(${swagger})
+        @ApiOperation(value = "删除单个", notes = "删除单个${comments}", produces = "application/json")
+        @ApiImplicitParam(name = "${pk.attrname}", value = "${comments}ID", required = true, paramType = "path", dataType = "${pk.attrtype}", defaultValue = "${pk.example}")
+        @ApiResponses({
+                @ApiResponse(code = 204, message = "删除成功")
+        })
+        #end
+    public R delete(@PathVariable ${pk.attrType} ${pk.attrname}) {
+            ${classname}Service..deleteById(${pk.attrname});
+
+        return R.delete();
+    }
+
+    /**
+     * 删除多个
+     */
+    @SysLog("删除多个${comments}")
     @DeleteMapping
 #if(${swagger})
-    @ApiOperation(value = "删除", notes = "删除${comments}", produces = "application/json")
+    @ApiOperation(value = "删除多个", notes = "一次性删除多个${comments}", produces = "application/json")
     @ApiImplicitParam(name = "${pk.attrname}s", value = "${comments}ID", required = true, paramType = "body", dataType = "${pk.attrtype}[]", defaultValue = "[${pk.example}]")
     @ApiResponses({
             @ApiResponse(code = 204, message = "删除成功")
     })
 #end
-    public R delete(@RequestBody ${pk.attrType}[] ${pk.attrname}s) {
+    public R deletes(@RequestBody ${pk.attrType}[] ${pk.attrname}s) {
         ${classname}Service.deleteBatchIds(Arrays.asList(${pk.attrname}s));
 
         return R.delete();
