@@ -172,7 +172,7 @@ public class GenUtils {
         map.put("searchColumns", tableEntity.getSearchColumns());
         map.put("className", tableEntity.getClassName());
         map.put("classname", tableEntity.getClassname());
-        map.put("pathName", tableEntity.getClassname().toLowerCase());
+        map.put("pathName", tableEntity.getTableName().toLowerCase().replaceAll("_","-"));
         map.put("columns", tableEntity.getColumns());
         map.put("hasBigDecimal", hasBigDecimal);
         //包路径配置
