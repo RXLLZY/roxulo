@@ -9,6 +9,7 @@ import com.swt.common.validator.ValidatorUtils;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 #if(${swagger})
 import io.swagger.annotations.*;
 #end
@@ -153,7 +154,7 @@ public class ${className}Controller extends AbstractController {
         })
         #end
     public R delete(@PathVariable ${pk.attrType} ${pk.attrname}) {
-            ${classname}Service..deleteById(${pk.attrname});
+            ${classname}Service.deleteById(${pk.attrname});
 
         return R.delete();
     }

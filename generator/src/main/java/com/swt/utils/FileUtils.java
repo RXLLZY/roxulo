@@ -43,24 +43,32 @@ public class FileUtils {
      * 删除指定目录下的代码文件
      *
      * @param path     文件路径
-     * @param fileName 表名
+     * @param viewName  前端路径
+     * @param javaName 后端路径
      * @return
      */
-    public static List<String> delTargetFile(String path, String fileName) {
+    public static List<String> delTargetFile(String path, String viewName, String javaName) {
         List<String> successFileName = new ArrayList<>();
-        fileName = fileName.toLowerCase();
-        List<String> end = Arrays.asList(".js", "dao.xml", ".html", "controller.java", "dao.java", "entity.java", "service.java", "serviceimpl.java");
-        List<String> allPath = getFile(path, fileName);
+        List<String> viewSuffix = Arrays.asList(".js", ".html");
+        List<String> javaSuffix = Arrays.asList("dao.xml", "controller.java", "dao.java", "entity.java", "service.java", "serviceimpl.java");
+        //获取符合条件的文件名
+        List<String> allPath = getFile(path, viewName);
+        allPath.addAll(getFile(path, javaName));
+        List<String> fileNameList = new ArrayList<>();
         //拼接文件名
-        for (int j = 0; j < end.size(); j++) {
-            String s = end.get(j);
-            end.set(j, fileName + s);
+        for (int j = 0; j < viewSuffix.size(); j++) {
+            String s = viewSuffix.get(j);
+            fileNameList.add(viewName + s);
+        }
+        for (int j = 0; j < javaSuffix.size(); j++) {
+            String s = javaSuffix.get(j);
+            fileNameList.add(javaName + s);
         }
         //删除正确的文件名
         for (int i = 0; i < allPath.size(); i++) {
             String s = allPath.get(i);
-            for (int j = 0; j < end.size(); j++) {
-                String s1 = end.get(j);
+            for (int j = 0; j < fileNameList.size(); j++) {
+                String s1 = fileNameList.get(j);
                 if (s.toLowerCase().endsWith(s1)) {
                     //删除文件并记录
                     File file = new File(s);

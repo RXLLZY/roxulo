@@ -110,13 +110,15 @@ public class SysGeneratorService {
         //配置信息
         Configuration config = getConfig();
         for (String tableName : tableNames) {
-            String fileName = tableName.replace(config.getString("tablePrefix"),"").replaceAll("_", "");
-            String url = "/" + fileName.toLowerCase() + ".html";
+            String fileName = tableName.replace(config.getString("tablePrefix"), "");
+            String  viewName= fileName.replaceAll("_", "-");
+            String  viewPath = "/" + viewName.toLowerCase() + ".html";
             //删除菜单栏
-            deleteMenu(url);
+            deleteMenu(viewPath);
+            String javaName = fileName.replaceAll("_", "").toLowerCase();
             //配置java文件和html文件
             String path = getConfig().getString("mainDirectory");
-            fileNames.addAll(FileUtils.delTargetFile(path, fileName));
+            fileNames.addAll(FileUtils.delTargetFile(path, viewName, javaName));
         }
         if(fileNames.size() == 0 ){
             throw new RRException( "项目不存在相关代码文件,无需删除", 500);

@@ -163,6 +163,7 @@ public class GenUtils {
         tableEntity.setSearchColumns(searchs);
         //封装模板数据
         Map<String, Object> map = new HashMap<>();
+        String pathName = tableEntity.getTableName().toLowerCase().replaceAll("_","-");
         map.put("tableName", tableEntity.getTableName());
         map.put("comments", tableEntity.getComments());
         map.put("api", api);
@@ -172,7 +173,7 @@ public class GenUtils {
         map.put("searchColumns", tableEntity.getSearchColumns());
         map.put("className", tableEntity.getClassName());
         map.put("classname", tableEntity.getClassname());
-        map.put("pathName", tableEntity.getTableName().toLowerCase().replaceAll("_","-"));
+        map.put("pathName", pathName);
         map.put("columns", tableEntity.getColumns());
         map.put("hasBigDecimal", hasBigDecimal);
         //包路径配置
@@ -209,7 +210,7 @@ public class GenUtils {
             Template tpl = Velocity.getTemplate(template, "UTF-8");
             tpl.merge(context, sw);
             try {
-                String fileName = getFileName(template, tableEntity.getClassName(), config);
+                String fileName = getFileName(template, tableEntity.getClassName(), pathName, config);
                 if (zip == null) {
                     if (template.endsWith("menu.sql.vm")) {
                         //写数据库
@@ -281,7 +282,7 @@ public class GenUtils {
     /**
      * 获取文件名
      */
-    public static String getFileName(String template, String className,Configuration config) {
+    public static String getFileName(String template, String className, String pathName, Configuration config) {
         String packagePath = "main" + File.separator + "java" + File.separator;
         String packageName = config.getString("package","package");
         String moduleName = config.getString("moduleName","moduleName");
@@ -316,12 +317,12 @@ public class GenUtils {
 
         if (template.contains("list.html.vm")) {
             return "main" + File.separator + "resources" + File.separator + "templates" + File.separator
-                    + "modules" + File.separator + moduleName + File.separator + className.toLowerCase() + ".html";
+                    + "modules" + File.separator + moduleName + File.separator + pathName + ".html";
         }
 
         if (template.contains("list.js.vm")) {
             return "main" + File.separator + "resources" + File.separator + "statics" + File.separator + "js" + File.separator
-                    + "modules" + File.separator + moduleName + File.separator + className.toLowerCase() + ".js";
+                    + "modules" + File.separator + moduleName + File.separator + pathName + ".js";
         }
 
         if (template.contains("menu.sql.vm")) {
