@@ -84,7 +84,6 @@ var vm = new Vue({
             var xhr = new XMLHttpRequest();
             xhr.open("post", "sys/generator/export", true);
             xhr.setRequestHeader("Content-Type", "application/json");
-            xhr.send(JSON.stringify(tables))
             xhr.responseType = "blob";
             xhr.onload = function() {
                 if (this.status == 200) {
@@ -99,7 +98,7 @@ var vm = new Vue({
                     document.body.removeChild(elink);
                 }
             }
-            xhr.send();
+            xhr.send(JSON.stringify(tables))
         },
         deleteCode: function () {
             var tables = getSelectedTableRows();
