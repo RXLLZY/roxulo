@@ -82,16 +82,20 @@ function getSelectedRows() {
     var ids = grid.getGridParam("selarrrow");
     for (var i = 0; i < ids.length; i++) {
         var rowData = grid.jqGrid("getRowData",ids[i]);
-        //选中行的表名
-        var tableName = rowData.tableName;
         //选中备注
         var tableComment = rowData.tableComment;
         if(tableComment === ""||tableComment === null){
         	alert("表备注不能为空");
         	return;
 		}
+        //选中备注
+        var moduleName = rowData.moduleName;
+        if(moduleName === ""||moduleName === null){
+            alert("模块路径不能为空");
+            return;
+        }
         //建一个数组，把选中行的时间添加到这个数组中去。
-        tableArr[i] = tableName + "%7C" + tableComment;
+        tableArr[i] = rowData;
     }
     return tableArr;
 }
@@ -108,10 +112,8 @@ function getSelectedTableRows() {
     var ids = grid.getGridParam("selarrrow");
     for (var i = 0; i < ids.length; i++) {
         var rowData = grid.jqGrid("getRowData",ids[i]);
-        //选中行的表名
-        var tableName = rowData.tableName;
         //建一个数组，把选中行的时间添加到这个数组中去。
-        tableArr[i] = tableName;
+        tableArr[i] = rowData;
     }
     return tableArr;
 }

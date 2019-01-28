@@ -1,12 +1,15 @@
 package com.swt.service;
 
 import com.swt.dao.SysGeneratorDao;
+import com.swt.entity.TablePropertiesEntity;
 import com.swt.utils.FileUtils;
 import com.swt.utils.GenUtils;
 import com.swt.utils.RRException;
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.beans.BeanMap;
 import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayOutputStream;
@@ -29,8 +32,9 @@ public class SysGeneratorService {
     @Autowired
     private SysGeneratorDao sysGeneratorDao;
 
-    public List<Map<String, Object>> queryList(Map<String, Object> map) {
-        return sysGeneratorDao.queryList(map);
+    public List<TablePropertiesEntity> queryList(Map<String, Object> map) {
+        final List<TablePropertiesEntity> maps = sysGeneratorDao.queryList(map);
+        return maps;
     }
 
     public int queryTotal(Map<String, Object> map) {
@@ -57,17 +61,16 @@ public class SysGeneratorService {
         return sysGeneratorDao.queryExample(tableName);
     }
 
-    public byte[] generatorZipCode(String[] tableNamesWithTableComments) {
+    public byte[] generatorZipCode(List<TablePropertiesEntity> tableNamesWithTableComments) {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         ZipOutputStream zip = new ZipOutputStream(outputStream);
 
-        for (String tableNamesWithTableComment : tableNamesWithTableComments) {
-            String[] split = tableNamesWithTableComment.split("\\|");
-            String tableName = split[0];
-            String tableComment = split[1];
+        for (TablePropertiesEntity tableNamesWithTableComment : tableNamesWithTableComments) {
+            String tableName = tableNamesWithTableComment.getTableName();
+            BeanMap beanMap = BeanMap.create(tableNamesWithTableComment);
             //查询表信息
             Map<String, String> table = queryTable(tableName);
-            table.put("tableComment", tableComment);
+            table.putAll(beanMap);
             //查询列信息
             List<Map<String, String>> columns = queryColumns(tableName);
             //获取示例
@@ -79,20 +82,23 @@ public class SysGeneratorService {
         return outputStream.toByteArray();
     }
 
-    public void generatorCode(String[] tableNamesWithTableComments) {
+    public void generatorCode(List<TablePropertiesEntity> tables) {
         //配置信息
         Configuration config = getConfig();
-        for (String tableNamesWithTableComment : tableNamesWithTableComments) {
-            String[] split = tableNamesWithTableComment.split("\\|");
-            String tableName = split[0];
-            String tableComment = split[1];
-            String url = "/" + tableName.replace(config.getString("tablePrefix"),"").toLowerCase().replaceAll("_", "") + ".html";
+        for (TablePropertiesEntity tablePropertiesEntity : tables) {
+            String tableName = tablePropertiesEntity.getTableName();
+            String tablePrefix = tablePropertiesEntity.getTablePrefix();
+            if(!StringUtils.isEmpty(tablePrefix)){
+                tableName = tableName.replace(tablePrefix, "").toLowerCase().replaceAll("_", "-");
+            }
+            BeanMap beanMap = BeanMap.create(tablePropertiesEntity);
+            String url = "/" + tableName + ".html";
             if (queryMenuCount(url) > 0) {
                 throw new RRException("菜单已存在");
             }
             //查询表信息
             Map<String, String> table = queryTable(tableName);
-            table.put("tableComment", tableComment);
+            table.putAll(beanMap);
             //查询列信息
             List<Map<String, String>> columns = queryColumns(tableName);
             //获取示例
@@ -105,17 +111,21 @@ public class SysGeneratorService {
         }
     }
 
-    public List<String> deleteCode(String[] tableNames) {
+    public List<String> deleteCode(List<TablePropertiesEntity> tables) {
         List<String> fileNames = new ArrayList<>();
         //配置信息
         Configuration config = getConfig();
-        for (String tableName : tableNames) {
-            String fileName = tableName.replace(config.getString("tablePrefix"), "");
-            String  viewName= fileName.replaceAll("_", "-");
+        for (TablePropertiesEntity tablePropertiesEntity : tables) {
+            String tableName = tablePropertiesEntity.getTableName();
+            String tablePrefix = tablePropertiesEntity.getTablePrefix();
+            if(!StringUtils.isEmpty(tablePrefix)){
+                tableName = tableName.replace(tablePrefix, "").toLowerCase();
+            }
+            String  viewName= tableName.replaceAll("_", "-");
             String  viewPath = "/" + viewName.toLowerCase() + ".html";
             //删除菜单栏
             deleteMenu(viewPath);
-            String javaName = fileName.replaceAll("_", "").toLowerCase();
+            String javaName = tableName.replaceAll("_", "").toLowerCase();
             //配置java文件和html文件
             String path = getConfig().getString("mainDirectory");
             fileNames.addAll(FileUtils.delTargetFile(path, viewName, javaName));

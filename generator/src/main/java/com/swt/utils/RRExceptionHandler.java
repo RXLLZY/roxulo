@@ -22,8 +22,8 @@ public class RRExceptionHandler {
 	@ExceptionHandler(RRException.class)
 	public R handleRRException(RRException e){
 		R r = new R();
-		r.put("code", e.getStatus());
-		r.put("msg", e.getMessage());
+		r.put("status", e.getStatus());
+		r.put("message", e.getMessage());
 
 		return r;
 	}

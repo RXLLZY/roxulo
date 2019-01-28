@@ -1,8 +1,12 @@
 package com.swt.utils;
 
 
+import org.apache.commons.configuration.Configuration;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
+
+import static com.swt.utils.GenUtils.getConfig;
 
 /**
  * 查询参数
@@ -19,6 +23,10 @@ public class Query extends LinkedHashMap<String, Object> {
     private int limit;
 
     public Query(Map<String, Object> params){
+        //配置信息
+        Configuration config = getConfig();
+        String moduleName = config.getString("moduleName");
+        params.put("moduleName", moduleName);
         this.putAll(params);
 
         //分页参数

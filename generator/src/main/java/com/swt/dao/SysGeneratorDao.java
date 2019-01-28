@@ -1,5 +1,6 @@
 package com.swt.dao;
 
+import com.swt.entity.TablePropertiesEntity;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -15,7 +16,7 @@ import java.util.Map;
 @Mapper
 public interface SysGeneratorDao {
 	
-	List<Map<String, Object>> queryList(Map<String, Object> map);
+	List<TablePropertiesEntity> queryList(Map<String, Object> map);
 	
 	int queryTotal(Map<String, Object> map);
 	

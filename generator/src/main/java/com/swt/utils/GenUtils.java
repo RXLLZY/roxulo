@@ -75,7 +75,7 @@ public class GenUtils {
         tableEntity.setTableName(table.get("tableName"));
         tableEntity.setComments(commentToJava(table.get("tableComment")));
         //表名转换成Java类名
-        String className = tableToJava(tableEntity.getTableName(), config.getString("tablePrefix"));
+        String className = tableToJava(tableEntity.getTableName(), table.get("tablePrefix"));
         tableEntity.setClassName(className);
         tableEntity.setClassname(StringUtils.uncapitalize(className));
         //列信息
@@ -178,7 +178,9 @@ public class GenUtils {
         map.put("hasBigDecimal", hasBigDecimal);
         //包路径配置
         map.put("package", config.getString("package"));
-        map.put("moduleName", config.getString("moduleName"));
+        //enterModuleName(tableEntity.getTableName(), config.getString("tablePrefix"), moduleName);
+        String moduleName = table.getOrDefault("moduleName", "moduleName");
+        map.put("moduleName", moduleName);
         map.put("controller", config.getString("controller","controller"));
         map.put("service", config.getString("service","service"));
         map.put("dao", config.getString("dao","dao"));
@@ -210,7 +212,7 @@ public class GenUtils {
             Template tpl = Velocity.getTemplate(template, "UTF-8");
             tpl.merge(context, sw);
             try {
-                String fileName = getFileName(template, tableEntity.getClassName(), pathName, config);
+                String fileName = getFileName(template, moduleName, tableEntity.getClassName(), pathName, config);
                 if (zip == null) {
                     if (template.endsWith("menu.sql.vm")) {
                         //写数据库
@@ -269,6 +271,16 @@ public class GenUtils {
     }
 
     /**
+     * 当表前缀生效时候，moduleName为表前缀
+     */
+    public static void enterModuleName(String tableName, String tablePrefix, String moduleName) {
+        if (StringUtils.isNotBlank(tablePrefix)) {
+            if (tableName.startsWith(tablePrefix)) {
+                moduleName = tablePrefix.replace("_", "");
+            }
+        }
+    }
+    /**
      * 获取配置信息
      */
     public static Configuration getConfig() {
@@ -281,11 +293,16 @@ public class GenUtils {
 
     /**
      * 获取文件名
+     * @param template 模板路径
+     * @param moduleName
+     * @param className
+     * @param pathName
+     * @param config
+     * @return
      */
-    public static String getFileName(String template, String className, String pathName, Configuration config) {
+    public static String getFileName(String template, String moduleName, String className, String pathName, Configuration config) {
         String packagePath = "main" + File.separator + "java" + File.separator;
         String packageName = config.getString("package","package");
-        String moduleName = config.getString("moduleName","moduleName");
         if (StringUtils.isNotBlank(packageName)) {
             packagePath += packageName.replace(".", File.separator) + File.separator + config.getString("modules") + File.separator + moduleName + File.separator;
         }
