@@ -26,7 +26,6 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
 import java.io.FileNotFoundException;
@@ -37,8 +36,8 @@ import java.io.FileNotFoundException;
  * @author Mark @shuweitech.com
  * @since 1.0.0 2016-10-27
  */
-@RestControllerAdvice
-public class RRExceptionHandler {
+//@RestControllerAdvice
+public class BodyExceptionHandler {
 	private Logger logger = LoggerFactory.getLogger(getClass());
 
 	/**
