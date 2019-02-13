@@ -30,6 +30,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
 import java.io.FileNotFoundException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 异常处理器
@@ -46,14 +48,23 @@ public class HeaderExceptionHandler {
 	 */
 	@ExceptionHandler(RRException.class)
 	public ResponseEntity handleRRException(RRException e){
-        logger.error(e.getMessage(), e);
-		return new ResponseEntity(e.getMessage(), HttpStatus.valueOf(e.getStatus()));
+
+		Map<String, Object> response = new HashMap(16);
+		response.put("status", e.getStatus());
+		response.put("message", e.getMessage());
+		HttpStatus resolve = HttpStatus.resolve(e.getStatus());
+		if(resolve == null){
+			return new ResponseEntity(response, HttpStatus.INTERNAL_SERVER_ERROR);
+		}else{
+			return new ResponseEntity(response, resolve);
+		}
 	}
 
 	@ExceptionHandler(NoHandlerFoundException.class)
 	public ResponseEntity handlerNoFoundException(Exception e) {
 		logger.error(e.getMessage(), e);
-		return new ResponseEntity( "访问地址不存在，请确认后重新请求!",HttpStatus.NOT_FOUND);
+		//No handler found for uri [/q1/q1/1/_search] and method [POST]
+		return new ResponseEntity( "访问地址不存在，请确认后重新请求!",HttpStatus.BAD_REQUEST);
 	}
 
 	@ExceptionHandler(DuplicateKeyException.class)
@@ -95,7 +106,7 @@ public class HeaderExceptionHandler {
 	@ExceptionHandler(IllegalArgumentException.class)
 	public ResponseEntity handleIllegalArgumentException(IllegalArgumentException e){
 		logger.error(e.getMessage(), e);
-		return new ResponseEntity("不合法参数", HttpStatus.NOT_ACCEPTABLE);
+		return new ResponseEntity("参数不合法", HttpStatus.NOT_ACCEPTABLE);
 	}
 
 	@ExceptionHandler(ClassCastException.class)
