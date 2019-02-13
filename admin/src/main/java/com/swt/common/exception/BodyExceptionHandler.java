@@ -26,6 +26,7 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
 import java.io.FileNotFoundException;
@@ -36,7 +37,7 @@ import java.io.FileNotFoundException;
  * @author Mark @shuweitech.com
  * @since 1.0.0 2016-10-27
  */
-//@RestControllerAdvice
+@RestControllerAdvice
 public class BodyExceptionHandler {
 	private Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -45,6 +46,7 @@ public class BodyExceptionHandler {
 	 */
 	@ExceptionHandler(RRException.class)
 	public R handleRRException(RRException e){
+		logger.error(e.getMessage(), e);
 		R r = new R();
 		r.put("status", e.getStatus());
 		r.put("message", e.getMessage());
@@ -56,6 +58,7 @@ public class BodyExceptionHandler {
 		logger.error(e.getMessage(), e);
 		return R.error(404, "访问地址不存在，请确认后重新请求!");
 	}
+
 	@ExceptionHandler(DuplicateKeyException.class)
 	public R handleDuplicateKeyException(DuplicateKeyException e){
 		logger.error(e.getMessage(), e);

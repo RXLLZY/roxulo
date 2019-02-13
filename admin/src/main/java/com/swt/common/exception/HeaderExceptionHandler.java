@@ -27,7 +27,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
 import java.io.FileNotFoundException;
@@ -38,7 +37,7 @@ import java.io.FileNotFoundException;
  * @author Mark @shuweitech.com
  * @since 1.0.0 2016-10-27
  */
-@RestControllerAdvice
+//@RestControllerAdvice
 public class HeaderExceptionHandler {
 	private Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -47,6 +46,7 @@ public class HeaderExceptionHandler {
 	 */
 	@ExceptionHandler(RRException.class)
 	public ResponseEntity handleRRException(RRException e){
+        logger.error(e.getMessage(), e);
 		return new ResponseEntity(e.getMessage(), HttpStatus.valueOf(e.getStatus()));
 	}
 
