@@ -16,6 +16,8 @@
 
 package com.swt.common.utils;
 
+import com.swt.common.exception.RRException;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -54,13 +56,17 @@ public class R extends HashMap<String, Object> {
 	public static R error(String message) {
 		return error(500, message);
 	}
-	
+
 	public static R error(int status, String message) {
-		R r = new R();
-		r.put("status", status);
-		r.put("message", message);
-		return r;
+		throw new RRException(message, status);
 	}
+//
+//	public static R error(int status, String message) {
+//		R r = new R();
+//		r.put("status", status);
+//		r.put("message", message);
+//		return r;
+//	}
 
 	public static R ok(String message) {
 		R r = new R();
