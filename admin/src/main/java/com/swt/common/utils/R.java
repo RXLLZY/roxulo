@@ -30,7 +30,7 @@ import java.util.Map;
  */
 public class R extends HashMap<String, Object> {
 	private static final long serialVersionUID = 1L;
-	
+
 	public R() {
 		put("status", 200);
 		put("message", "success");
@@ -40,12 +40,6 @@ public class R extends HashMap<String, Object> {
 		R r = new R();
 		r.put("status", 201);
 		r.put("message", "资源创建成功");
-		return r;
-	}
-
-	public static R delete() {
-		R r = new R();
-		r.put("status", 204);
 		return r;
 	}
 

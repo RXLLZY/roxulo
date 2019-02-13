@@ -18,6 +18,7 @@ package com.swt.common.exception;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.mysql.jdbc.exceptions.MySQLSyntaxErrorException;
+import com.swt.common.utils.R;
 import org.apache.shiro.authz.AuthorizationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,13 +48,23 @@ public class HeaderExceptionHandler {
 	 */
 	@ExceptionHandler(RRException.class)
 	public ResponseEntity handleRRException(RRException e){
-		return new ResponseEntity(e.getMessage(), HttpStatus.valueOf(e.getStatus()));
+
+		R r = new R();
+		r.put("status", e.getStatus());
+		r.put("message", e.getMessage());
+		HttpStatus resolve = HttpStatus.resolve(e.getStatus());
+		if(resolve == null){
+			return new ResponseEntity(r, HttpStatus.INTERNAL_SERVER_ERROR);
+		}else{
+			return new ResponseEntity(r, resolve);
+		}
 	}
 
 	@ExceptionHandler(NoHandlerFoundException.class)
 	public ResponseEntity handlerNoFoundException(Exception e) {
 		logger.error(e.getMessage(), e);
-		return new ResponseEntity( "访问地址不存在，请确认后重新请求!",HttpStatus.NOT_FOUND);
+		//No handler found for uri [/q1/q1/1/_search] and method [POST]
+		return new ResponseEntity( "访问地址不存在，请确认后重新请求!",HttpStatus.BAD_REQUEST);
 	}
 
 	@ExceptionHandler(DuplicateKeyException.class)
@@ -95,7 +106,7 @@ public class HeaderExceptionHandler {
 	@ExceptionHandler(IllegalArgumentException.class)
 	public ResponseEntity handleIllegalArgumentException(IllegalArgumentException e){
 		logger.error(e.getMessage(), e);
-		return new ResponseEntity("不合法参数", HttpStatus.NOT_ACCEPTABLE);
+		return new ResponseEntity("参数不合法", HttpStatus.NOT_ACCEPTABLE);
 	}
 
 	@ExceptionHandler(ClassCastException.class)

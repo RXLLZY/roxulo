@@ -6,9 +6,11 @@ import java.util.Date;
 
 import com.swt.common.annotation.SysLog;
 import com.swt.common.validator.ValidatorUtils;
+import com.swt.common.responses.Responses;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.http.HttpStatus;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 #if(${swagger})
 import io.swagger.annotations.*;
@@ -55,9 +57,9 @@ public class ${className}Controller extends AbstractController {
             @ApiResponse(code = 200, message = "success")
     })
 #end
-    public R list(@RequestParam #if(${swagger})@ApiParam(hidden = true)#end Map<String, Object> params) {
+    public Responses<PageUtils> list(@RequestParam #if(${swagger})@ApiParam(hidden = true)#end Map<String, Object> params) {
         PageUtils page = ${classname}Service.queryPage(params);
-        return R.ok().put("page", page);
+        return success(page);
     }
 
 
@@ -73,10 +75,10 @@ public class ${className}Controller extends AbstractController {
             @ApiResponse(code = 200, message = "success")
     })
 #end
-    public R info(@PathVariable("${pk.attrname}") ${pk.attrType} ${pk.attrname}) {
+    public Responses<${className}Entity> info(@PathVariable("${pk.attrname}") ${pk.attrType} ${pk.attrname}) {
         ${className}Entity ${classname} = ${classname}Service.selectById(${pk.attrname});
 
-        return R.ok().put("${classname}", ${classname});
+        return success(${classname});
     }
 
     /**
@@ -92,7 +94,7 @@ public class ${className}Controller extends AbstractController {
             @ApiResponse(code = 422, message = "参数校验失败")
     })
 #end
-    public R save(@RequestBody ${className}Entity ${classname}) {
+    public Responses<${className}Entity> save(@RequestBody ${className}Entity ${classname}) {
 #if($CrtUserId != '')
         //添加用户名
         ${classname}.set${CrtUserId}(getUserId());
@@ -105,7 +107,7 @@ public class ${className}Controller extends AbstractController {
         ValidatorUtils.validateEntity(${classname});
         ${classname}Service.insert(${classname});
 
-        return R.ok();
+        return success(HttpStatus.CREATED, ${classname});
     }
 
     /**
@@ -122,7 +124,7 @@ public class ${className}Controller extends AbstractController {
             @ApiResponse(code = 422, message = "参数校验失败")
     })
 #end
-    public R update(@PathVariable("${pk.attrname}") ${pk.attrType} ${pk.attrname}, @RequestBody ${className}Entity ${classname}) {
+    public Responses<${className}Entity> update(@PathVariable("${pk.attrname}") ${pk.attrType} ${pk.attrname}, @RequestBody ${className}Entity ${classname}) {
 #if($OptUserId != '')
         //添加用户名
         ${classname}.set${OptUserId}(getUserId());
@@ -137,26 +139,25 @@ public class ${className}Controller extends AbstractController {
         //全部更新
         ${classname}Service.updateById(${classname});
 
-        return R.ok();
+        return success(${classname});
     }
 
     /**
      * 删除单个
      */
     @SysLog("删除单个${comments}")
-    @DeleteMapping("/${pk.attrname}")
+    @DeleteMapping("/${pk.attrname}/{${pk.attrname}}")
     @RequiresPermissions("${moduleName}:${pathName}:delete")
-        #if(${swagger})
-        @ApiOperation(value = "删除单个", notes = "删除单个${comments}", produces = "application/json")
-        @ApiImplicitParam(name = "${pk.attrname}", value = "${comments}ID", required = true, paramType = "path", dataType = "${pk.attrtype}", defaultValue = "${pk.example}")
-        @ApiResponses({
-                @ApiResponse(code = 204, message = "删除成功")
-        })
-        #end
-    public R delete(@PathVariable ${pk.attrType} ${pk.attrname}) {
+#if(${swagger})
+    @ApiOperation(value = "删除单个", notes = "删除单个${comments}", produces = "application/json")
+    @ApiImplicitParam(name = "${pk.attrname}", value = "${comments}ID", required = true, paramType = "path", dataType = "${pk.attrtype}", defaultValue = "${pk.example}")
+    @ApiResponses({
+            @ApiResponse(code = 204, message = "删除成功")
+    })
+#end
+    public Responses<Void> delete(@PathVariable ${pk.attrType} ${pk.attrname}) {
             ${classname}Service.deleteById(${pk.attrname});
-
-        return R.delete();
+        return success(HttpStatus.NO_CONTENT);
     }
 
     /**
@@ -172,10 +173,9 @@ public class ${className}Controller extends AbstractController {
             @ApiResponse(code = 204, message = "删除成功")
     })
 #end
-    public R deletes(@RequestBody ${pk.attrType}[] ${pk.attrname}s) {
+    public Responses<Void>  deletes(@RequestBody ${pk.attrType}[] ${pk.attrname}s) {
         ${classname}Service.deleteBatchIds(Arrays.asList(${pk.attrname}s));
-
-        return R.delete();
+        return success(HttpStatus.NO_CONTENT);
     }
 
 }
