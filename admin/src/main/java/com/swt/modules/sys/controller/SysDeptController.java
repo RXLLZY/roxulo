@@ -17,12 +17,14 @@
 package com.swt.modules.sys.controller;
 
 import com.swt.common.controller.AbstractController;
+import com.swt.common.responses.Responses;
 import com.swt.common.utils.Constant;
 import com.swt.common.utils.R;
 import com.swt.modules.sys.entity.SysDeptEntity;
 import com.swt.modules.sys.service.SysDeptService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -50,10 +52,10 @@ public class SysDeptController extends AbstractController {
 	 */
 	@RequestMapping("/list")
 	@RequiresPermissions("sys:dept:list")
-	public List<SysDeptEntity> list(){
+	public Responses<List<SysDeptEntity>> list(){
 		List<SysDeptEntity> deptList = sysDeptService.queryList(new HashMap<String, Object>());
 
-		return deptList;
+		return success(deptList);
 	}
 
 	/**
@@ -61,7 +63,7 @@ public class SysDeptController extends AbstractController {
 	 */
 	@RequestMapping("/select")
 	@RequiresPermissions("sys:dept:select")
-	public R select(){
+	public Responses<List<SysDeptEntity>> select(){
 		List<SysDeptEntity> deptList = sysDeptService.queryList(new HashMap<String, Object>());
 
 		//添加一级部门
@@ -74,7 +76,7 @@ public class SysDeptController extends AbstractController {
 			deptList.add(root);
 		}
 
-		return R.ok().put("deptList", deptList);
+		return success(deptList);
 	}
 
 	/**
@@ -82,7 +84,7 @@ public class SysDeptController extends AbstractController {
 	 */
 	@RequestMapping("/info")
 	@RequiresPermissions("sys:dept:list")
-	public R info(){
+	public Responses<Long> info(){
 		long deptId = 0;
 		if(getUserId() != Constant.SUPER_ADMIN){
 			List<SysDeptEntity> deptList = sysDeptService.queryList(new HashMap<String, Object>());
@@ -100,7 +102,7 @@ public class SysDeptController extends AbstractController {
 			deptId = parentId;
 		}
 
-		return R.ok().put("deptId", deptId);
+		return success(deptId);
 	}
 	
 	/**
@@ -108,10 +110,10 @@ public class SysDeptController extends AbstractController {
 	 */
 	@RequestMapping("/info/{deptId}")
 	@RequiresPermissions("sys:dept:info")
-	public R info(@PathVariable("deptId") Long deptId){
+	public Responses<SysDeptEntity> info(@PathVariable("deptId") Long deptId){
 		SysDeptEntity dept = sysDeptService.selectById(deptId);
-		
-		return R.ok().put("dept", dept);
+
+		return success(dept);
 	}
 	
 	/**
@@ -119,10 +121,10 @@ public class SysDeptController extends AbstractController {
 	 */
 	@RequestMapping("/save")
 	@RequiresPermissions("sys:dept:save")
-	public R save(@RequestBody SysDeptEntity dept){
+	public Responses<SysDeptEntity> save(@RequestBody SysDeptEntity dept){
 		sysDeptService.insert(dept);
-		
-		return R.ok();
+
+		return success(dept);
 	}
 	
 	/**
@@ -130,10 +132,10 @@ public class SysDeptController extends AbstractController {
 	 */
 	@RequestMapping("/update")
 	@RequiresPermissions("sys:dept:update")
-	public R update(@RequestBody SysDeptEntity dept){
+	public Responses<SysDeptEntity> update(@RequestBody SysDeptEntity dept){
 		sysDeptService.updateById(dept);
-		
-		return R.ok();
+
+		return success(dept);
 	}
 	
 	/**
@@ -141,16 +143,16 @@ public class SysDeptController extends AbstractController {
 	 */
 	@RequestMapping("/delete")
 	@RequiresPermissions("sys:dept:delete")
-	public R delete(long deptId){
+	public Responses<Void> delete(long deptId){
 		//判断是否有子部门
 		List<Long> deptList = sysDeptService.queryDetpIdList(deptId);
 		if(deptList.size() > 0){
-			return R.error("请先删除子部门");
+			R.error("请先删除子部门");
 		}
 
 		sysDeptService.deleteById(deptId);
-		
-		return R.ok();
+
+		return success(HttpStatus.NO_CONTENT);
 	}
 	
 }

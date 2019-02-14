@@ -29,7 +29,7 @@ var vm = new Vue({
         getMenu: function(menuId){
             //加载菜单树
             $.get(baseURL + "sys/menu/select", function(r){
-                ztree = $.fn.zTree.init($("#menuTree"), setting, r.menuList);
+                ztree = $.fn.zTree.init($("#menuTree"), setting, r.result);
                 var node = ztree.getNodeByParam("menuId", vm.menu.parentId);
                 ztree.selectNode(node);
 
@@ -51,7 +51,7 @@ var vm = new Vue({
             $.get(baseURL + "sys/menu/info/"+menuId, function(r){
                 vm.showList = false;
                 vm.title = "修改";
-                vm.menu = r.menu;
+                vm.menu = r.result;
 
                 vm.getMenu();
             });
@@ -68,13 +68,12 @@ var vm = new Vue({
                     url: baseURL + "sys/menu/delete",
                     data: "menuId=" + menuId,
                     success: function(r){
-                        if(r.status === 200){
-                            alert('操作成功', function(){
-                                vm.reload();
-                            });
-                        }else{
-                            alert(r.message);
-                        }
+                        alert('操作成功', function(){
+                            vm.reload();
+                        });
+                    },
+                    error:function(r){
+                        alert(r.responseJSON.message);
                     }
                 });
             });
@@ -91,13 +90,12 @@ var vm = new Vue({
                 contentType: "application/json",
                 data: JSON.stringify(vm.menu),
                 success: function(r){
-                    if(r.status === 200){
-                        alert('操作成功', function(){
-                            vm.reload();
-                        });
-                    }else{
-                        alert(r.message);
-                    }
+                    alert('操作成功', function(){
+                        vm.reload();
+                    });
+                },
+                error:function(r){
+                    alert(r.responseJSON.message);
                 }
             });
         },

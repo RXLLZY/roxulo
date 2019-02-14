@@ -18,7 +18,6 @@ package com.swt.common.exception;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.mysql.jdbc.exceptions.MySQLSyntaxErrorException;
-import com.swt.common.utils.R;
 import org.apache.shiro.authz.AuthorizationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,6 +31,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
 import java.io.FileNotFoundException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 异常处理器
@@ -49,14 +50,14 @@ public class HeaderExceptionHandler {
 	@ExceptionHandler(RRException.class)
 	public ResponseEntity handleRRException(RRException e){
 
-		R r = new R();
-		r.put("status", e.getStatus());
-		r.put("message", e.getMessage());
+		Map<String, Object> response = new HashMap(16);
+		response.put("status", e.getStatus());
+		response.put("message", e.getMessage());
 		HttpStatus resolve = HttpStatus.resolve(e.getStatus());
 		if(resolve == null){
-			return new ResponseEntity(r, HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}else{
-			return new ResponseEntity(r, resolve);
+			return new ResponseEntity(response, resolve);
 		}
 	}
 

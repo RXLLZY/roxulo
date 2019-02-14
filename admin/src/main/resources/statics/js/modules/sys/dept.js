@@ -28,7 +28,7 @@ var vm = new Vue({
         getDept: function(){
             //加载部门树
             $.get(baseURL + "sys/dept/select", function(r){
-                ztree = $.fn.zTree.init($("#deptTree"), setting, r.deptList);
+                ztree = $.fn.zTree.init($("#deptTree"), setting, r.result);
                 var node = ztree.getNodeByParam("deptId", vm.dept.parentId);
                 ztree.selectNode(node);
 
@@ -50,7 +50,7 @@ var vm = new Vue({
             $.get(baseURL + "sys/dept/info/"+deptId, function(r){
                 vm.showList = false;
                 vm.title = "修改";
-                vm.dept = r.dept;
+                vm.dept = r.result;
 
                 vm.getDept();
             });
@@ -67,13 +67,12 @@ var vm = new Vue({
                     url: baseURL + "sys/dept/delete",
                     data: "deptId=" + deptId,
                     success: function(r){
-                        if(r.status === 200){
-                            alert('操作成功', function(){
-                                vm.reload();
-                            });
-                        }else{
-                            alert(r.message);
-                        }
+                        alert('操作成功', function(){
+                            vm.reload();
+                        })
+                    },
+                    error:function(r){
+                        alert(r.responseJSON.message);
                     }
                 });
             });
@@ -86,13 +85,12 @@ var vm = new Vue({
                 contentType: "application/json",
                 data: JSON.stringify(vm.dept),
                 success: function(r){
-                    if(r.status === 200){
-                        alert('操作成功', function(){
-                            vm.reload();
-                        });
-                    }else{
-                        alert(r.message);
-                    }
+                    alert('操作成功', function(){
+                        vm.reload();
+                    })
+                },
+                error:function(r){
+                    alert(r.responseJSON.message);
                 }
             });
         },
@@ -159,7 +157,7 @@ $(function () {
     $.get(baseURL + "sys/dept/info", function(r){
         var colunms = Dept.initColumn();
         var table = new TreeTable(Dept.id, baseURL + "sys/dept/list", colunms);
-        table.setRootCodeValue(r.deptId);
+        table.setRootCodeValue(r.result);
         table.setExpandColumn(2);
         table.setIdField("deptId");
         table.setCodeField("deptId");

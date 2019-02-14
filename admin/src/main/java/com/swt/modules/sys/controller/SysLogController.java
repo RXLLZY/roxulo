@@ -16,8 +16,9 @@
 
 package com.swt.modules.sys.controller;
 
+import com.swt.common.controller.AbstractController;
+import com.swt.common.responses.Responses;
 import com.swt.common.utils.PageUtils;
-import com.swt.common.utils.R;
 import com.swt.modules.sys.service.SysLogService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +39,7 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping("/sys/log")
-public class SysLogController {
+public class SysLogController extends AbstractController {
 	@Autowired
 	private SysLogService sysLogService;
 	
@@ -48,10 +49,10 @@ public class SysLogController {
 	@ResponseBody
 	@RequestMapping("/list")
 	@RequiresPermissions("sys:log:list")
-	public R list(@RequestParam Map<String, Object> params){
+	public Responses<PageUtils> list(@RequestParam Map<String, Object> params){
 		PageUtils page = sysLogService.queryPage(params);
 
-		return R.ok().put("page", page);
+		return success(page);
 	}
 	
 }

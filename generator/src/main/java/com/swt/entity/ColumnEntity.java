@@ -35,7 +35,8 @@ public class ColumnEntity {
 	private Boolean search;
 	//是否是资源
 	private Boolean resource;
-
+	//是否以is_开头
+	private Boolean startIs;
 	public String getColumnName() {
 		return columnName;
 	}
@@ -130,5 +131,13 @@ public class ColumnEntity {
 
 	public void setAttrtype(String attrtype) {
 		this.attrtype = attrtype;
+	}
+
+	public Boolean getStartIs() {
+		return startIs;
+	}
+
+	public void setStartIs(Boolean startIs) {
+		this.startIs = startIs;
 	}
 }

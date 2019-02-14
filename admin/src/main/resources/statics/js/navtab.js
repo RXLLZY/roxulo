@@ -106,7 +106,7 @@ layui.define(['element'], function(exports){
 			    	element.tabDelete(ELEM.tabFilter, $(this).parent('li').index()).init();
 			    });
 		    };
-		    //切换到当前打开的选项卡
+		    //切换到当前打开的选项卡sys/menu/nav
 		    element.tabChange(ELEM.tabFilter, ELEM.titleBox.find('li').length - 1);
 		    }else {
 			    element.tabChange(ELEM.tabFilter, tabIndex);

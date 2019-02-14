@@ -18,8 +18,8 @@ package com.swt.modules.sys.controller;
 
 import com.swt.common.annotation.SysLog;
 import com.swt.common.controller.AbstractController;
+import com.swt.common.responses.Responses;
 import com.swt.common.utils.PageUtils;
-import com.swt.common.utils.R;
 import com.swt.common.validator.ValidatorUtils;
 import com.swt.modules.sys.entity.SysRoleEntity;
 import com.swt.modules.sys.service.SysRoleDeptService;
@@ -27,6 +27,7 @@ import com.swt.modules.sys.service.SysRoleMenuService;
 import com.swt.modules.sys.service.SysRoleService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -54,10 +55,10 @@ public class SysRoleController extends AbstractController {
 	 */
 	@RequestMapping("/list")
 	@RequiresPermissions("sys:role:list")
-	public R list(@RequestParam Map<String, Object> params){
+	public Responses<PageUtils> list(@RequestParam Map<String, Object> params){
 		PageUtils page = sysRoleService.queryPage(params);
 
-		return R.ok().put("page", page);
+		return success(page);
 	}
 	
 	/**
@@ -65,10 +66,10 @@ public class SysRoleController extends AbstractController {
 	 */
 	@RequestMapping("/select")
 	@RequiresPermissions("sys:role:select")
-	public R select(){
+	public Responses<List<SysRoleEntity>> select(){
 		List<SysRoleEntity> list = sysRoleService.selectList(null);
-		
-		return R.ok().put("list", list);
+
+		return success(list);
 	}
 	
 	/**
@@ -76,7 +77,7 @@ public class SysRoleController extends AbstractController {
 	 */
 	@RequestMapping("/info/{roleId}")
 	@RequiresPermissions("sys:role:info")
-	public R info(@PathVariable("roleId") Long roleId){
+	public Responses<SysRoleEntity> info(@PathVariable("roleId") Long roleId){
 		SysRoleEntity role = sysRoleService.selectById(roleId);
 		
 		//查询角色对应的菜单
@@ -86,8 +87,8 @@ public class SysRoleController extends AbstractController {
 		//查询角色对应的部门
 		List<Long> deptIdList = sysRoleDeptService.queryDeptIdList(new Long[]{roleId});
 		role.setDeptIdList(deptIdList);
-		
-		return R.ok().put("role", role);
+
+		return success(role);
 	}
 	
 	/**
@@ -96,12 +97,12 @@ public class SysRoleController extends AbstractController {
 	@SysLog("保存角色")
 	@RequestMapping("/save")
 	@RequiresPermissions("sys:role:save")
-	public R save(@RequestBody SysRoleEntity role){
+	public Responses<SysRoleEntity> save(@RequestBody SysRoleEntity role){
 		ValidatorUtils.validateEntity(role);
 		
 		sysRoleService.save(role);
-		
-		return R.ok();
+
+		return success(role);
 	}
 	
 	/**
@@ -110,12 +111,12 @@ public class SysRoleController extends AbstractController {
 	@SysLog("修改角色")
 	@RequestMapping("/update")
 	@RequiresPermissions("sys:role:update")
-	public R update(@RequestBody SysRoleEntity role){
+	public Responses<SysRoleEntity> update(@RequestBody SysRoleEntity role){
 		ValidatorUtils.validateEntity(role);
 		
 		sysRoleService.update(role);
-		
-		return R.ok();
+
+		return success(role);
 	}
 	
 	/**
@@ -124,9 +125,9 @@ public class SysRoleController extends AbstractController {
 	@SysLog("删除角色")
 	@RequestMapping("/delete")
 	@RequiresPermissions("sys:role:delete")
-	public R delete(@RequestBody Long[] roleIds){
+	public Responses<Void> delete(@RequestBody Long[] roleIds){
 		sysRoleService.deleteBatch(roleIds);
-		
-		return R.ok();
+
+		return success(HttpStatus.NO_CONTENT);
 	}
 }

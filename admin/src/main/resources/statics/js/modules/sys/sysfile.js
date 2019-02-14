@@ -41,10 +41,10 @@ $(function () {
         multiselect: true,
         pager: "#jqGridPager",
         jsonReader : {
-            root: "page.list",
-            page: "page.currPage",
-            total: "page.totalPage",
-            records: "page.totalCount"
+            root: "result.list",
+            page: "result.currPage",
+            total: "result.totalPage",
+            records: "result.totalCount"
         },
         prmNames : {
             page:"page", 
@@ -119,13 +119,12 @@ var vm = new Vue({
                     contentType: "application/json",
                     data: JSON.stringify(vm.sysFile),
                     success: function (r) {
-                        if (r.status === 200) {
                             alert('操作成功', function (index) {
                                 vm.reload();
                             });
-                        } else {
-                            alert(r.message);
-                        }
+                    },
+                    error:function(r){
+                        alert(r.responseJSON.message);
                     }
                 });
             }else{
@@ -135,13 +134,12 @@ var vm = new Vue({
                     contentType: "application/json",
                     data: JSON.stringify(vm.sysFile),
                     success: function (r) {
-                        if (r.status === 200) {
-                            alert('操作成功', function (index) {
-                                vm.reload();
-                            });
-                        } else {
-                            alert(r.message);
-                        }
+                        alert('操作成功', function (index) {
+                            vm.reload();
+                        });
+                    },
+                    error:function(r){
+                        alert(r.responseJSON.message);
                     }
                 });
 			}
@@ -159,20 +157,19 @@ var vm = new Vue({
                     contentType: "application/json",
 				    data: JSON.stringify(ids),
 				    success: function(r){
-						if(r.status == 200){
-							alert('操作成功', function(index){
-								$("#jqGrid").trigger("reloadGrid");
-							});
-						}else{
-							alert(r.message);
-						}
-					}
+                        alert('操作成功', function(index){
+                            $("#jqGrid").trigger("reloadGrid");
+                        });
+					},
+                    error:function(r){
+                        alert(r.responseJSON.message);
+                    }
 				});
 			});
 		},
 		getInfo: function(id){
 			$.get(baseURL + "sys/file/"+id, function(r){
-                vm.sysFile = r.sysFile;
+                vm.sysFile = r.result;
                 console.log(r.sysFile)
             });
 		},

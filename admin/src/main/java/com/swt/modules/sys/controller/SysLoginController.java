@@ -96,7 +96,12 @@ public class SysLoginController {
 	    
 		return R.ok();
 	}
-	
+
+	@ResponseBody
+	@RequestMapping("unauthorized")
+	public R unauthorized(){
+		return R.error(401, "登录信息已失效");
+	}
 	/**
 	 * 退出
 	 */

@@ -25,10 +25,10 @@ $(function () {
         multiselect: true,
         pager: "#jqGridPager",
         jsonReader : {
-            root: "page.list",
-            page: "page.currPage",
-            total: "page.totalPage",
-            records: "page.totalCount"
+            root: "result.list",
+            page: "result.currPage",
+            total: "result.totalPage",
+            records: "result.totalCount"
         },
         prmNames : {
             page:"page", 
@@ -125,13 +125,12 @@ var vm = new Vue({
                     contentType: "application/json",
                     data: JSON.stringify(userIds),
                     success: function(r){
-                        if(r.status == 200){
-                            alert('操作成功', function(){
-                                vm.reload();
-                            });
-                        }else{
-                            alert(r.message);
-                        }
+                        alert('操作成功', function(){
+                            vm.reload();
+                        });
+                    },
+                    error:function(r){
+                        alert(r.responseJSON.message);
                     }
                 });
             });
@@ -144,19 +143,18 @@ var vm = new Vue({
                 contentType: "application/json",
                 data: JSON.stringify(vm.user),
                 success: function(r){
-                    if(r.status === 200){
-                        alert('操作成功', function(){
-                            vm.reload();
-                        });
-                    }else{
-                        alert(r.message);
-                    }
+                    alert('操作成功', function(){
+                        vm.reload();
+                    });
+                },
+                error:function(r){
+                    alert(r.responseJSON.message);
                 }
             });
         },
         getUser: function(userId){
             $.get(baseURL + "sys/user/info/"+userId, function(r){
-                vm.user = r.user;
+                vm.user = r.result;
                 vm.user.password = null;
 
                 vm.getDept();
@@ -164,7 +162,7 @@ var vm = new Vue({
         },
         getRoleList: function(){
             $.get(baseURL + "sys/role/select", function(r){
-                vm.roleList = r.list;
+                vm.roleList = r.result;
             });
         },
         deptTree: function(){

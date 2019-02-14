@@ -16,13 +16,15 @@
 
 package com.swt.modules.sys.controller;
 
+import com.swt.common.controller.AbstractController;
+import com.swt.common.responses.Responses;
 import com.swt.common.utils.PageUtils;
-import com.swt.common.utils.R;
 import com.swt.common.validator.ValidatorUtils;
 import com.swt.modules.sys.entity.SysDictEntity;
 import com.swt.modules.sys.service.SysDictService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
@@ -36,7 +38,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("sys/dict")
-public class SysDictController {
+public class SysDictController extends AbstractController {
     @Autowired
     private SysDictService sysDictService;
 
@@ -45,10 +47,10 @@ public class SysDictController {
      */
     @RequestMapping("/list")
     @RequiresPermissions("sys:dict:list")
-    public R list(@RequestParam Map<String, Object> params){
+    public Responses<PageUtils> list(@RequestParam Map<String, Object> params){
         PageUtils page = sysDictService.queryPage(params);
 
-        return R.ok().put("page", page);
+        return success(page);
     }
 
 
@@ -57,10 +59,10 @@ public class SysDictController {
      */
     @RequestMapping("/info/{id}")
     @RequiresPermissions("sys:dict:info")
-    public R info(@PathVariable("id") Long id){
+    public Responses<SysDictEntity> info(@PathVariable("id") Long id){
         SysDictEntity dict = sysDictService.selectById(id);
 
-        return R.ok().put("dict", dict);
+        return success(dict);
     }
 
     /**
@@ -68,13 +70,13 @@ public class SysDictController {
      */
     @RequestMapping("/save")
     @RequiresPermissions("sys:dict:save")
-    public R save(@RequestBody SysDictEntity dict){
+    public Responses<SysDictEntity> save(@RequestBody SysDictEntity dict){
         //校验类型
         ValidatorUtils.validateEntity(dict);
 
         sysDictService.insert(dict);
 
-        return R.ok();
+        return success(dict);
     }
 
     /**
@@ -82,13 +84,13 @@ public class SysDictController {
      */
     @RequestMapping("/update")
     @RequiresPermissions("sys:dict:update")
-    public R update(@RequestBody SysDictEntity dict){
+    public Responses<SysDictEntity> update(@RequestBody SysDictEntity dict){
         //校验类型
         ValidatorUtils.validateEntity(dict);
 
         sysDictService.updateById(dict);
 
-        return R.ok();
+        return success(dict);
     }
 
     /**
@@ -96,10 +98,10 @@ public class SysDictController {
      */
     @RequestMapping("/delete")
     @RequiresPermissions("sys:dict:delete")
-    public R delete(@RequestBody Long[] ids){
+    public Responses<Void> delete(@RequestBody Long[] ids){
         sysDictService.deleteBatchIds(Arrays.asList(ids));
 
-        return R.ok();
+        return success(HttpStatus.NO_CONTENT);
     }
 
 }

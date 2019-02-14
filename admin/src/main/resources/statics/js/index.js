@@ -47,12 +47,12 @@ var vm = new Vue({
 	methods: {
 		getMenuList: function (event) {
 			$.getJSON("sys/menu/nav?_"+$.now(), function(r){
-				vm.menuList = r.menuList;
+				vm.menuList = r.result;
 			});
 		},
 		getUser: function(){
 			$.getJSON("sys/user/info?_"+$.now(), function(r){
-				vm.user = r.user;
+				vm.user = r.result;
 			});
 		},
 		updatePassword: function(){
@@ -73,15 +73,14 @@ var vm = new Vue({
                         data: JSON.stringify(vm.form),
 					    dataType: "json",
 					    success: function(result){
-							if(result.status == 200){
-								layer.close(index);
-								layer.alert('修改成功', function(index){
-									location.reload();
-								});
-							}else{
-								layer.alert(result.msg);
-							}
-						}
+							layer.close(index);
+							layer.alert('修改成功', function(index){
+								location.reload();
+							});
+						},
+                        error:function(r){
+                            alert(r.responseJSON.message);
+                        }
 					});
 	            }
 			});

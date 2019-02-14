@@ -19,10 +19,10 @@ $(function () {
         multiselect: true,
         pager: "#jqGridPager",
         jsonReader : {
-            root: "page.list",
-            page: "page.currPage",
-            total: "page.totalPage",
-            records: "page.totalCount"
+            root: "result.list",
+            page: "result.currPage",
+            total: "result.totalPage",
+            records: "result.totalCount"
         },
         prmNames : {
             page:"page",
@@ -146,20 +146,19 @@ var vm = new Vue({
                     contentType: "application/json",
                     data: JSON.stringify(roleIds),
                     success: function(r){
-                        if(r.status == 200){
-                            alert('操作成功', function(){
-                                vm.reload();
-                            });
-                        }else{
-                            alert(r.message);
-                        }
+                        alert('操作成功', function(){
+                            vm.reload();
+                        });
+                    },
+                    error:function(r){
+                        alert(r.responseJSON.message);
                     }
                 });
             });
         },
         getRole: function(roleId){
             $.get(baseURL + "sys/role/info/"+roleId, function(r){
-                vm.role = r.role;
+                vm.role = r.result;
 
                 //勾选角色所拥有的菜单
                 var menuIds = vm.role.menuIdList;
@@ -215,7 +214,7 @@ var vm = new Vue({
         getMenuTree: function(roleId) {
             //加载菜单树
             $.get(baseURL + "sys/menu/list", function(r){
-                menu_ztree = $.fn.zTree.init($("#menuTree"), menu_setting, r);
+                menu_ztree = $.fn.zTree.init($("#menuTree"), menu_setting, r.result);
                 //展开所有节点
                 menu_ztree.expandAll(true);
 
@@ -227,7 +226,7 @@ var vm = new Vue({
         getDataTree: function(roleId) {
             //加载菜单树
             $.get(baseURL + "sys/dept/list", function(r){
-                data_ztree = $.fn.zTree.init($("#dataTree"), data_setting, r);
+                data_ztree = $.fn.zTree.init($("#dataTree"), data_setting, r.result);
                 //展开所有节点
                 data_ztree.expandAll(true);
             });

@@ -2,15 +2,16 @@ package com.swt.modules.sys.controller;
 
 import com.swt.common.annotation.SysLog;
 import com.swt.common.controller.AbstractController;
+import com.swt.common.responses.Responses;
 import com.swt.common.utils.ConfigConstant;
 import com.swt.common.utils.PageUtils;
-import com.swt.common.utils.R;
 import com.swt.common.validator.ValidatorUtils;
 import com.swt.modules.sys.entity.SysFileEntity;
 import com.swt.modules.sys.service.SysFileService;
 import io.swagger.annotations.*;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -40,11 +41,11 @@ public class SysFileController extends AbstractController{
     @ResponseBody
     @PostMapping("/upload")
     @ApiOperation(value = "uploadFile", notes = "上传文件",consumes="multipart/form-data",produces="application/json")
-    public R upload(@RequestParam("file") MultipartFile file){
+    public Responses<SysFileEntity> upload(@RequestParam("file") MultipartFile file){
 
         SysFileEntity sysFileEntity = sysFileService.upload(file);
 
-        return R.ok().put("sysFile", sysFileEntity);
+        return success(sysFileEntity);
     }
 
     /**
@@ -53,11 +54,11 @@ public class SysFileController extends AbstractController{
     @ResponseBody
     @PostMapping("/uploadAndAdd")
     @ApiOperation(value = "uploadFile", notes = "上传文件",consumes="multipart/form-data",produces="application/json")
-    public R uploadAndAdd(@RequestParam("file") MultipartFile file){
+    public Responses<SysFileEntity> uploadAndAdd(@RequestParam("file") MultipartFile file){
 
         SysFileEntity sysFileEntity = sysFileService.uploadAndAdd(file);
 
-        return R.ok().put("sysFile", sysFileEntity);
+        return success(sysFileEntity);
     }
     /**
      * 列表
@@ -70,10 +71,10 @@ public class SysFileController extends AbstractController{
             @ApiImplicitParam(name = "sidx", value = "排序字段", required = false, paramType = "query", dataType = "string"),
             @ApiImplicitParam(name = "order", value = "升降序", required = false, paramType = "query", dataType = "string", defaultValue = "asc"),
     })
-    public R list(@RequestParam @ApiParam(hidden = true) Map<String, Object> params) {
+    public Responses<PageUtils> list(@RequestParam @ApiParam(hidden = true) Map<String, Object> params) {
         PageUtils page = sysFileService.queryPage(params);
 
-        return R.ok().put("page", page);
+        return success(page);
     }
 
 
@@ -83,10 +84,10 @@ public class SysFileController extends AbstractController{
     @GetMapping("/{id}")
     @ApiOperation(value = "记录", notes = "根据ID查询单条静态资源详情",produces="application/json")
     @ApiImplicitParam(name = "id", value = "静态资源ID", required = true,paramType = "path", dataType = "integer", defaultValue="1")
-    public R info(@PathVariable("id") Integer id){
+    public Responses<SysFileEntity> info(@PathVariable("id") Integer id){
         SysFileEntity sysFile = sysFileService.selectById(id);
 
-        return R.ok().put("sysFile", sysFile);
+        return success(sysFile);
     }
 
     /**
@@ -95,7 +96,7 @@ public class SysFileController extends AbstractController{
     @SysLog("新增静态资源")
     @PostMapping
     @ApiOperation(value = "新增", notes = "新增静态资源",produces="application/json")
-    public R save(@RequestBody SysFileEntity sysFile){
+    public Responses<SysFileEntity> save(@RequestBody SysFileEntity sysFile){
         //添加用户名
         sysFile.setCrtUserId(getUserId());
         //添加创建时间
@@ -104,7 +105,7 @@ public class SysFileController extends AbstractController{
         ValidatorUtils.validateEntity(sysFile);
         sysFileService.insert(sysFile);
 
-        return R.ok();
+        return success(sysFile);
     }
 
     /**
@@ -114,14 +115,14 @@ public class SysFileController extends AbstractController{
     @PutMapping("/{id}")
     @ApiOperation(value = "修改", notes = "修改静态资源",produces="application/json")
     @ApiImplicitParam(name = "id", value = "静态资源ID", required = true,paramType = "path", dataType = "integer", defaultValue="1")
-    public R update(@PathVariable("id") Integer id,@RequestBody SysFileEntity sysFile){
+    public Responses<SysFileEntity> update(@PathVariable("id") Integer id, @RequestBody SysFileEntity sysFile){
         sysFile.setId(id);
         //校验
         ValidatorUtils.validateEntity(sysFile);
         //全部更新
         sysFileService.updateAllColumnById(sysFile);
-        
-        return R.ok();
+
+        return success(sysFile);
     }
 
     /**
@@ -131,14 +132,14 @@ public class SysFileController extends AbstractController{
     @DeleteMapping
     @ApiOperation(value = "删除", notes = "删除静态资源",produces="application/json")
     @ApiImplicitParam(name = "ids", value = "静态资源ID", required = true,paramType = "body", dataType = "integer[]", defaultValue="[1]")
-    public R delete(@RequestBody Integer[] ids){
+    public Responses<Void> delete(@RequestBody Integer[] ids){
         for (int i = 0; i < ids.length; i++) {
             SysFileEntity sysFileEntity = sysFileService.selectById(ids[i]);
             FileUtils.deleteQuietly(new File(ConfigConstant.CONTENT_PATH + sysFileEntity.getPath()));
         }
         sysFileService.deleteBatchIds(Arrays.asList(ids));
 
-        return R.ok();
+        return success(HttpStatus.NO_CONTENT);
     }
 
 }

@@ -102,6 +102,8 @@ public class GenUtils {
             }else{
                 columnEntity.setHidden(false);
             }
+            //列名是否以is_开头
+            columnEntity.setStartIs(columnName.startsWith("is_"));
             //列名转换成Java属性名
             String attrName = columnToJava(columnEntity.getColumnName());
             //大写属性名

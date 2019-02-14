@@ -52,7 +52,7 @@ public class ${className}Entity implements Serializable {
 #if(${swagger})
 	@ApiModelProperty(value = "$column.comments", example = "$column.example", hidden = ${column.hidden}, required = $column.nullAble)
 #end
-#if($column.attrType == "Boolean")
+#if($column.startIs)
     @TableField("${column.columnName}")
 #end
 #end
