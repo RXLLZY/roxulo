@@ -54,8 +54,8 @@ $(function () {
         },
         onComplete : function(file, r){
             if(r.status == 200){
-                alert(r.sysFile.originalName + "上传成功");
-                vm.${classname}.${column.attrname} = r.sysFile.path;
+                alert(r.result.originalName + "上传成功");
+                vm.${classname}.${column.attrname} = r.result.path;
             }else{
                 alert(r.message);
             }
