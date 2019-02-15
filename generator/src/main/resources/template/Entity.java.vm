@@ -1,5 +1,9 @@
 package ${package}.modules.${moduleName}.${entity};
 
+import lombok.Data;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.baomidou.mybatisplus.annotations.TableField;
@@ -25,6 +29,10 @@ import javax.validation.constraints.NotNull;
  * @email ${email}
  * @date ${datetime}
  */
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @TableName("${tableName}")
 #if(${swagger})
 @ApiModel(value = "${comments}")
@@ -57,22 +65,5 @@ public class ${className}Entity implements Serializable {
 #end
 #end
 	private $column.attrType $column.attrname;
-#end
-
-#foreach ($column in $columns)
-
-	/**
-	 * 设置：${column.comments}
-	 */
-	public void set${column.attrName}($column.attrType $column.attrname) {
-		this.$column.attrname = $column.attrname;
-	}
-
-	/**
-	 * 获取：${column.comments}
-	 */
-	public $column.attrType get${column.attrName}() {
-		return $column.attrname;
-	}
 #end
 }

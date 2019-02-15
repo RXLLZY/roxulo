@@ -3,6 +3,10 @@ package com.swt.modules.sys.entity;
 
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
@@ -13,6 +17,10 @@ import java.io.Serializable;
  * @email @shuweitech.com
  * @date 2016年9月18日 上午9:28:39
  */
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @TableName("sys_user_role")
 public class SysUserRoleEntity implements Serializable {
 	private static final long serialVersionUID = 1L;

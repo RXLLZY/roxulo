@@ -4,6 +4,10 @@ import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
@@ -16,6 +20,10 @@ import java.util.Date;
  * @email shuweitech.com
  * @date 2018-09-19 18:11:12
  */
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @TableName("sys_file")
 @ApiModel(value="静态资源")
 public class SysFileEntity implements Serializable {
@@ -63,101 +71,4 @@ public class SysFileEntity implements Serializable {
 	 */
 	@ApiModelProperty(value="创建时间", example="Date", hidden=true,required=false)
 	private Date crtTime;
-
-	/**
-	 * 设置：主键
-	 */
-	public void setId(Integer id) {
-		this.id = id;
-	}
-	/**
-	 * 获取：主键
-	 */
-	public Integer getId() {
-		return id;
-	}
-	/**
-	 * 设置：原始名称
-	 */
-	public void setOriginalName(String originalName) {
-		this.originalName = originalName;
-	}
-	/**
-	 * 获取：原始名称
-	 */
-	public String getOriginalName() {
-		return originalName;
-	}
-	/**
-	 * 设置：文件路径
-	 */
-	public void setPath(String path) {
-		this.path = path;
-	}
-	/**
-	 * 获取：文件路径
-	 */
-	public String getPath() {
-		return path;
-	}
-	/**
-	 * 设置：文件类型
-	 */
-	public void setContentType(String contentType) {
-		this.contentType = contentType;
-	}
-	/**
-	 * 获取：文件类型
-	 */
-	public String getContentType() {
-		return contentType;
-	}
-	/**
-	 * 设置：文件大小
-	 */
-	public void setSize(String size) {
-		this.size = size;
-	}
-	/**
-	 * 获取：文件大小
-	 */
-	public String getSize() {
-		return size;
-	}
-	/**
-	 * 设置：描述
-	 */
-	public void setDescription(String description) {
-		this.description = description;
-	}
-	/**
-	 * 获取：描述
-	 */
-	public String getDescription() {
-		return description;
-	}
-	/**
-	 * 设置：创建者
-	 */
-	public void setCrtUserId(Long crtUserId) {
-		this.crtUserId = crtUserId;
-	}
-	/**
-	 * 获取：创建者
-	 */
-	public Long getCrtUserId() {
-		return crtUserId;
-	}
-	/**
-	 * 设置：创建时间
-	 */
-	public void setCrtTime(Date crtTime) {
-		this.crtTime = crtTime;
-	}
-	/**
-	 * 获取：创建时间
-	 */
-	public Date getCrtTime() {
-		return crtTime;
-	}
 }

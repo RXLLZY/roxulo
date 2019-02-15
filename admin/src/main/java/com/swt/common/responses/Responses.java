@@ -1,7 +1,8 @@
 package com.swt.common.responses;
 
 import io.swagger.annotations.ApiModelProperty;
-import lombok.*;
+import lombok.Builder;
+import lombok.Data;
 import org.springframework.http.HttpStatus;
 
 import javax.servlet.http.HttpServletResponse;
@@ -11,12 +12,8 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Caratacus
  */
-@Getter
-@ToString
+@Data
 @Builder
-@EqualsAndHashCode(callSuper = false)
-@AllArgsConstructor
-@NoArgsConstructor
 public class Responses<T> {
     private static final long serialVersionUID = 1L;
 
