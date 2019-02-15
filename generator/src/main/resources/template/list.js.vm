@@ -70,7 +70,11 @@ var vm = new Vue({
 	data:{
 #if(${search})
         q:{
-            ${searchColumn.attrname}: null
+#if(${search})
+    #foreach($searchColumn in $searchColumns)
+            ${searchColumn.attrname}: null,
+    #end
+#end
         },
 #end
 		showList: true,
@@ -165,7 +169,12 @@ var vm = new Vue({
 			var page = $("#jqGrid").jqGrid('getGridParam','page');
 			$("#jqGrid").jqGrid('setGridParam',{
 #if(${search})
-                postData:{'${searchColumn.attrname}': vm.q.${searchColumn.attrname}},
+                postData:{
+    #if(${search})
+        #foreach($searchColumn in $searchColumns)
+            '${searchColumn.attrname}': vm.q.${searchColumn.attrname},
+        #end
+    #end},
 #end
                 page:page
             }).trigger("reloadGrid");
