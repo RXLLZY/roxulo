@@ -163,8 +163,8 @@ public class GenUtils {
         //保存搜索列
         tableEntity.setSearchColumns(searchs);
         //封装模板数据
-        Map<String, Object> map = new HashMap<>();
-        String pathName = tableEntity.getTableName().toLowerCase().replaceAll("_","-");
+        Map<String, Object> map = new HashMap<>(16);
+        String pathName = tableToPath(tableEntity.getTableName(), table.get("tablePrefix"));
         map.put("tableName", tableEntity.getTableName());
         map.put("comments", tableEntity.getComments());
         map.put("api", api);
@@ -271,6 +271,16 @@ public class GenUtils {
         return columnToJava(tableName);
     }
 
+    /**
+     * 表名转换成Java类名
+     */
+    public static String tableToPath(String tableName, String tablePrefix) {
+        if (StringUtils.isNotBlank(tablePrefix)) {
+            tableName = tableName.replace(tablePrefix, "");
+        }
+        String path = tableName.toLowerCase().replaceAll("_", "-");
+        return path;
+    }
     /**
      * 当表前缀生效时候，moduleName为表前缀
      */

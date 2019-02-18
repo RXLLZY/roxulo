@@ -88,11 +88,12 @@ public class SysGeneratorService {
         for (TablePropertiesEntity tablePropertiesEntity : tables) {
             String tableName = tablePropertiesEntity.getTableName();
             String tablePrefix = tablePropertiesEntity.getTablePrefix();
+            String moduleName = "";
             if(!StringUtils.isEmpty(tablePrefix)){
-                tableName = tableName.replace(tablePrefix, "").toLowerCase().replaceAll("_", "-");
+                moduleName = tableName.replace(tablePrefix, "").toLowerCase().replaceAll("_", "-");
             }
             BeanMap beanMap = BeanMap.create(tablePropertiesEntity);
-            String url = "/" + tableName + ".html";
+            String url = "/" + moduleName + ".html";
             if (queryMenuCount(url) > 0) {
                 throw new RRException("菜单已存在");
             }
