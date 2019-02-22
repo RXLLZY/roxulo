@@ -123,7 +123,7 @@ public class SysGeneratorService {
                 tableName = tableName.replace(tablePrefix, "").toLowerCase();
             }
             String  viewName= tableName.replaceAll("_", "-");
-            String  viewPath = "/" + viewName.toLowerCase() + ".html";
+            String  viewPath = "modules/" + tablePropertiesEntity.getModuleName() + "/" + viewName.toLowerCase() + ".html";
             //删除菜单栏
             deleteMenu(viewPath);
             String javaName = tableName.replaceAll("_", "").toLowerCase();
