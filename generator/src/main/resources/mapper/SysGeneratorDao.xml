@@ -42,6 +42,6 @@
 	</select>
     <delete id="deleteMenu">
         delete from sys_menu where parent_id = (select menu_id from (select menu_id FROM `sys_menu` where url like '%${_parameter}') as a);
-        delete from sys_menu  where url like '%${_parameter}';
+        delete from sys_menu  where url = #{0};
 	</delete>
 </mapper>

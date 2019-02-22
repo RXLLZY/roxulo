@@ -122,7 +122,7 @@ public class GenUtils {
             if (exampleMap != null && exampleMap.get(columnName) != null) {
                 columnEntity.setExample(commentToJava(String.valueOf(exampleMap.get(columnName))));
             } else {
-                columnEntity.setExample(attrType);
+                columnEntity.setExample("");
             }
             //是否主键
             if ("PRI".equalsIgnoreCase(column.get("columnKey")) && tableEntity.getPk() == null) {
