@@ -144,7 +144,7 @@ public class ${className}Controller extends AbstractController {
      * 删除单个
      */
     @SysLog("删除单个${comments}")
-    @DeleteMapping("/${pk.attrname}/{${pk.attrname}}")
+    @DeleteMapping("/{${pk.attrname}}")
     @RequiresPermissions("${moduleName}:${pathName}:delete")
 #if(${swagger})
     @ApiOperation(value = "删除单个", notes = "删除单个${comments}", produces = "application/json")
