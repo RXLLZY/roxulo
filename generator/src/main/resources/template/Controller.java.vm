@@ -6,8 +6,8 @@ import java.util.Date;
 
 import com.swt.common.annotation.SysLog;
 import com.swt.common.validator.ValidatorUtils;
-import com.swt.shopping.common.validator.group.AddGroup;
-import com.swt.shopping.common.validator.group.UpdateGroup;
+import com.swt.common.validator.group.AddGroup;
+import com.swt.common.validator.group.UpdateGroup;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
