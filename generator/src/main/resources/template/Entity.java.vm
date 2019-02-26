@@ -7,6 +7,8 @@ import lombok.AllArgsConstructor;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.baomidou.mybatisplus.annotations.TableField;
+import com.swt.common.validator.group.AddGroup;
+import com.swt.common.validator.group.UpdateGroup;
 
 #if(${hasBigDecimal})
 import java.math.BigDecimal;
@@ -52,9 +54,13 @@ public class ${className}Entity implements Serializable {
 #else
 #if($column.nullAble)
 #if($column.attrType == "String")
-	@NotBlank(message = "${column.comments}不能为空")
+	@NotBlank(message = "${column.comments}不能为空", groups = {AddGroup.class, UpdateGroup.class})
 #else
-	@NotNull(message = "${column.comments}不能为空")
+#if($CrtUserId == ${column.attrName})
+	@NotNull(message = "${column.comments}不能为空", groups = {AddGroup.class})
+#else
+	@NotNull(message = "${column.comments}不能为空", groups = {AddGroup.class, UpdateGroup.class})
+#end
 #end
 #end
 #if(${swagger})

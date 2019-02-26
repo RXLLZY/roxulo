@@ -6,6 +6,8 @@ import java.util.Date;
 
 import com.swt.common.annotation.SysLog;
 import com.swt.common.validator.ValidatorUtils;
+import com.swt.common.validator.group.AddGroup;
+import com.swt.common.validator.group.UpdateGroup;
 import com.swt.common.responses.Responses;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -104,7 +106,7 @@ public class ${className}Controller extends AbstractController {
         ${classname}.set${CrtTime}(new Date());
 #end
         //校验
-        ValidatorUtils.validateEntity(${classname});
+        ValidatorUtils.validateEntity(${classname}, AddGroup.class);
         ${classname}Service.insert(${classname});
 
         return success(HttpStatus.CREATED, ${classname});
@@ -135,7 +137,7 @@ public class ${className}Controller extends AbstractController {
 #end
         ${classname}.set${pk.attrName}(${pk.attrname});
         //校验
-        ValidatorUtils.validateEntity(${classname});
+        ValidatorUtils.validateEntity(${classname}, UpdateGroup.class);
         //全部更新
         ${classname}Service.updateById(${classname});
 
