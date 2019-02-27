@@ -18,6 +18,7 @@ package com.swt.common.exception;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.mysql.jdbc.exceptions.MySQLSyntaxErrorException;
+import com.swt.common.cons.Regex;
 import com.swt.common.utils.R;
 import org.apache.shiro.authz.AuthorizationException;
 import org.slf4j.Logger;
@@ -30,6 +31,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
 import java.io.FileNotFoundException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * 异常处理器
@@ -62,7 +65,12 @@ public class BodyExceptionHandler {
 	@ExceptionHandler(DuplicateKeyException.class)
 	public R handleDuplicateKeyException(DuplicateKeyException e){
 		logger.error(e.getMessage(), e);
-		String message = e.getMessage().split(" key ")[1].split("\r\n")[0];
+		Pattern pattern= Pattern.compile(Regex.DUPLICATE_ENTRY);
+		Matcher matcher = pattern.matcher(e.getMessage());
+		String message = "";
+		if (matcher.find()) {
+			message = matcher.group(0);
+		}
 		return R.error(message + "不能重复");
 	}
 
@@ -121,7 +129,7 @@ public class BodyExceptionHandler {
 	@ExceptionHandler(HttpMessageNotReadableException.class)
 	public R handleFileNotFoundException(HttpMessageNotReadableException e){
 		logger.error(e.getMessage(), e);
-		return R.error("请求体参数为空");
+		return R.error("参数转换失败");
 	}
 
 	@ExceptionHandler(Exception.class)
