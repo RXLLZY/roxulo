@@ -11,7 +11,7 @@ $(function () {
 			{ label: '描述', name: 'description', index: 'description', width: 80 }, 			
 			{ label: '创建者', name: 'crtUserId', index: 'crt_user_id', width: 80 }, 			
 			{ label: '创建时间', name: 'crtTime', index: 'crt_time', width: 80 },
-            { label: '预览', name: 'path', index: 'path', width: 80 ,formatter:function(cellvalue, options, rowObject){;
+            { label: '预览', name: 'path', index: 'path', width: 80 ,classes:"avatar", formatter:function(cellvalue, options, rowObject){;
                     var contentType = rowObject.contentType;
                     var url = baseURL + cellvalue;
                     var html;
@@ -70,11 +70,11 @@ $(function () {
         },
         onComplete : function(file, r){
             if(r.status == 200){
-                alert(r.sysFile.originalName + "上传成功");
-                vm.sysFile.originalName = r.sysFile.originalName;
-                vm.sysFile.contentType = r.sysFile.contentType;
-                vm.sysFile.path = r.sysFile.path;
-                vm.sysFile.size = r.sysFile.size;
+                alert(r.result.originalName + "上传成功");
+                vm.sysFile.originalName = r.result.originalName;
+                vm.sysFile.contentType = r.result.contentType;
+                vm.sysFile.path = r.result.path;
+                vm.sysFile.size = r.result.size;
             }else{
                 alert(r.message);
             }

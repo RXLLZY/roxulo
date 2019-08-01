@@ -1,13 +1,13 @@
 $(function () {
     $("#jqGrid").jqGrid({
-        url: baseURL + '${moduleName}/${pathName}',
+        url: baseURL + "${moduleName}/${pathName}",
         datatype: "json",
         colModel: [
 #foreach($column in $columns)
 #if($column.columnName == $pk.columnName)
-			{ label: '${column.attrname}', name: '${column.attrname}', index: '${column.columnName}', width: 50, key: true },
+			{ label: "${column.attrname}", name: "${column.attrname}", title: "${column.attrname}", index: "${column.columnName}", width: 50, key: true },
 #else
-			{ label: '${column.comments}', name: '${column.attrname}', index: '${column.columnName}', width: 80 }#if($velocityCount != $columns.size()), #end
+			{ label: "${column.comments}", name: "${column.attrname}", title: "${column.attrname}", index: "${column.columnName}", width: 80 }#if($velocityCount != $columns.size()), #end
 
 #end
 #end
@@ -41,14 +41,14 @@ $(function () {
 
 #foreach($column in $columns)
 #if($column.resource)
-    new AjaxUpload('#${column.attrname}', {
+    new AjaxUpload("#${column.attrname}", {
         action: baseURL + "sys/file/uploadAndAdd",
-        name: 'file',
+        name: "file",
         autoSubmit:true,
         responseType:"json",
         onSubmit:function(file, extension){
             // if (!(extension && /^(jpg|jpeg|png|gif)$/.test(extension.toLowerCase()))){
-            //     alert('只支持jpg、png、gif格式的图片！');
+            //     alert("只支持jpg、png、gif格式的图片！");
             //     return false;
             // }
         },
@@ -66,7 +66,7 @@ $(function () {
 });
 
 var vm = new Vue({
-	el:'#rrapp',
+	el:"#rrapp",
 	data:{
 #if(${search})
         q:{
@@ -108,7 +108,7 @@ var vm = new Vue({
                     contentType: "application/json",
                     data: JSON.stringify(vm.${classname}),
                     success: function (r) {
-                        alert('操作成功', function (index) {
+                        alert("操作成功", function (index) {
                             vm.reload();
                         });
                     },
@@ -123,7 +123,7 @@ var vm = new Vue({
                     contentType: "application/json",
                     data: JSON.stringify(vm.${classname}),
                     success: function (r) {
-                        alert('操作成功', function (index) {
+                        alert("操作成功", function (index) {
                             vm.reload();
                         });
                     },
@@ -139,14 +139,14 @@ var vm = new Vue({
 				return ;
 			}
 
-			confirm('确定要删除选中的记录？', function(){
+			confirm("确定要删除选中的记录？", function(){
 				$.ajax({
 					type: "DELETE",
 				    url: baseURL + "${moduleName}/${pathName}",
                     contentType: "application/json",
 				    data: JSON.stringify(${pk.attrname}s),
 				    success: function(r){
-                        alert('操作成功', function(index){
+                        alert("操作成功", function(index){
                             $("#jqGrid").trigger("reloadGrid");
                         });
 					},
@@ -163,13 +163,13 @@ var vm = new Vue({
 		},
 		reload: function (event) {
 			vm.showList = true;
-			var page = $("#jqGrid").jqGrid('getGridParam','page');
-			$("#jqGrid").jqGrid('setGridParam',{
+			var page = $("#jqGrid").jqGrid("getGridParam","page");
+			$("#jqGrid").jqGrid("setGridParam",{
 #if(${search})
                 postData:{
     #if(${search})
         #foreach($searchColumn in $searchColumns)
-            '${searchColumn.attrname}': vm.q.${searchColumn.attrname},
+            "${searchColumn.attrname}": vm.q.${searchColumn.attrname},
         #end
     #end},
 #end

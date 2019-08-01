@@ -26,7 +26,7 @@ public class ColumnEntity {
     //auto_increment
     private String extra;
     //是否为空
-    private Boolean nullAble;
+    private Boolean isNull;
 	//示例
 	private String example;
 	//是否隐藏
@@ -79,14 +79,14 @@ public class ColumnEntity {
 	public void setExtra(String extra) {
 		this.extra = extra;
 	}
-	public Boolean getNullAble() {
-		return nullAble;
+	public Boolean getIsNull() {
+		return isNull;
 	}
-	public void setNullAble(String nullAble) {
-		if("NO".equals(nullAble)){
-			this.nullAble = true;
+	public void setIsNull(String isNull) {
+		if("NO".equals(isNull)){
+			this.isNull = true;
 		}else{
-			this.nullAble = false;
+			this.isNull = false;
 		}
 	}
 

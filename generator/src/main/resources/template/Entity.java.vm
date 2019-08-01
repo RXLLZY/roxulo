@@ -52,7 +52,7 @@ public class ${className}Entity implements Serializable {
 	@ApiModelProperty(value = "主键", example = "$column.example", hidden = true)
 #end
 #else
-#if($column.nullAble)
+#if($column.isNull)
 #if($column.attrType == "String")
 	@NotBlank(message = "${column.comments}不能为空", groups = {AddGroup.class, UpdateGroup.class})
 #else
@@ -64,7 +64,7 @@ public class ${className}Entity implements Serializable {
 #end
 #end
 #if(${swagger})
-	@ApiModelProperty(value = "$column.comments", example = "$column.example", hidden = ${column.hidden}, required = $column.nullAble)
+	@ApiModelProperty(value = "$column.comments", example = "$column.example", hidden = ${column.hidden}, required = $column.isNull)
 #end
 #if($column.startIs)
     @TableField("${column.columnName}")

@@ -93,9 +93,10 @@ public class GenUtils {
             String columnName = column.get("columnName");
             columnEntity.setColumnName(columnName);
             columnEntity.setDataType(column.get("dataType"));
-            columnEntity.setComments(commentToJava(column.get("columnComment")));
+            String columnComment = column.get("columnComment");
+            columnEntity.setComments(commentToJava(columnComment));
             columnEntity.setExtra(column.get("extra"));
-            columnEntity.setNullAble(column.get("nullAble"));
+            columnEntity.setIsNull(column.get("is_null"));
             if(hidden.contains(columnName)){
                 columnEntity.setHidden(true);
             }else{

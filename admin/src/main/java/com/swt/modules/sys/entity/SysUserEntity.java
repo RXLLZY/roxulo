@@ -56,6 +56,7 @@ public class SysUserEntity implements Serializable {
 	/**
 	 * 盐
 	 */
+	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 	private String salt;
 
 	/**

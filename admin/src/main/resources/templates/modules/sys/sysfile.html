@@ -3,6 +3,25 @@
 <head>
     <title>静态资源</title>
 		<#include "/header.html">
+    <style>
+        .avatar{
+            overflow: visible!important;
+        }
+        .avatar img {
+            display: block;
+            border: 0;
+            transform: scale(1);
+            transition: all 1s ease 0s;
+            -webkit-transform: scale(1);
+            -webkit-transform: all 1s ease 0s;
+        }
+        .avatar:hover img {
+            transform: scale(5,5);
+            transition: all 1s ease 0s;
+            -webkit-transform: scale(5,5);
+            -webkit-transform: all 1s ease 0s;
+        }
+    </style>
 </head>
 <body>
 <div id="rrapp" v-cloak>

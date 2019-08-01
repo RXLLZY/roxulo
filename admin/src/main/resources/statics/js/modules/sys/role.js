@@ -224,7 +224,7 @@ var vm = new Vue({
             });
         },
         getDataTree: function(roleId) {
-            //加载菜单树
+            //加载数据树
             $.get(baseURL + "sys/dept/list", function(r){
                 data_ztree = $.fn.zTree.init($("#dataTree"), data_setting, r.result);
                 //展开所有节点
@@ -234,7 +234,7 @@ var vm = new Vue({
         getDept: function(){
             //加载部门树
             $.get(baseURL + "sys/dept/list", function(r){
-                dept_ztree = $.fn.zTree.init($("#deptTree"), dept_setting, r);
+                dept_ztree = $.fn.zTree.init($("#deptTree"), dept_setting, r.result);
                 var node = dept_ztree.getNodeByParam("deptId", vm.role.deptId);
                 if(node != null){
                     dept_ztree.selectNode(node);
