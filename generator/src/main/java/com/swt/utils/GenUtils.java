@@ -192,7 +192,8 @@ public class GenUtils {
         map.put("swagger", config.getBoolean("requiredSwagger",false));
         //是否权限校验
         map.put("requiresPermissions", config.getBoolean("requiresPermissions",false));
-
+        //绑定模块路径
+        map.put("modules", config.getString("modules","modules"));
         //是否添加查询字段
         map.put("search", config.getBoolean("search",false));
 

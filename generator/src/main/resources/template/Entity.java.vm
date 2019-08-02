@@ -1,4 +1,4 @@
-package ${package}.modules.${moduleName}.${entity};
+package ${package}.${modules}.${moduleName}.${entity};
 
 import lombok.Data;
 import lombok.Builder;

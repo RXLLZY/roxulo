@@ -33,9 +33,12 @@ public class ValidatorUtils {
     public static void validateEntity(Object object, Class<?>... groups)
             throws RRException {
         Set<ConstraintViolation<Object>> constraintViolations = validator.validate(object, groups);
+        StringBuilder errorMsg = new StringBuilder();
         if (!constraintViolations.isEmpty()) {
         	ConstraintViolation<Object> constraint = (ConstraintViolation<Object>)constraintViolations.iterator().next();
-            throw new RRException(constraint.getMessage(), 422);
+            errorMsg.append(constraint.getMessage());
+            errorMsg.append("<br/>");
         }
+        throw new RRException(errorMsg.toString(), 422);
     }
 }
