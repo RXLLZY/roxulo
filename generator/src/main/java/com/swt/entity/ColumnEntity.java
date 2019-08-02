@@ -37,6 +37,8 @@ public class ColumnEntity {
 	private Boolean resource;
 	//是否以is_开头
 	private Boolean startIs;
+	//字段长度
+	private Long length;
 	public String getColumnName() {
 		return columnName;
 	}
@@ -139,5 +141,13 @@ public class ColumnEntity {
 
 	public void setStartIs(Boolean startIs) {
 		this.startIs = startIs;
+	}
+
+	public Long getLength() {
+		return length;
+	}
+
+	public void setLength(Long length) {
+		this.length = length;
 	}
 }

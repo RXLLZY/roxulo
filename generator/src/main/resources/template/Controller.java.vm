@@ -37,7 +37,7 @@ import ${package}.common.controller.AbstractController;
 #end
 public class ${className}Controller extends AbstractController {
     @Autowired
-    private ${className}Service ${classname}Service;
+    private I${className}Service ${classname}Service;
 
     /**
      * 列表

@@ -97,6 +97,7 @@ public class GenUtils {
             columnEntity.setComments(commentToJava(columnComment));
             columnEntity.setExtra(column.get("extra"));
             columnEntity.setIsNull(column.get("is_null"));
+            columnEntity.setLength(Long.parseLong(column.get("length")));
             if(hidden.contains(columnName)){
                 columnEntity.setHidden(true);
             }else{
@@ -327,11 +328,11 @@ public class GenUtils {
         }
 
         if (template.contains("Dao.java.vm")) {
-            return packagePath + config.getString("dao","dao") + File.separator + className + "Dao.java";
+            return packagePath + config.getString("dao","dao") + File.separator + "I" + className + "Dao.java";
         }
 
         if (template.contains("Service.java.vm")) {
-            return packagePath + config.getString("service","service") + File.separator + className + "Service.java";
+            return packagePath + config.getString("service","service") + File.separator + "I" + className + "Service.java";
         }
 
         if (template.contains("ServiceImpl.java.vm")) {
