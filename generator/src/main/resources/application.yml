@@ -13,7 +13,7 @@ spring:
     datasource:
         type: com.alibaba.druid.pool.DruidDataSource
         driverClassName: com.mysql.jdbc.Driver
-        url: jdbc:mysql://192.168.1.110:3306/generator?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true
+        url: jdbc:mysql://192.168.1.102:3306/generator?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true
         username: sctv
         password: sctv
     jackson:

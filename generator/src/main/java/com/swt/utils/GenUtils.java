@@ -91,7 +91,7 @@ public class GenUtils {
         for (Map<String, String> column : columns) {
             ColumnEntity columnEntity = new ColumnEntity();
             String columnName = column.get("columnName");
-            columnEntity.setColumnName(columnName);
+            columnEntity.setColumnName(toLowerCaseFirstOne(columnName));
             columnEntity.setDataType(column.get("dataType"));
             String columnComment = column.get("columnComment");
             columnEntity.setComments(commentToJava(columnComment));
@@ -105,7 +105,7 @@ public class GenUtils {
             //列名是否以is_开头
             columnEntity.setStartIs(columnName.startsWith("is_"));
             //列名转换成Java属性名
-            String attrName = columnToJava(columnEntity.getColumnName());
+            String attrName = toUpperCaseFirstOne(columnEntity.getColumnName());
             //大写属性名
             columnEntity.setAttrName(attrName);
             attrNamesList.add(columnName);
@@ -200,10 +200,10 @@ public class GenUtils {
         map.put("datetime", DateUtils.format(new Date(), DateUtils.DATE_TIME_PATTERN));
 
         //用户信息
-        map.put("CrtUserId", attrNamesList.contains(config.getString("crt_user_id"))?columnToJava(config.getString("crt_user_id")):"");
-        map.put("OptUserId", attrNamesList.contains(config.getString("opt_user_id"))?columnToJava(config.getString("opt_user_id")):"");
-        map.put("CrtTime", attrNamesList.contains(config.getString("crt_time"))?columnToJava(config.getString("crt_time")):"");
-        map.put("OptTime", attrNamesList.contains(config.getString("opt_time"))?columnToJava(config.getString("opt_time")):"");
+        map.put("CrtUserId", attrNamesList.contains(config.getString("crt_user_id"))?toUpperCaseFirstOne(config.getString("crt_user_id")):"");
+        map.put("OptUserId", attrNamesList.contains(config.getString("opt_user_id"))?toUpperCaseFirstOne(config.getString("opt_user_id")):"");
+        map.put("CrtTime", attrNamesList.contains(config.getString("crt_time"))?toUpperCaseFirstOne(config.getString("crt_time")):"");
+        map.put("OptTime", attrNamesList.contains(config.getString("opt_time"))?toUpperCaseFirstOne(config.getString("opt_time")):"");
         VelocityContext context = new VelocityContext(map);
 
         //获取模板列表
@@ -359,5 +359,24 @@ public class GenUtils {
         }
 
         return null;
+    }
+
+    //首字母转小写
+    public static String toLowerCaseFirstOne(String s){
+        if(Character.isLowerCase(s.charAt(0))){
+            return s;
+        }else{
+            return (new StringBuilder()).append(Character.toLowerCase(s.charAt(0))).append(s.substring(1)).toString();
+        }
+    }
+
+    //首字母转大写
+    public static String toUpperCaseFirstOne(String s){
+        if(Character.isUpperCase(s.charAt(0))){
+            return s;
+        }
+        else{
+            return (new StringBuilder()).append(Character.toUpperCase(s.charAt(0))).append(s.substring(1)).toString();
+        }
     }
 }

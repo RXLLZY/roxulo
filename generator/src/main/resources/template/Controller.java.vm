@@ -4,11 +4,12 @@ import java.util.Arrays;
 import java.util.Map;
 import java.util.Date;
 
-import com.swt.common.annotation.SysLog;
+import com.alibaba.fastjson.JSONObject;
+import com.swt.common.utils.PageData;
+import com.swt.common.utils.ResultBean;
 import com.swt.common.validator.ValidatorUtils;
 import com.swt.common.validator.group.AddGroup;
 import com.swt.common.validator.group.UpdateGroup;
-import com.swt.common.responses.Responses;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -19,9 +20,6 @@ import io.swagger.annotations.*;
 #end
 import ${package}.modules.${moduleName}.${entity}.${className}Entity;
 import ${package}.modules.${moduleName}.${service}.${className}Service;
-import ${package}.common.utils.PageUtils;
-import ${package}.common.utils.R;
-import ${package}.common.controller.AbstractController;
 
 /**
  * ${api}
@@ -35,15 +33,14 @@ import ${package}.common.controller.AbstractController;
 #if(${swagger})
 @Api(tags = "${api}", description = "${api}")
 #end
-public class ${className}Controller extends AbstractController {
-    @Autowired
+public class ${className}Controller{
+
     private ${className}Service ${classname}Service;
 
     /**
      * 列表
      */
     @GetMapping
-    @RequiresPermissions("${moduleName}:${pathName}:list")
 #if(${swagger})
     @ApiOperation(value = "列表", notes = "分页查询${comments}", produces = "application/json")
     @ApiImplicitParams({
@@ -59,9 +56,11 @@ public class ${className}Controller extends AbstractController {
             @ApiResponse(code = 200, message = "success")
     })
 #end
-    public Responses<PageUtils> list(@RequestParam #if(${swagger})@ApiParam(hidden = true)#end Map<String, Object> params) {
-        PageUtils page = ${classname}Service.queryPage(params);
-        return success(page);
+    public ResultBean<PageData<${className}Entity>> list(@RequestParam #if(${swagger})@ApiParam(hidden = true)#end Map<String, Object> params) {
+        PageData<${className}Entity> page = ${classname}Service.queryPage(params);
+        ResultBean<PageData<${className}Entity>> resultBean = new ResultBean<>();
+        resultBean.setResult(page);
+        return resultBean;
     }
 
 
@@ -69,7 +68,6 @@ public class ${className}Controller extends AbstractController {
      * 记录
      */
     @GetMapping("/{${pk.attrname}}")
-    @RequiresPermissions("${moduleName}:${pathName}:info")
 #if(${swagger})
     @ApiOperation(value = "记录", notes = "根据ID查询单条${comments}详情", produces = "application/json")
     @ApiImplicitParam(name = "${pk.attrname}", value = "${comments}ID", required = true, paramType = "path", dataType = "${pk.attrtype}", defaultValue = "${pk.example}")
@@ -77,18 +75,17 @@ public class ${className}Controller extends AbstractController {
             @ApiResponse(code = 200, message = "success")
     })
 #end
-    public Responses<${className}Entity> info(@PathVariable("${pk.attrname}") ${pk.attrType} ${pk.attrname}) {
+    public ResultBean<${className}Entity> info(@PathVariable("${pk.attrname}") ${pk.attrType} ${pk.attrname}) {
         ${className}Entity ${classname} = ${classname}Service.selectById(${pk.attrname});
-
-        return success(${classname});
+        ResultBean<${className}Entity> resultBean = new ResultBean<>();
+        resultBean.setResult(${classname});
+        return resultBean;
     }
 
     /**
      * 新增
      */
-    @SysLog("新增${comments}")
-    @PostMapping
-    @RequiresPermissions("${moduleName}:${pathName}:save")
+    @PostMapping("add")
 #if(${swagger})
     @ApiOperation(value = "新增", notes = "新增${comments}", produces = "application/json")
     @ApiResponses({
@@ -96,7 +93,7 @@ public class ${className}Controller extends AbstractController {
             @ApiResponse(code = 422, message = "参数校验失败")
     })
 #end
-    public Responses<${className}Entity> save(@RequestBody ${className}Entity ${classname}) {
+    public ResultBean<Integer> save(@RequestBody ${className}Entity ${classname}) {
 #if($CrtUserId != '')
         //添加用户名
         ${classname}.set${CrtUserId}(getUserId());
@@ -108,16 +105,15 @@ public class ${className}Controller extends AbstractController {
         //校验
         ValidatorUtils.validateEntity(${classname}, AddGroup.class);
         ${classname}Service.insert(${classname});
-
-        return success(HttpStatus.CREATED, ${classname});
+        ResultBean<Integer> resultBean = new ResultBean<>();
+        resultBean.setResult(1);
+        return resultBean;
     }
 
     /**
      * 修改
      */
-    @SysLog("修改${comments}")
-    @PutMapping("/{${pk.attrname}}")
-    @RequiresPermissions("${moduleName}:${pathName}:update")
+    @PostMapping("/{${pk.attrname}}/update")
 #if(${swagger})
     @ApiOperation(value = "修改", notes = "修改${comments}", produces = "application/json")
     @ApiImplicitParam(name = "${pk.attrname}", value = "${comments}ID", required = true, paramType = "path", dataType = "${pk.attrtype}", defaultValue = "${pk.example}")
@@ -126,7 +122,7 @@ public class ${className}Controller extends AbstractController {
             @ApiResponse(code = 422, message = "参数校验失败")
     })
 #end
-    public Responses<${className}Entity> update(@PathVariable("${pk.attrname}") ${pk.attrType} ${pk.attrname}, @RequestBody ${className}Entity ${classname}) {
+    public ResultBean<JSONObject> update(@PathVariable("${pk.attrname}") ${pk.attrType} ${pk.attrname}, @RequestBody ${className}Entity ${classname}) {
 #if($OptUserId != '')
         //添加用户名
         ${classname}.set${OptUserId}(getUserId());
@@ -141,14 +137,15 @@ public class ${className}Controller extends AbstractController {
         //全部更新
         ${classname}Service.updateById(${classname});
 
-        return success(${classname});
+        ResultBean<JSONObject> resultBean = new ResultBean<>();
+        resultBean.setResult(new JSONObject());
+        return resultBean;
     }
 
     /**
      * 删除单个
      */
-    @SysLog("删除单个${comments}")
-    @DeleteMapping("/{${pk.attrname}}")
+    @PostMapping("/{${pk.attrname}}/delete")
     @RequiresPermissions("${moduleName}:${pathName}:delete")
 #if(${swagger})
     @ApiOperation(value = "删除单个", notes = "删除单个${comments}", produces = "application/json")
@@ -157,17 +154,17 @@ public class ${className}Controller extends AbstractController {
             @ApiResponse(code = 204, message = "删除成功")
     })
 #end
-    public Responses<Void> delete(@PathVariable ${pk.attrType} ${pk.attrname}) {
-            ${classname}Service.deleteById(${pk.attrname});
-        return success(HttpStatus.NO_CONTENT);
+    public ResultBean<JSONObject> delete(@PathVariable ${pk.attrType} ${pk.attrname}) {
+        ${classname}Service.deleteById(${pk.attrname});
+        ResultBean<JSONObject> resultBean = new ResultBean<>();
+        resultBean.setResult(new JSONObject());
+        return resultBean;
     }
 
     /**
-     * 删除多个
+     * 批量删除
      */
-    @SysLog("删除多个${comments}")
-    @DeleteMapping
-    @RequiresPermissions("${moduleName}:${pathName}:deletes")
+    @PostMapping("batch-delete")
 #if(${swagger})
     @ApiOperation(value = "删除多个", notes = "一次性删除多个${comments}", produces = "application/json")
     @ApiImplicitParam(name = "${pk.attrname}s", value = "${comments}ID", required = true, paramType = "body", dataType = "${pk.attrtype}[]", defaultValue = "[${pk.example}]")
@@ -175,9 +172,11 @@ public class ${className}Controller extends AbstractController {
             @ApiResponse(code = 204, message = "删除成功")
     })
 #end
-    public Responses<Void>  deletes(@RequestBody ${pk.attrType}[] ${pk.attrname}s) {
+    public ResultBean<JSONObject>  deletes(@RequestBody ${pk.attrType}[] ${pk.attrname}s) {
         ${classname}Service.deleteBatchIds(Arrays.asList(${pk.attrname}s));
-        return success(HttpStatus.NO_CONTENT);
+        ResultBean<JSONObject> resultBean = new ResultBean<>();
+        resultBean.setResult(new JSONObject());
+        return resultBean;
     }
 
 }

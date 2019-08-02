@@ -6,7 +6,7 @@ import java.util.Map;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
-import ${package}.common.utils.PageUtils;
+import ${package}.common.utils.PageData;
 import ${package}.common.utils.Query;
 
 import ${package}.modules.${moduleName}.dao.${className}Dao;
@@ -24,7 +24,9 @@ import ${package}.modules.${moduleName}.${service}.${className}Service;
 public class ${className}ServiceImpl extends ServiceImpl<${className}Dao, ${className}Entity> implements ${className}Service {
 
     @Override
-    public PageUtils queryPage(Map<String, Object> params) {
+    public PageData<${className}Entity> queryPage(Map<String, Object> params) {
+
+        PageData<${className}Entity> resultData = new PageData<>();
 #foreach ($searchColumn in $searchColumns)
         String ${searchColumn.attrname} = (String) params.get("${searchColumn.attrname}");
 #end
@@ -39,8 +41,9 @@ public class ${className}ServiceImpl extends ServiceImpl<${className}Dao, ${clas
 #end
 #end
         );
-
-        return new PageUtils(page);
+        resultData.setList(page.getRecords());
+        resultData.setTotalCount(page.getTotal());
+        return resultData;
     }
 
 }
