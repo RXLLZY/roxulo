@@ -1,4 +1,4 @@
-package ${package}.modules.${moduleName}.${controller};
+package ${package}.${modules}.${moduleName}.${controller};
 
 import java.util.Arrays;
 import java.util.Map;
@@ -18,8 +18,8 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 #if(${swagger})
 import io.swagger.annotations.*;
 #end
-import ${package}.modules.${moduleName}.${entity}.${className}Entity;
-import ${package}.modules.${moduleName}.${service}.${className}Service;
+import ${package}.${modules}.${moduleName}.${entity}.${className}Entity;
+import ${package}.${modules}.${moduleName}.${service}.${className}Service;
 
 /**
  * ${api}

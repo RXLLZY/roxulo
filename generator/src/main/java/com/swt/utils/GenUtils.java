@@ -187,6 +187,7 @@ public class GenUtils {
         map.put("service", config.getString("service","service"));
         map.put("dao", config.getString("dao","dao"));
         map.put("entity", config.getString("entity","entity"));
+        map.put("modules", config.getString("modules","modules"));
 
         //是否生成swagger
         map.put("swagger", config.getBoolean("swagger",false));
@@ -341,7 +342,7 @@ public class GenUtils {
 
         if (template.contains("Dao.xml.vm")) {
 //          return "main" + File.separator + "resources" + File.separator  + config.getString("mapper","mapper")  + File.separator + className + "Dao.xml";
-            return "main" + File.separator + "resources" + File.separator + "mapper" + File.separator + moduleName + File.separator + className + "Dao.xml";
+            return packagePath + config.getString("entity","entity") + File.separator + "daomapper" + File.separator + className + "Dao.xml";
         }
 
         if (template.contains("list.html.vm")) {
