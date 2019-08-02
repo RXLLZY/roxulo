@@ -1,7 +1,7 @@
 package com.swt.modules.sys.service.impl;
 
 
-import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.swt.common.utils.MapUtils;
 import com.swt.modules.sys.dao.SysUserRoleDao;
 import com.swt.modules.sys.entity.SysUserRoleEntity;
@@ -39,7 +39,7 @@ public class SysUserRoleServiceImpl extends ServiceImpl<SysUserRoleDao, SysUserR
 
 			list.add(sysUserRoleEntity);
 		}
-		this.insertBatch(list);
+		this.saveBatch(list);
 	}
 
 	@Override

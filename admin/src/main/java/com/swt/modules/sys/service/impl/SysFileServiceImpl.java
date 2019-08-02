@@ -1,8 +1,9 @@
 package com.swt.modules.sys.service.impl;
 
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import com.baomidou.mybatisplus.plugins.Page;
-import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.swt.common.exception.RRException;
 import com.swt.common.utils.ConfigConstant;
 import com.swt.common.utils.PageUtils;
@@ -31,9 +32,9 @@ public class SysFileServiceImpl extends ServiceImpl<SysFileDao, SysFileEntity> i
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
         String originalName = (String)params.get("originalName");
-        Page<SysFileEntity> page = this.selectPage(
+        IPage<SysFileEntity> page = this.baseMapper.selectPage(
                 new Query<SysFileEntity>(params).getPage(),
-                new EntityWrapper<SysFileEntity>()
+                new QueryWrapper<SysFileEntity>()
                         .like(StringUtils.isNotBlank(originalName),"original_name", originalName)
         );
 

@@ -62,7 +62,7 @@ public class SysRoleController extends AbstractController {
 	@RequestMapping("/info/{roleId}")
 	@RequiresPermissions("sys:role:info")
 	public Responses<SysRoleEntity> info(@PathVariable("roleId") Long roleId){
-		SysRoleEntity role = sysRoleService.selectById(roleId);
+		SysRoleEntity role = sysRoleService.getById(roleId);
 		
 		//查询角色对应的菜单
 		List<Long> menuIdList = sysRoleMenuService.queryMenuIdList(roleId);

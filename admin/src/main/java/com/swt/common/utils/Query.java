@@ -1,8 +1,8 @@
 package com.swt.common.utils;
 
-import com.baomidou.mybatisplus.plugins.Page;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.swt.common.xss.SQLFilter;
-import org.apache.commons.lang.StringUtils;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -18,7 +18,7 @@ public class Query<T> extends LinkedHashMap<String, Object> {
     /**
      * mybatis-plus分页参数
      */
-    private Page<T> page;
+    private IPage<T> page;
     /**
      * 当前页码
      */
@@ -50,17 +50,11 @@ public class Query<T> extends LinkedHashMap<String, Object> {
         this.put("order", order);
 
         //mybatis-plus分页
-        this.page = new Page<>(currPage, limit);
-
-        //排序
-        if(StringUtils.isNotBlank(sidx) && StringUtils.isNotBlank(order)){
-            this.page.setOrderByField(sidx);
-            this.page.setAsc("ASC".equalsIgnoreCase(order));
-        }
+        this.page = new IPage<>(currPage, limit);
 
     }
 
-    public Page<T> getPage() {
+    public IPage<T> getPage() {
         return page;
     }
 

@@ -1,6 +1,6 @@
 package com.swt.modules.sys.service.impl;
 
-import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.swt.modules.sys.dao.SysRoleDeptDao;
 import com.swt.modules.sys.entity.SysRoleDeptEntity;
 import com.swt.modules.sys.service.SysRoleDeptService;
@@ -40,7 +40,7 @@ public class SysRoleDeptServiceImpl extends ServiceImpl<SysRoleDeptDao, SysRoleD
 
 			list.add(sysRoleDeptEntity);
 		}
-		this.insertBatch(list);
+		this.saveBatch(list);
 	}
 
 	@Override

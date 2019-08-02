@@ -16,9 +16,9 @@
 
 package com.swt.modules.sys.service.impl;
 
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import com.baomidou.mybatisplus.plugins.Page;
-import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.google.gson.Gson;
 import com.swt.common.exception.RRException;
 import com.swt.common.utils.PageUtils;
@@ -44,9 +44,9 @@ public class SysConfigServiceImpl extends ServiceImpl<SysConfigDao, SysConfigEnt
 	public PageUtils queryPage(Map<String, Object> params) {
 		String paramKey = (String)params.get("paramKey");
 
-		Page<SysConfigEntity> page = this.selectPage(
+		IPage<SysConfigEntity> page = this.baseMapper.selectPage(
 				new Query<SysConfigEntity>(params).getPage(),
-				new EntityWrapper<SysConfigEntity>()
+				new QueryWrapper<SysConfigEntity>()
 					.like(StringUtils.isNotBlank(paramKey),"param_key", paramKey)
 					.eq("status", 1)
 		);
@@ -56,7 +56,7 @@ public class SysConfigServiceImpl extends ServiceImpl<SysConfigDao, SysConfigEnt
 	
 	@Override
 	public void save(SysConfigEntity config) {
-		this.insert(config);
+		this.save(config);
 		sysConfigRedis.saveOrUpdate(config);
 	}
 
@@ -78,7 +78,7 @@ public class SysConfigServiceImpl extends ServiceImpl<SysConfigDao, SysConfigEnt
 	@Transactional(rollbackFor = Exception.class)
 	public void deleteBatch(Long[] ids) {
 		for(Long id : ids){
-			SysConfigEntity config = this.selectById(id);
+			SysConfigEntity config = this.getById(id);
 			sysConfigRedis.delete(config.getParamKey());
 		}
 

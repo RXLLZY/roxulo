@@ -1,8 +1,9 @@
 package com.swt.modules.sys.service.impl;
 
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import com.baomidou.mybatisplus.plugins.Page;
-import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.swt.common.utils.PageUtils;
 import com.swt.common.utils.Query;
 import com.swt.modules.sys.dao.SysDictDao;
@@ -21,9 +22,9 @@ public class SysDictServiceImpl extends ServiceImpl<SysDictDao, SysDictEntity> i
     public PageUtils queryPage(Map<String, Object> params) {
         String name = (String)params.get("name");
 
-        Page<SysDictEntity> page = this.selectPage(
+        IPage<SysDictEntity> page = this.baseMapper.selectPage(
                 new Query<SysDictEntity>(params).getPage(),
-                new EntityWrapper<SysDictEntity>()
+                new QueryWrapper<SysDictEntity>()
                     .like(StringUtils.isNotBlank(name),"name", name)
         );
 

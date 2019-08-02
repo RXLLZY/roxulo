@@ -1,9 +1,9 @@
 package com.swt.modules.sys.service.impl;
 
 
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import com.baomidou.mybatisplus.plugins.Page;
-import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.swt.common.annotation.DataFilter;
 import com.swt.common.utils.Constant;
 import com.swt.common.utils.PageUtils;
@@ -50,15 +50,15 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
 	public PageUtils queryPage(Map<String, Object> params) {
 		String username = (String)params.get("username");
 
-		Page<SysUserEntity> page = this.selectPage(
+		IPage<SysUserEntity> page = this.baseMapper.selectPage(
 			new Query<SysUserEntity>(params).getPage(),
-			new EntityWrapper<SysUserEntity>()
+			new QueryWrapper<SysUserEntity>()
 				.like(StringUtils.isNotBlank(username),"username", username)
 				.addFilterIfNeed(params.get(Constant.SQL_FILTER) != null, (String)params.get(Constant.SQL_FILTER))
 		);
 
 		for(SysUserEntity sysUserEntity : page.getRecords()){
-			SysDeptEntity sysDeptEntity = sysDeptService.selectById(sysUserEntity.getDeptId());
+			SysDeptEntity sysDeptEntity = sysDeptService.getById(sysUserEntity.getDeptId());
 			sysUserEntity.setDeptName(sysDeptEntity.getName());
 		}
 
@@ -73,7 +73,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
 		String salt = RandomStringUtils.randomAlphanumeric(20);
 		user.setSalt(salt);
 		user.setPassword(ShiroUtils.sha256(user.getPassword(), user.getSalt()));
-		this.insert(user);
+		this.save(user);
 		
 		//保存用户与角色关系
 		sysUserRoleService.saveOrUpdate(user.getUserId(), user.getRoleIdList());
@@ -99,7 +99,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
         SysUserEntity userEntity = new SysUserEntity();
         userEntity.setPassword(newPassword);
         return this.update(userEntity,
-                new EntityWrapper<SysUserEntity>().eq("user_id", userId).eq("password", password));
+                new QueryWrapper<SysUserEntity>().eq("user_id", userId).eq("password", password));
     }
 
 }

@@ -1,8 +1,9 @@
 package ${package}.${modules}.${moduleName}.${service};
 
-import com.baomidou.mybatisplus.service.IService;
-import ${package}.common.utils.PageData;
-import ${package}.${modules}.${moduleName}.${entity}.${className}Entity;
+import com.baomidou.mybatisplus.extension.service.IService;
+import com.sc.commonlib.ge.dbtool.plus.page.PageData;
+import com.sc.commonlib.ge.dbtool.plus.page.PageInfo;
+import com.sc.tv.base.entity.pb.bean.${className};
 
 import java.util.Map;
 
@@ -13,8 +14,8 @@ import java.util.Map;
  * @email ${email}
  * @date ${datetime}
  */
-public interface ${className}Service extends IService<${className}Entity> {
+public interface ${className}Service extends IService<${className}> {
 
-    PageData<${className}Entity> queryPage(Map<String, Object> params);
+    PageData<${className}> queryPage(PageInfo pageInfo, ${className} ${classname});
 }
 

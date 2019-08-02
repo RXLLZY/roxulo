@@ -46,7 +46,7 @@ public class SysConfigController extends AbstractController {
 	@RequestMapping("/info/{id}")
 	@RequiresPermissions("sys:config:info")
 	public Responses<SysConfigEntity> info(@PathVariable("id") Long id){
-		SysConfigEntity config = sysConfigService.selectById(id);
+		SysConfigEntity config = sysConfigService.getById(id);
 
 		return success(config);
 	}

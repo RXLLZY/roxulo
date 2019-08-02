@@ -1,6 +1,6 @@
 package com.swt.common.utils;
 
-import com.baomidou.mybatisplus.plugins.Page;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 
 import java.io.Serializable;
 import java.util.List;
@@ -15,13 +15,13 @@ import java.util.List;
 public class PageUtils implements Serializable {
 	private static final long serialVersionUID = 1L;
 	//总记录数
-	private int totalCount;
+	private long totalCount;
 	//每页记录数
-	private int pageSize;
+	private long pageSize;
 	//总页数
-	private int totalPage;
+	private long totalPage;
 	//当前页数
-	private int currPage;
+	private long currPage;
 	//列表数据
 	private List<?> list;
 	
@@ -32,18 +32,18 @@ public class PageUtils implements Serializable {
 	 * @param pageSize    每页记录数
 	 * @param currPage    当前页数
 	 */
-	public PageUtils(List<?> list, int totalCount, int pageSize, int currPage) {
+	public PageUtils(List<?> list, long totalCount, long pageSize, long currPage) {
 		this.list = list;
 		this.totalCount = totalCount;
 		this.pageSize = pageSize;
 		this.currPage = currPage;
-		this.totalPage = (int)Math.ceil((double)totalCount/pageSize);
+		this.totalPage = (long)Math.ceil((double)totalCount/pageSize);
 	}
 
 	/**
 	 * 分页
 	 */
-	public PageUtils(Page<?> page) {
+	public PageUtils(IPage<?> page) {
 		this.list = page.getRecords();
 		this.totalCount = page.getTotal();
 		this.pageSize = page.getSize();
@@ -51,35 +51,35 @@ public class PageUtils implements Serializable {
 		this.totalPage = page.getPages();
 	}
 
-	public int getTotalCount() {
+	public long getTotalCount() {
 		return totalCount;
 	}
 
-	public void setTotalCount(int totalCount) {
+	public void setTotalCount(long totalCount) {
 		this.totalCount = totalCount;
 	}
 
-	public int getPageSize() {
+	public long getPageSize() {
 		return pageSize;
 	}
 
-	public void setPageSize(int pageSize) {
+	public void setPageSize(long pageSize) {
 		this.pageSize = pageSize;
 	}
 
-	public int getTotalPage() {
+	public long getTotalPage() {
 		return totalPage;
 	}
 
-	public void setTotalPage(int totalPage) {
+	public void setTotalPage(long totalPage) {
 		this.totalPage = totalPage;
 	}
 
-	public int getCurrPage() {
+	public long getCurrPage() {
 		return currPage;
 	}
 
-	public void setCurrPage(int currPage) {
+	public void setCurrPage(long currPage) {
 		this.currPage = currPage;
 	}
 

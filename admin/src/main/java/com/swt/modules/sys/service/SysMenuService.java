@@ -1,7 +1,7 @@
 package com.swt.modules.sys.service;
 
 
-import com.baomidou.mybatisplus.service.IService;
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.swt.modules.sys.entity.SysMenuEntity;
 
 import java.util.List;

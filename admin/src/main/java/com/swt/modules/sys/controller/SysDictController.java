@@ -44,7 +44,7 @@ public class SysDictController extends AbstractController {
     @RequestMapping("/info/{id}")
     @RequiresPermissions("sys:dict:info")
     public Responses<SysDictEntity> info(@PathVariable("id") Long id){
-        SysDictEntity dict = sysDictService.selectById(id);
+        SysDictEntity dict = sysDictService.getById(id);
 
         return success(dict);
     }
@@ -58,7 +58,7 @@ public class SysDictController extends AbstractController {
         //校验类型
         ValidatorUtils.validateEntity(dict);
 
-        sysDictService.insert(dict);
+        sysDictService.save(dict);
 
         return success(dict);
     }

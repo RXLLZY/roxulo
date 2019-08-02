@@ -88,7 +88,7 @@ public class SysUserController extends AbstractController {
 	@RequestMapping("/info/{userId}")
 	@RequiresPermissions("sys:user:info")
 	public Responses<SysUserEntity> info(@PathVariable("userId") Long userId){
-		SysUserEntity user = sysUserService.selectById(userId);
+		SysUserEntity user = sysUserService.getById(userId);
 		
 		//获取用户所属的角色列表
 		List<Long> roleIdList = sysUserRoleService.queryRoleIdList(userId);

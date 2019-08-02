@@ -3,14 +3,14 @@ package ${package}.${modules}.${moduleName}.${service}.impl;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 import java.util.Map;
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import com.baomidou.mybatisplus.plugins.Page;
-import com.baomidou.mybatisplus.service.impl.ServiceImpl;
-import ${package}.common.utils.PageData;
-import ${package}.common.utils.Query;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.sc.commonlib.ge.dbtool.plus.page.PageInfo;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.sc.commonlib.ge.dbtool.plus.page.PageData;
 
-import ${package}.${modules}.${moduleName}.dao.${className}Dao;
-import ${package}.${modules}.${moduleName}.${entity}.${className}Entity;
+import com.sc.tv.base.entity.pb.dao.I${className}Dao;
+import com.sc.tv.base.entity.pb.bean.${className};
 import ${package}.${modules}.${moduleName}.${service}.${className}Service;
 
 /**
@@ -21,18 +21,18 @@ import ${package}.${modules}.${moduleName}.${service}.${className}Service;
  * @date ${datetime}
  */
 @Service("${classname}Service")
-public class ${className}ServiceImpl extends ServiceImpl<${className}Dao, ${className}Entity> implements ${className}Service {
+public class ${className}ServiceImpl extends ServiceImpl<I${className}Dao, ${className}> implements ${className}Service {
 
     @Override
-    public PageData<${className}Entity> queryPage(Map<String, Object> params) {
+    public PageData<${className}> queryPage(PageInfo pageInfo, ${className} ${classname}) {
 
-        PageData<${className}Entity> resultData = new PageData<>();
+        PageData<${className}> resultData = new PageData<>(pageInfo);
 #foreach ($searchColumn in $searchColumns)
         String ${searchColumn.attrname} = (String) params.get("${searchColumn.attrname}");
 #end
-        Page<${className}Entity> page = this.selectPage(
-                new Query<${className}Entity>(params).getPage(),
-                new EntityWrapper<${className}Entity>()
+        IPage<${className}> page = this.baseMapper.selectPage(
+                resultData,
+                new QueryWrapper<${className}>()
 #foreach ($searchColumn in $searchColumns)
 #if($searchColumn.attrType == "Integer")
                         .eq(StringUtils.isNotBlank(${searchColumn.attrname}), "${searchColumn.columnName}", ${searchColumn.attrname})
@@ -41,8 +41,6 @@ public class ${className}ServiceImpl extends ServiceImpl<${className}Dao, ${clas
 #end
 #end
         );
-        resultData.setList(page.getRecords());
-        resultData.setTotalCount(page.getTotal());
         return resultData;
     }
 

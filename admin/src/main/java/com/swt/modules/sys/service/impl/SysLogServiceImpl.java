@@ -1,8 +1,9 @@
 package com.swt.modules.sys.service.impl;
 
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import com.baomidou.mybatisplus.plugins.Page;
-import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.swt.common.utils.PageUtils;
 import com.swt.common.utils.Query;
 import com.swt.modules.sys.dao.SysLogDao;
@@ -21,9 +22,9 @@ public class SysLogServiceImpl extends ServiceImpl<SysLogDao, SysLogEntity> impl
     public PageUtils queryPage(Map<String, Object> params) {
         String key = (String)params.get("key");
 
-        Page<SysLogEntity> page = this.selectPage(
+        IPage<SysLogEntity> page = this.baseMapper.selectPage(
             new Query<SysLogEntity>(params).getPage(),
-            new EntityWrapper<SysLogEntity>().like(StringUtils.isNotBlank(key),"username", key)
+            new QueryWrapper<SysLogEntity>().like(StringUtils.isNotBlank(key),"username", key)
         );
 
         return new PageUtils(page);

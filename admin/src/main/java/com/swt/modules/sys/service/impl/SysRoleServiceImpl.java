@@ -1,8 +1,8 @@
 package com.swt.modules.sys.service.impl;
 
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import com.baomidou.mybatisplus.plugins.Page;
-import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.swt.common.annotation.DataFilter;
 import com.swt.common.utils.Constant;
 import com.swt.common.utils.PageUtils;
@@ -44,15 +44,15 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleDao, SysRoleEntity> i
 	public PageUtils queryPage(Map<String, Object> params) {
 		String roleName = (String)params.get("roleName");
 
-		Page<SysRoleEntity> page = this.selectPage(
+		IPage<SysRoleEntity> page = this.baseMapper.selectPage(
 			new Query<SysRoleEntity>(params).getPage(),
-			new EntityWrapper<SysRoleEntity>()
+			new QueryWrapper<SysRoleEntity>()
 				.like(StringUtils.isNotBlank(roleName),"role_name", roleName)
-				.addFilterIfNeed(params.get(Constant.SQL_FILTER) != null, (String)params.get(Constant.SQL_FILTER))
+				.and(params.get(Constant.SQL_FILTER) != null, (String)params.get(Constant.SQL_FILTER))
 		);
 
 		for(SysRoleEntity sysRoleEntity : page.getRecords()){
-			SysDeptEntity sysDeptEntity = sysDeptService.selectById(sysRoleEntity.getDeptId());
+			SysDeptEntity sysDeptEntity = sysDeptService.getById(sysRoleEntity.getDeptId());
 			if(sysDeptEntity != null){
 				sysRoleEntity.setDeptName(sysDeptEntity.getName());
 			}
@@ -65,7 +65,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleDao, SysRoleEntity> i
 	@Transactional(rollbackFor = Exception.class)
 	public void save(SysRoleEntity role) {
 		role.setCreateTime(new Date());
-		this.insert(role);
+		this.save(role);
 
 		//保存角色与菜单关系
 		sysRoleMenuService.saveOrUpdate(role.getRoleId(), role.getMenuIdList());

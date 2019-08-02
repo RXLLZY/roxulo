@@ -4,11 +4,11 @@ import lombok.Data;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
-import com.baomidou.mybatisplus.annotations.TableId;
-import com.baomidou.mybatisplus.annotations.TableName;
-import com.baomidou.mybatisplus.annotations.TableField;
-import com.sv.tv.base.entity.pb.validator.group.AddGroup;
-import com.sv.tv.base.entity.pb.validator.group.UpdateGroup;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.swt.common.validator.group.AddGroup;
+import com.swt.common.validator.group.UpdateGroup;
 
 #if(${hasBigDecimal})
 import java.math.BigDecimal;
@@ -39,7 +39,7 @@ import javax.validation.constraints.NotNull;
 #if(${swagger})
 @ApiModel(value = "${comments}")
 #end
-public class ${className}Entity implements Serializable {
+public class ${className} implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 #foreach ($column in $columns)

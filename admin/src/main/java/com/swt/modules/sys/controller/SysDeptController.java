@@ -95,7 +95,7 @@ public class SysDeptController extends AbstractController {
 	@RequestMapping("/info/{deptId}")
 	@RequiresPermissions("sys:dept:info")
 	public Responses<SysDeptEntity> info(@PathVariable("deptId") Long deptId){
-		SysDeptEntity dept = sysDeptService.selectById(deptId);
+		SysDeptEntity dept = sysDeptService.getById(deptId);
 
 		return success(dept);
 	}
@@ -106,7 +106,7 @@ public class SysDeptController extends AbstractController {
 	@RequestMapping("/save")
 	@RequiresPermissions("sys:dept:save")
 	public Responses<SysDeptEntity> save(@RequestBody SysDeptEntity dept){
-		sysDeptService.insert(dept);
+		sysDeptService.save(dept);
 
 		return success(dept);
 	}

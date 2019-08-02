@@ -85,7 +85,7 @@ public class SysFileController extends AbstractController{
     @ApiOperation(value = "记录", notes = "根据ID查询单条静态资源详情",produces="application/json")
     @ApiImplicitParam(name = "id", value = "静态资源ID", required = true,paramType = "path", dataType = "integer", defaultValue="1")
     public Responses<SysFileEntity> info(@PathVariable("id") Integer id){
-        SysFileEntity sysFile = sysFileService.selectById(id);
+        SysFileEntity sysFile = sysFileService.getById(id);
 
         return success(sysFile);
     }
@@ -103,7 +103,7 @@ public class SysFileController extends AbstractController{
         sysFile.setCrtTime(new Date());
         //校验
         ValidatorUtils.validateEntity(sysFile);
-        sysFileService.insert(sysFile);
+        sysFileService.save(sysFile);
 
         return success(sysFile);
     }
@@ -134,7 +134,7 @@ public class SysFileController extends AbstractController{
     @ApiImplicitParam(name = "ids", value = "静态资源ID", required = true,paramType = "body", dataType = "integer[]", defaultValue="[1]")
     public Responses<Void> delete(@RequestBody Integer[] ids){
         for (int i = 0; i < ids.length; i++) {
-            SysFileEntity sysFileEntity = sysFileService.selectById(ids[i]);
+            SysFileEntity sysFileEntity = sysFileService.getById(ids[i]);
             FileUtils.deleteQuietly(new File(ConfigConstant.CONTENT_PATH + sysFileEntity.getPath()));
         }
         sysFileService.deleteBatchIds(Arrays.asList(ids));

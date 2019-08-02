@@ -5,21 +5,19 @@ import java.util.Map;
 import java.util.Date;
 
 import com.alibaba.fastjson.JSONObject;
-import com.swt.common.utils.PageData;
-import com.swt.common.utils.ResultBean;
-import com.swt.common.validator.ValidatorUtils;
-import com.swt.common.validator.group.AddGroup;
-import com.swt.common.validator.group.UpdateGroup;
-import org.apache.commons.io.FileUtils;
+import com.sc.commomlib.ge.utils.support.ResultBean;
+import com.sc.commonlib.ge.dbtool.plus.page.PageData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.http.HttpStatus;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
+import com.sc.tv.base.common.session.validator.ValidatorUtils;
+import com.sc.tv.base.common.session.validator.group.AddGroup;
+import com.sc.tv.base.common.session.validator.group.UpdateGroup;
+import com.sc.commonlib.ge.dbtool.plus.page.PageInfo;
 #if(${swagger})
 import io.swagger.annotations.*;
 #end
-import ${package}.${modules}.${moduleName}.${entity}.${className}Entity;
-import ${package}.${modules}.${moduleName}.${service}.${className}Service;
+import com.sc.tv.base.entity.pb.bean.${className};
+import com.sc.tv.tm.service.builder.${className}Service;
 
 /**
  * ${api}
@@ -35,6 +33,7 @@ import ${package}.${modules}.${moduleName}.${service}.${className}Service;
 #end
 public class ${className}Controller{
 
+    @Autowired
     private ${className}Service ${classname}Service;
 
     /**
@@ -56,9 +55,9 @@ public class ${className}Controller{
             @ApiResponse(code = 200, message = "success")
     })
 #end
-    public ResultBean<PageData<${className}Entity>> list(@RequestParam #if(${swagger})@ApiParam(hidden = true)#end Map<String, Object> params) {
-        PageData<${className}Entity> page = ${classname}Service.queryPage(params);
-        ResultBean<PageData<${className}Entity>> resultBean = new ResultBean<>();
+    public ResultBean<PageData<${className}>> list(PageInfo pageInfo, ${className} ${classname}) {
+        PageData<${className}> page = ${classname}Service.queryPage(pageInfo, ${classname});
+        ResultBean<PageData<${className}>> resultBean = new ResultBean<>();
         resultBean.setResult(page);
         return resultBean;
     }
@@ -75,9 +74,9 @@ public class ${className}Controller{
             @ApiResponse(code = 200, message = "success")
     })
 #end
-    public ResultBean<${className}Entity> info(@PathVariable("${pk.attrname}") ${pk.attrType} ${pk.attrname}) {
-        ${className}Entity ${classname} = ${classname}Service.selectById(${pk.attrname});
-        ResultBean<${className}Entity> resultBean = new ResultBean<>();
+    public ResultBean<${className}> info(@PathVariable("${pk.attrname}") ${pk.attrType} ${pk.attrname}) {
+        ${className} ${classname} = ${classname}Service.getById(${pk.attrname});
+        ResultBean<${className}> resultBean = new ResultBean<>();
         resultBean.setResult(${classname});
         return resultBean;
     }
@@ -93,7 +92,7 @@ public class ${className}Controller{
             @ApiResponse(code = 422, message = "参数校验失败")
     })
 #end
-    public ResultBean<Integer> save(@RequestBody ${className}Entity ${classname}) {
+    public ResultBean<Integer> save(@RequestBody ${className} ${classname}) {
 #if($CrtUserId != '')
         //添加用户名
         ${classname}.set${CrtUserId}(getUserId());
@@ -103,8 +102,8 @@ public class ${className}Controller{
         ${classname}.set${CrtTime}(new Date());
 #end
         //校验
-        ValidatorUtils.validateEntity(${classname}, AddGroup.class);
-        ${classname}Service.insert(${classname});
+        ValidatorUtils.validate(${classname}, AddGroup.class);
+        ${classname}Service.save(${classname});
         ResultBean<Integer> resultBean = new ResultBean<>();
         resultBean.setResult(1);
         return resultBean;
@@ -122,7 +121,7 @@ public class ${className}Controller{
             @ApiResponse(code = 422, message = "参数校验失败")
     })
 #end
-    public ResultBean<JSONObject> update(@PathVariable("${pk.attrname}") ${pk.attrType} ${pk.attrname}, @RequestBody ${className}Entity ${classname}) {
+    public ResultBean<JSONObject> update(@PathVariable("${pk.attrname}") ${pk.attrType} ${pk.attrname}, @RequestBody ${className} ${classname}) {
 #if($OptUserId != '')
         //添加用户名
         ${classname}.set${OptUserId}(getUserId());
@@ -133,7 +132,7 @@ public class ${className}Controller{
 #end
         ${classname}.set${pk.attrName}(${pk.attrname});
         //校验
-        ValidatorUtils.validateEntity(${classname}, UpdateGroup.class);
+        ValidatorUtils.validate(${classname}, UpdateGroup.class);
         //全部更新
         ${classname}Service.updateById(${classname});
 
@@ -146,7 +145,6 @@ public class ${className}Controller{
      * 删除单个
      */
     @PostMapping("/{${pk.attrname}}/delete")
-    @RequiresPermissions("${moduleName}:${pathName}:delete")
 #if(${swagger})
     @ApiOperation(value = "删除单个", notes = "删除单个${comments}", produces = "application/json")
     @ApiImplicitParam(name = "${pk.attrname}", value = "${comments}ID", required = true, paramType = "path", dataType = "${pk.attrtype}", defaultValue = "${pk.example}")
@@ -155,7 +153,7 @@ public class ${className}Controller{
     })
 #end
     public ResultBean<JSONObject> delete(@PathVariable ${pk.attrType} ${pk.attrname}) {
-        ${classname}Service.deleteById(${pk.attrname});
+        ${classname}Service.removeById(${pk.attrname});
         ResultBean<JSONObject> resultBean = new ResultBean<>();
         resultBean.setResult(new JSONObject());
         return resultBean;
@@ -173,7 +171,7 @@ public class ${className}Controller{
     })
 #end
     public ResultBean<JSONObject>  deletes(@RequestBody ${pk.attrType}[] ${pk.attrname}s) {
-        ${classname}Service.deleteBatchIds(Arrays.asList(${pk.attrname}s));
+        ${classname}Service.removeByIds(Arrays.asList(${pk.attrname}s));
         ResultBean<JSONObject> resultBean = new ResultBean<>();
         resultBean.setResult(new JSONObject());
         return resultBean;

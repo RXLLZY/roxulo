@@ -1,7 +1,7 @@
 package com.swt.modules.sys.service.impl;
 
 
-import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.swt.common.utils.Constant;
 import com.swt.common.utils.MapUtils;
 import com.swt.modules.sys.dao.SysMenuDao;
