@@ -189,7 +189,9 @@ public class GenUtils {
         map.put("entity", config.getString("entity","entity"));
 
         //是否生成swagger
-        map.put("swagger", config.getBoolean("swagger",false));
+        map.put("swagger", config.getBoolean("requiredSwagger",false));
+        //是否权限校验
+        map.put("requiresPermissions", config.getBoolean("requiresPermissions",false));
 
         //是否添加查询字段
         map.put("search", config.getBoolean("search",false));

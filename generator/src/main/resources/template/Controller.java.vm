@@ -88,7 +88,9 @@ public class ${className}Controller extends AbstractController {
      */
     @SysLog("新增${comments}")
     @PostMapping
+#if(${requiresPermissions})
     @RequiresPermissions("${moduleName}:${pathName}:save")
+#end
 #if(${swagger})
     @ApiOperation(value = "新增", notes = "新增${comments}", produces = "application/json")
     @ApiResponses({
@@ -117,7 +119,9 @@ public class ${className}Controller extends AbstractController {
      */
     @SysLog("修改${comments}")
     @PutMapping("/{${pk.attrname}}")
+#if(${requiresPermissions})
     @RequiresPermissions("${moduleName}:${pathName}:update")
+#end
 #if(${swagger})
     @ApiOperation(value = "修改", notes = "修改${comments}", produces = "application/json")
     @ApiImplicitParam(name = "${pk.attrname}", value = "${comments}ID", required = true, paramType = "path", dataType = "${pk.attrtype}", defaultValue = "${pk.example}")
@@ -149,7 +153,9 @@ public class ${className}Controller extends AbstractController {
      */
     @SysLog("删除单个${comments}")
     @DeleteMapping("/{${pk.attrname}}")
+#if(${requiresPermissions})
     @RequiresPermissions("${moduleName}:${pathName}:delete")
+#end
 #if(${swagger})
     @ApiOperation(value = "删除单个", notes = "删除单个${comments}", produces = "application/json")
     @ApiImplicitParam(name = "${pk.attrname}", value = "${comments}ID", required = true, paramType = "path", dataType = "${pk.attrtype}", defaultValue = "${pk.example}")
@@ -167,7 +173,9 @@ public class ${className}Controller extends AbstractController {
      */
     @SysLog("删除多个${comments}")
     @DeleteMapping
+#if(${requiresPermissions})
     @RequiresPermissions("${moduleName}:${pathName}:deletes")
+#end
 #if(${swagger})
     @ApiOperation(value = "删除多个", notes = "一次性删除多个${comments}", produces = "application/json")
     @ApiImplicitParam(name = "${pk.attrname}s", value = "${comments}ID", required = true, paramType = "body", dataType = "${pk.attrtype}[]", defaultValue = "[${pk.example}]")
