@@ -1,6 +1,7 @@
 package com.swt.modules.sys.shiro;
 
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.swt.common.utils.Constant;
 import com.swt.modules.sys.dao.SysMenuDao;
 import com.swt.modules.sys.dao.SysUserDao;
@@ -78,9 +79,7 @@ public class UserRealm extends AuthorizingRealm {
 		UsernamePasswordToken token = (UsernamePasswordToken)authcToken;
 
 		//查询用户信息
-		SysUserEntity user = new SysUserEntity();
-		user.setUsername(token.getUsername());
-		user = sysUserDao.selectOne(user);
+		SysUserEntity user = sysUserDao.selectOne(new QueryWrapper<SysUserEntity>().eq("username", token.getUsername()));
 
 		//账号不存在
 		if(user == null) {

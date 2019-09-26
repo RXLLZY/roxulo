@@ -51,7 +51,7 @@ public class SysRoleController extends AbstractController {
 	@RequestMapping("/select")
 	@RequiresPermissions("sys:role:select")
 	public Responses<List<SysRoleEntity>> select(){
-		List<SysRoleEntity> list = sysRoleService.selectList(null);
+		List<SysRoleEntity> list = sysRoleService.list(null);
 
 		return success(list);
 	}

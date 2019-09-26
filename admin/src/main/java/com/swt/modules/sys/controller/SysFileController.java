@@ -120,7 +120,7 @@ public class SysFileController extends AbstractController{
         //校验
         ValidatorUtils.validateEntity(sysFile);
         //全部更新
-        sysFileService.updateAllColumnById(sysFile);
+        sysFileService.updateById(sysFile);
 
         return success(sysFile);
     }
@@ -137,7 +137,7 @@ public class SysFileController extends AbstractController{
             SysFileEntity sysFileEntity = sysFileService.getById(ids[i]);
             FileUtils.deleteQuietly(new File(ConfigConstant.CONTENT_PATH + sysFileEntity.getPath()));
         }
-        sysFileService.deleteBatchIds(Arrays.asList(ids));
+        sysFileService.removeByIds(Arrays.asList(ids));
 
         return success(HttpStatus.NO_CONTENT);
     }

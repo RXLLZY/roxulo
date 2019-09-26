@@ -37,7 +37,7 @@ public interface SysConfigService extends IService<SysConfigEntity>  {
 	/**
 	 * 保存配置信息
 	 */
-	public void save(SysConfigEntity config);
+	public void saveEntity(SysConfigEntity config);
 	
 	/**
 	 * 更新配置信息

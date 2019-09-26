@@ -83,7 +83,7 @@ public class SysDictController extends AbstractController {
     @RequestMapping("/delete")
     @RequiresPermissions("sys:dict:delete")
     public Responses<Void> delete(@RequestBody Long[] ids){
-        sysDictService.deleteBatchIds(Arrays.asList(ids));
+        sysDictService.removeByIds(Arrays.asList(ids));
 
         return success(HttpStatus.NO_CONTENT);
     }

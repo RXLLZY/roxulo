@@ -140,7 +140,7 @@ public class SysUserController extends AbstractController {
 			R.error("当前用户不能删除");
 		}
 
-		sysUserService.deleteBatchIds(Arrays.asList(userIds));
+		sysUserService.removeByIds(Arrays.asList(userIds));
 
 		return success(HttpStatus.NO_CONTENT);
 	}

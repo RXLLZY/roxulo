@@ -2,7 +2,6 @@ package com.swt.modules.sys.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.swt.common.exception.RRException;
 import com.swt.common.utils.ConfigConstant;
@@ -77,7 +76,7 @@ public class SysFileServiceImpl extends ServiceImpl<SysFileDao, SysFileEntity> i
     @Override
     public SysFileEntity uploadAndAdd(MultipartFile file) {
         SysFileEntity sysFileEntity = upload(file);
-        insert(sysFileEntity);
+        this.save(sysFileEntity);
 
         return sysFileEntity;
     }

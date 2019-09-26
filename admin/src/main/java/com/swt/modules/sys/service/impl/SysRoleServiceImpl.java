@@ -48,7 +48,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleDao, SysRoleEntity> i
 			new Query<SysRoleEntity>(params).getPage(),
 			new QueryWrapper<SysRoleEntity>()
 				.like(StringUtils.isNotBlank(roleName),"role_name", roleName)
-				.and(params.get(Constant.SQL_FILTER) != null, (String)params.get(Constant.SQL_FILTER))
+				.and(params.get(Constant.SQL_FILTER) != null, i -> i.apply((String)params.get(Constant.SQL_FILTER)))
 		);
 
 		for(SysRoleEntity sysRoleEntity : page.getRecords()){
@@ -63,7 +63,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleDao, SysRoleEntity> i
 
 	@Override
 	@Transactional(rollbackFor = Exception.class)
-	public void save(SysRoleEntity role) {
+	public void saveEntity(SysRoleEntity role) {
 		role.setCreateTime(new Date());
 		this.save(role);
 
@@ -77,7 +77,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleDao, SysRoleEntity> i
 	@Override
 	@Transactional(rollbackFor = Exception.class)
 	public void update(SysRoleEntity role) {
-		this.updateAllColumnById(role);
+		this.update(role);
 
 		//更新角色与菜单关系
 		sysRoleMenuService.saveOrUpdate(role.getRoleId(), role.getMenuIdList());
@@ -90,7 +90,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleDao, SysRoleEntity> i
 	@Transactional(rollbackFor = Exception.class)
 	public void deleteBatch(Long[] roleIds) {
 		//删除角色
-		this.deleteBatchIds(Arrays.asList(roleIds));
+		this.removeByIds(Arrays.asList(roleIds));
 
 		//删除角色与菜单关联
 		sysRoleMenuService.deleteBatch(roleIds);

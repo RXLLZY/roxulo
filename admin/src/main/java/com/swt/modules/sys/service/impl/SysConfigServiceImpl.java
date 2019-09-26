@@ -55,7 +55,7 @@ public class SysConfigServiceImpl extends ServiceImpl<SysConfigDao, SysConfigEnt
 	}
 	
 	@Override
-	public void save(SysConfigEntity config) {
+	public void saveEntity(SysConfigEntity config) {
 		this.save(config);
 		sysConfigRedis.saveOrUpdate(config);
 	}
@@ -63,7 +63,7 @@ public class SysConfigServiceImpl extends ServiceImpl<SysConfigDao, SysConfigEnt
 	@Override
 	@Transactional(rollbackFor = Exception.class)
 	public void update(SysConfigEntity config) {
-		this.updateAllColumnById(config);
+		this.update(config);
 		sysConfigRedis.saveOrUpdate(config);
 	}
 
@@ -82,7 +82,7 @@ public class SysConfigServiceImpl extends ServiceImpl<SysConfigDao, SysConfigEnt
 			sysConfigRedis.delete(config.getParamKey());
 		}
 
-		this.deleteBatchIds(Arrays.asList(ids));
+		this.removeByIds(Arrays.asList(ids));
 	}
 
 	@Override

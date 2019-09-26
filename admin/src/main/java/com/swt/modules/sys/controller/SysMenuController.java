@@ -48,7 +48,7 @@ public class SysMenuController extends AbstractController {
 	@RequestMapping("/list")
 	@RequiresPermissions("sys:menu:list")
 	public Responses<List<SysMenuEntity>> list(){
-		List<SysMenuEntity> menuList = sysMenuService.selectList(null);
+		List<SysMenuEntity> menuList = sysMenuService.list(null);
 		for(SysMenuEntity sysMenuEntity : menuList){
 			SysMenuEntity parentMenuEntity = sysMenuService.getById(sysMenuEntity.getParentId());
 			if(parentMenuEntity != null){

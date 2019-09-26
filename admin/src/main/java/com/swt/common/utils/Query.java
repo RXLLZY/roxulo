@@ -50,7 +50,7 @@ public class Query<T> extends LinkedHashMap<String, Object> {
         this.put("order", order);
 
         //mybatis-plus分页
-        this.page = new IPage<>(currPage, limit);
+        this.page = new Page<>(currPage, limit);
 
     }
 
