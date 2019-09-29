@@ -4,10 +4,10 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.swt.common.annotation.DataFilter;
-import com.swt.common.utils.Constant;
+import com.swt.common.utils.PageData;
+import com.swt.common.utils.PageInfo;
 import com.swt.common.utils.PageUtils;
-import com.swt.common.utils.Query;
-import com.swt.modules.sys.dao.SysRoleDao;
+import com.swt.modules.sys.dao.ISysRoleDao;
 import com.swt.modules.sys.entity.SysDeptEntity;
 import com.swt.modules.sys.entity.SysRoleEntity;
 import com.swt.modules.sys.service.*;
@@ -18,7 +18,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
 import java.util.Date;
-import java.util.Map;
 
 
 /**
@@ -29,26 +28,25 @@ import java.util.Map;
  * @date 2016年9月18日 上午9:45:12
  */
 @Service("sysRoleService")
-public class SysRoleServiceImpl extends ServiceImpl<SysRoleDao, SysRoleEntity> implements SysRoleService {
+public class SysRoleServiceImpl extends ServiceImpl<ISysRoleDao, SysRoleEntity> implements ISysRoleService {
 	@Autowired
-	private SysRoleMenuService sysRoleMenuService;
+	private ISysRoleMenuService sysRoleMenuService;
 	@Autowired
-	private SysRoleDeptService sysRoleDeptService;
+	private ISysRoleDeptService sysRoleDeptService;
 	@Autowired
-	private SysUserRoleService sysUserRoleService;
+	private ISysUserRoleService sysUserRoleService;
 	@Autowired
-	private SysDeptService sysDeptService;
+	private ISysDeptService sysDeptService;
 
 	@Override
 	@DataFilter(subDept = true, user = false)
-	public PageUtils queryPage(Map<String, Object> params) {
-		String roleName = (String)params.get("roleName");
+	public PageUtils queryPage(PageInfo pageInfo, String roleName,String sqlFilter) {
 
 		IPage<SysRoleEntity> page = this.baseMapper.selectPage(
-			new Query<SysRoleEntity>(params).getPage(),
+				new PageData<>(pageInfo),
 			new QueryWrapper<SysRoleEntity>()
 				.like(StringUtils.isNotBlank(roleName),"role_name", roleName)
-				.and(params.get(Constant.SQL_FILTER) != null, i -> i.apply((String)params.get(Constant.SQL_FILTER)))
+				.and(StringUtils.isEmpty(sqlFilter), i -> i.apply(sqlFilter))
 		);
 
 		for(SysRoleEntity sysRoleEntity : page.getRecords()){

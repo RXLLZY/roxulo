@@ -3,7 +3,7 @@ package com.swt.modules.sys.controller;
 
 import com.google.code.kaptcha.Constants;
 import com.google.code.kaptcha.Producer;
-import com.swt.common.utils.R;
+import com.swt.common.utils.ResultBean;
 import com.swt.common.validator.ValidatorUtils;
 import com.swt.modules.sys.form.SysLoginForm;
 import com.swt.modules.sys.shiro.ShiroUtils;
@@ -57,10 +57,10 @@ public class SysLoginController {
 	@ResponseBody
 	@RequestMapping(value = "/sys/login", method = RequestMethod.POST)
 	@ApiOperation("登录")
-	public R login(@RequestBody SysLoginForm form) {
+	public ResultBean login(@RequestBody SysLoginForm form) {
 //		String kaptcha = ShiroUtils.getKaptcha(Constants.KAPTCHA_SESSION_KEY);
 //		if(!captcha.equalsIgnoreCase(form.getCaptcha())){
-//			return R.error("验证码不正确");
+//			return ResultBean.error("验证码不正确");
 //		}
 		//表单校验
 		ValidatorUtils.validateEntity(form);
@@ -69,22 +69,22 @@ public class SysLoginController {
 			UsernamePasswordToken token = new UsernamePasswordToken(form.getUsername(), form.getPassword());
 			subject.login(token);
 		}catch (UnknownAccountException e) {
-			return R.error(e.getMessage());
+			return ResultBean.error(e.getMessage());
 		}catch (IncorrectCredentialsException e) {
-			return R.error("账号或密码不正确");
+			return ResultBean.error("账号或密码不正确");
 		}catch (LockedAccountException e) {
-			return R.error("账号已被锁定,请联系管理员");
+			return ResultBean.error("账号已被锁定,请联系管理员");
 		}catch (AuthenticationException e) {
-			return R.error("账户验证失败");
+			return ResultBean.error("账户验证失败");
 		}
 	    
-		return R.ok();
+		return ResultBean.ok();
 	}
 
 	@ResponseBody
 	@RequestMapping("unauthorized")
-	public R unauthorized(){
-		return R.error(401, "您已登出或者登陆超时");
+	public ResultBean unauthorized(){
+		return ResultBean.error(401, "您已登出或者登陆超时");
 	}
 	/**
 	 * 退出

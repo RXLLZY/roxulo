@@ -3,8 +3,8 @@ package com.swt.modules.sys.shiro;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.swt.common.utils.Constant;
-import com.swt.modules.sys.dao.SysMenuDao;
-import com.swt.modules.sys.dao.SysUserDao;
+import com.swt.modules.sys.dao.ISysMenuDao;
+import com.swt.modules.sys.dao.ISysUserDao;
 import com.swt.modules.sys.entity.SysMenuEntity;
 import com.swt.modules.sys.entity.SysUserEntity;
 import org.apache.commons.lang.StringUtils;
@@ -31,9 +31,9 @@ import java.util.*;
 @Component
 public class UserRealm extends AuthorizingRealm {
     @Autowired
-    private SysUserDao sysUserDao;
+    private ISysUserDao sysUserDao;
     @Autowired
-    private SysMenuDao sysMenuDao;
+    private ISysMenuDao sysMenuDao;
     
     /**
      * 授权(验证权限时调用)

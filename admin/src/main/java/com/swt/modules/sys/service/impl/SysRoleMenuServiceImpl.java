@@ -1,9 +1,9 @@
 package com.swt.modules.sys.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.swt.modules.sys.dao.SysRoleMenuDao;
+import com.swt.modules.sys.dao.ISysRoleMenuDao;
 import com.swt.modules.sys.entity.SysRoleMenuEntity;
-import com.swt.modules.sys.service.SysRoleMenuService;
+import com.swt.modules.sys.service.ISysRoleMenuService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,7 +20,7 @@ import java.util.List;
  * @date 2016年9月18日 上午9:44:35
  */
 @Service("sysRoleMenuService")
-public class SysRoleMenuServiceImpl extends ServiceImpl<SysRoleMenuDao, SysRoleMenuEntity> implements SysRoleMenuService {
+public class SysRoleMenuServiceImpl extends ServiceImpl<ISysRoleMenuDao, SysRoleMenuEntity> implements ISysRoleMenuService {
 
 	@Override
 	@Transactional(rollbackFor = Exception.class)

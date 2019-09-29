@@ -2,16 +2,14 @@ package com.swt.modules.sys.controller;
 
 import com.swt.common.controller.AbstractController;
 import com.swt.common.responses.Responses;
+import com.swt.common.utils.PageInfo;
 import com.swt.common.utils.PageUtils;
-import com.swt.modules.sys.service.SysLogService;
+import com.swt.modules.sys.service.ISysLogService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import java.util.Map;
 
 
 /**
@@ -25,7 +23,7 @@ import java.util.Map;
 @RequestMapping("/sys/log")
 public class SysLogController extends AbstractController {
 	@Autowired
-	private SysLogService sysLogService;
+	private ISysLogService sysLogService;
 	
 	/**
 	 * 列表
@@ -33,8 +31,8 @@ public class SysLogController extends AbstractController {
 	@ResponseBody
 	@RequestMapping("/list")
 	@RequiresPermissions("sys:log:list")
-	public Responses<PageUtils> list(@RequestParam Map<String, Object> params){
-		PageUtils page = sysLogService.queryPage(params);
+	public Responses<PageUtils> list(PageInfo pageInfo, String key){
+		PageUtils page = sysLogService.queryPage( pageInfo,  key);
 
 		return success(page);
 	}

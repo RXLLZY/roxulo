@@ -4,14 +4,14 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 import java.util.Map;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.sc.commonlib.ge.dbtool.plus.page.PageInfo;
+import ${package}.common.utils.PageData;
+import ${package}.common.utils.PageInfo;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.sc.commonlib.ge.dbtool.plus.page.PageData;
 
-import com.sc.tv.base.entity.pb.dao.I${className}Dao;
-import com.sc.tv.base.entity.pb.bean.${className};
-import ${package}.${modules}.${moduleName}.${service}.${className}Service;
+import ${package}.${modules}.${moduleName}.${dao}.I${className}Dao;
+import ${package}.${modules}.${moduleName}.${entity}.${className};
+import ${package}.${modules}.${moduleName}.${service}.I${className}Service;
 
 /**
  * ${comments} 实现
@@ -21,7 +21,7 @@ import ${package}.${modules}.${moduleName}.${service}.${className}Service;
  * @date ${datetime}
  */
 @Service("${classname}Service")
-public class ${className}ServiceImpl extends ServiceImpl<I${className}Dao, ${className}> implements ${className}Service {
+public class ${className}ServiceImpl extends ServiceImpl<I${className}Dao, ${className}> implements I${className}Service {
 
     @Override
     public PageData<${className}> queryPage(PageInfo pageInfo, ${className} ${classname}) {
@@ -33,13 +33,7 @@ public class ${className}ServiceImpl extends ServiceImpl<I${className}Dao, ${cla
         IPage<${className}> page = this.baseMapper.selectPage(
                 resultData,
                 new QueryWrapper<${className}>()
-#foreach ($searchColumn in $searchColumns)
-#if($searchColumn.attrType == "Integer")
-                        .eq(StringUtils.isNotBlank(${searchColumn.attrname}), "${searchColumn.columnName}", ${searchColumn.attrname})
-#else
-                        .like(StringUtils.isNotBlank(${searchColumn.attrname}), "${searchColumn.columnName}", ${searchColumn.attrname})
-#end
-#end
+                        .setEntity(${classname})
         );
         return resultData;
     }

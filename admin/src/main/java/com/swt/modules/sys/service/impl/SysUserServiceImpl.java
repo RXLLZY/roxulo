@@ -5,15 +5,15 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.swt.common.annotation.DataFilter;
-import com.swt.common.utils.Constant;
+import com.swt.common.utils.PageData;
+import com.swt.common.utils.PageInfo;
 import com.swt.common.utils.PageUtils;
-import com.swt.common.utils.Query;
-import com.swt.modules.sys.dao.SysUserDao;
+import com.swt.modules.sys.dao.ISysUserDao;
 import com.swt.modules.sys.entity.SysDeptEntity;
 import com.swt.modules.sys.entity.SysUserEntity;
-import com.swt.modules.sys.service.SysDeptService;
-import com.swt.modules.sys.service.SysUserRoleService;
-import com.swt.modules.sys.service.SysUserService;
+import com.swt.modules.sys.service.ISysDeptService;
+import com.swt.modules.sys.service.ISysUserRoleService;
+import com.swt.modules.sys.service.ISysUserService;
 import com.swt.modules.sys.shiro.ShiroUtils;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
@@ -23,7 +23,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 
 /**
@@ -34,11 +33,11 @@ import java.util.Map;
  * @date 2016年9月18日 上午9:46:09
  */
 @Service("sysUserService")
-public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> implements SysUserService {
+public class SysUserServiceImpl extends ServiceImpl<ISysUserDao, SysUserEntity> implements ISysUserService {
 	@Autowired
-	private SysUserRoleService sysUserRoleService;
+	private ISysUserRoleService sysUserRoleService;
 	@Autowired
-	private SysDeptService sysDeptService;
+	private ISysDeptService sysDeptService;
 
 	@Override
 	public List<Long> queryAllMenuId(Long userId) {
@@ -47,14 +46,13 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
 
 	@Override
 	@DataFilter(subDept = true, user = false)
-	public PageUtils queryPage(Map<String, Object> params) {
-		String username = (String)params.get("username");
+	public PageUtils queryPage(PageInfo pageInfo, String username, String sqlFilter) {
 
 		IPage<SysUserEntity> page = this.baseMapper.selectPage(
-			new Query<SysUserEntity>(params).getPage(),
+				new PageData<>(pageInfo),
 			new QueryWrapper<SysUserEntity>()
 				.like(StringUtils.isNotBlank(username),"username", username)
-				.apply(params.get(Constant.SQL_FILTER) != null, (String)params.get(Constant.SQL_FILTER))
+				.and(StringUtils.isEmpty(sqlFilter), i -> i.apply(sqlFilter))
 		);
 
 		for(SysUserEntity sysUserEntity : page.getRecords()){

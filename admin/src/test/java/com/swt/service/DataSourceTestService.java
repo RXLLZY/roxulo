@@ -19,7 +19,7 @@ package com.swt.service;
 import com.swt.datasources.DataSourceNames;
 import com.swt.datasources.annotation.DataSource;
 import com.swt.modules.sys.entity.SysUserEntity;
-import com.swt.modules.sys.service.SysUserService;
+import com.swt.modules.sys.service.ISysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,7 +32,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class DataSourceTestService {
     @Autowired
-    private SysUserService sysUserService;
+    private ISysUserService sysUserService;
 
     public SysUserEntity queryUser(Long userId){
         return sysUserService.getById(userId);

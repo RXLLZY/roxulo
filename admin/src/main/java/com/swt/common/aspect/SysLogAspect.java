@@ -6,7 +6,7 @@ import com.swt.common.utils.HttpContextUtils;
 import com.swt.common.utils.IPUtils;
 import com.swt.modules.sys.entity.SysLogEntity;
 import com.swt.modules.sys.entity.SysUserEntity;
-import com.swt.modules.sys.service.SysLogService;
+import com.swt.modules.sys.service.ISysLogService;
 import org.apache.shiro.SecurityUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -30,7 +30,7 @@ import java.util.Date;
 @Component
 public class SysLogAspect {
 	@Autowired
-	private SysLogService sysLogService;
+	private ISysLogService sysLogService;
 	
 	@Pointcut("@annotation(com.swt.common.annotation.SysLog)")
 	public void logPointCut() { 

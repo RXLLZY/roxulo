@@ -5,9 +5,9 @@ import com.swt.common.annotation.DataFilter;
 import com.swt.common.exception.RRException;
 import com.swt.common.utils.Constant;
 import com.swt.modules.sys.entity.SysUserEntity;
-import com.swt.modules.sys.service.SysDeptService;
-import com.swt.modules.sys.service.SysRoleDeptService;
-import com.swt.modules.sys.service.SysUserRoleService;
+import com.swt.modules.sys.service.ISysDeptService;
+import com.swt.modules.sys.service.ISysRoleDeptService;
+import com.swt.modules.sys.service.ISysUserRoleService;
 import com.swt.modules.sys.shiro.ShiroUtils;
 import org.apache.commons.lang.StringUtils;
 import org.aspectj.lang.JoinPoint;
@@ -33,11 +33,11 @@ import java.util.Set;
 @Component
 public class DataFilterAspect {
     @Autowired
-    private SysDeptService sysDeptService;
+    private ISysDeptService sysDeptService;
     @Autowired
-    private SysUserRoleService sysUserRoleService;
+    private ISysUserRoleService sysUserRoleService;
     @Autowired
-    private SysRoleDeptService sysRoleDeptService;
+    private ISysRoleDeptService sysRoleDeptService;
 
     @Pointcut("@annotation(com.swt.common.annotation.DataFilter)")
     public void dataFilterCut() {

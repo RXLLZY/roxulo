@@ -4,9 +4,9 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.swt.common.annotation.DataFilter;
 import com.swt.common.utils.Constant;
-import com.swt.modules.sys.dao.SysDeptDao;
+import com.swt.modules.sys.dao.ISysDeptDao;
 import com.swt.modules.sys.entity.SysDeptEntity;
-import com.swt.modules.sys.service.SysDeptService;
+import com.swt.modules.sys.service.ISysDeptService;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -15,7 +15,7 @@ import java.util.Map;
 
 
 @Service("sysDeptService")
-public class SysDeptServiceImpl extends ServiceImpl<SysDeptDao, SysDeptEntity> implements SysDeptService {
+public class SysDeptServiceImpl extends ServiceImpl<ISysDeptDao, SysDeptEntity> implements ISysDeptService {
 	
 	@Override
 	@DataFilter(subDept = true, user = false)

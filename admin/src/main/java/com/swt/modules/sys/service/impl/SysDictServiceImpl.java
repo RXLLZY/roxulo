@@ -4,26 +4,24 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.swt.common.utils.PageData;
+import com.swt.common.utils.PageInfo;
 import com.swt.common.utils.PageUtils;
-import com.swt.common.utils.Query;
-import com.swt.modules.sys.dao.SysDictDao;
+import com.swt.modules.sys.dao.ISysDictDao;
 import com.swt.modules.sys.entity.SysDictEntity;
-import com.swt.modules.sys.service.SysDictService;
+import com.swt.modules.sys.service.ISysDictService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 
-import java.util.Map;
-
 
 @Service("sysDictService")
-public class SysDictServiceImpl extends ServiceImpl<SysDictDao, SysDictEntity> implements SysDictService {
+public class SysDictServiceImpl extends ServiceImpl<ISysDictDao, SysDictEntity> implements ISysDictService {
 
     @Override
-    public PageUtils queryPage(Map<String, Object> params) {
-        String name = (String)params.get("name");
+    public PageUtils queryPage(PageInfo pageInfo, String name) {
 
         IPage<SysDictEntity> page = this.baseMapper.selectPage(
-                new Query<SysDictEntity>(params).getPage(),
+                new PageData<>(pageInfo),
                 new QueryWrapper<SysDictEntity>()
                     .like(StringUtils.isNotBlank(name),"name", name)
         );

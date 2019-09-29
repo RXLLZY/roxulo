@@ -47,11 +47,11 @@ public class GenUtils {
 
     public static List<String> getTemplates() {
         List<String> templates = new ArrayList<String>();
-//        templates.add("template/Entity.java.vm");
-//        templates.add("template/Dao.java.vm");
-//        templates.add("template/Dao.xml.vm");
-//        templates.add("template/Service.java.vm");
-//        templates.add("template/ServiceImpl.java.vm");
+        templates.add("template/Entity.java.vm");
+        templates.add("template/Dao.java.vm");
+        templates.add("template/Dao.xml.vm");
+        templates.add("template/Service.java.vm");
+        templates.add("template/ServiceImpl.java.vm");
         templates.add("template/Controller.java.vm");
 //        templates.add("template/list.html.vm");
 //        templates.add("template/list.js.vm");
@@ -187,10 +187,15 @@ public class GenUtils {
         map.put("service", config.getString("service","service"));
         map.put("dao", config.getString("dao","dao"));
         map.put("entity", config.getString("entity","entity"));
-        map.put("modules", config.getString("modules","modules"));
 
         //是否生成swagger
         map.put("swagger", config.getBoolean("swagger",false));
+        //是否权限校验
+        map.put("permissions", config.getBoolean("permissions",false));
+        //是否添加日志管理
+        map.put("sysLog", config.getBoolean("sysLog",false));
+        //绑定模块路径
+        map.put("modules", config.getString("modules","modules"));
 
         //是否添加查询字段
         map.put("search", config.getBoolean("search",false));
@@ -321,15 +326,15 @@ public class GenUtils {
         }
 
         if (template.contains("Entity.java.vm")) {
-            return packagePath + config.getString("entity","entity") + File.separator + className + "Entity.java";
+            return packagePath + config.getString("entity","entity") + File.separator + className + ".java";
         }
 
         if (template.contains("Dao.java.vm")) {
-            return packagePath + config.getString("dao","dao") + File.separator + className + "Dao.java";
+            return packagePath + config.getString("dao","dao") + File.separator + "I" + className + "Dao.java";
         }
 
         if (template.contains("Service.java.vm")) {
-            return packagePath + config.getString("service","service") + File.separator + className + "Service.java";
+            return packagePath + config.getString("service","service") + File.separator + "I" + className + "Service.java";
         }
 
         if (template.contains("ServiceImpl.java.vm")) {

@@ -5,19 +5,25 @@ import java.util.Map;
 import java.util.Date;
 
 import com.alibaba.fastjson.JSONObject;
-import com.sc.commomlib.ge.utils.support.ResultBean;
-import com.sc.commonlib.ge.dbtool.plus.page.PageData;
+#if(${sysLog})
+import com.swt.common.annotation.SysLog;
+#end
+import ${package}.common.utils.ResultBean;
+import ${package}.common.utils.PageData;
+import ${package}.common.utils.PageInfo;
+import ${package}.common.group.ValidatorUtils;
+import ${package}.common.validator.group.AddGroup;
+import ${package}.common.validator.group.UpdateGroup;
+#if(${permissions})
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+#end
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import com.sc.tv.base.common.session.validator.ValidatorUtils;
-import com.sc.tv.base.common.session.validator.group.AddGroup;
-import com.sc.tv.base.common.session.validator.group.UpdateGroup;
-import com.sc.commonlib.ge.dbtool.plus.page.PageInfo;
 #if(${swagger})
 import io.swagger.annotations.*;
 #end
-import com.sc.tv.base.entity.pb.bean.${className};
-import com.sc.tv.tm.service.builder.I${className}Service;
+import ${package}.${modules}.${moduleName}.${entity}.${className};
+import ${package}.${modules}.${moduleName}.${service}.I${className}Service;
 
 /**
  * ${api}
@@ -39,18 +45,12 @@ public class ${className}Controller{
     /**
      * 列表
      */
-    @GetMapping("list")
+    @GetMapping
+#if(${permissions})
+    @RequiresPermissions("${moduleName}:${pathName}:list")
+#end
 #if(${swagger})
     @ApiOperation(value = "列表", notes = "分页查询${comments}", produces = "application/json")
-    @ApiImplicitParams({
-#foreach ($searchColumn in $searchColumns)
-            @ApiImplicitParam(name = "${searchColumn.attrname}", value = "${searchColumn.comments}", required = false, paramType = "query", dataType = "${searchColumn.attrtype}"),
-#end
-            @ApiImplicitParam(name = "page", value = "页码", required = false, paramType = "query", dataType = "int", defaultValue = "1"),
-            @ApiImplicitParam(name = "limit", value = "每页条数", required = false, paramType = "query", dataType = "int", defaultValue = "10"),
-            @ApiImplicitParam(name = "sidx", value = "排序字段", required = false, paramType = "query", dataType = "string"),
-            @ApiImplicitParam(name = "order", value = "升降序", required = false, paramType = "query", dataType = "string", defaultValue = "asc")
-    })
     @ApiResponses({
             @ApiResponse(code = 200, message = "success")
     })
@@ -62,11 +62,13 @@ public class ${className}Controller{
         return resultBean;
     }
 
-
     /**
      * 记录
      */
-    @GetMapping("/detail")
+    @GetMapping("/{${pk.attrname}}")
+#if(${permissions})
+    @RequiresPermissions("${moduleName}:${pathName}:info")
+#end
 #if(${swagger})
     @ApiOperation(value = "记录", notes = "根据ID查询单条${comments}详情", produces = "application/json")
     @ApiImplicitParam(name = "${pk.attrname}", value = "${comments}ID", required = true, paramType = "path", dataType = "${pk.attrtype}", defaultValue = "${pk.example}")
@@ -74,7 +76,7 @@ public class ${className}Controller{
             @ApiResponse(code = 200, message = "success")
     })
 #end
-    public ResultBean<${className}> info(@RequestParam("${pk.attrname}") ${pk.attrType} ${pk.attrname}) {
+    public ResultBean<${className}> info(@PathVariable("${pk.attrname}") ${pk.attrType} ${pk.attrname}) {
         ${className} ${classname} = ${classname}Service.getById(${pk.attrname});
         ResultBean<${className}> resultBean = new ResultBean<>();
         resultBean.setResult(${classname});
@@ -84,7 +86,13 @@ public class ${className}Controller{
     /**
      * 新增
      */
-    @PostMapping("add")
+#if(${sysLog})
+    @SysLog("新增${comments}")
+#end
+    @PostMapping
+#if(${permissions})
+    @RequiresPermissions("${moduleName}:${pathName}:save")
+#end
 #if(${swagger})
     @ApiOperation(value = "新增", notes = "新增${comments}", produces = "application/json")
     @ApiResponses({
@@ -112,7 +120,13 @@ public class ${className}Controller{
     /**
      * 修改
      */
-    @PostMapping("/update")
+#if(${sysLog})
+    @SysLog("修改${comments}")
+#end
+    @PutMapping("/{${pk.attrname}}")
+#if(${permissions})
+    @RequiresPermissions("${moduleName}:${pathName}:update")
+#end
 #if(${swagger})
     @ApiOperation(value = "修改", notes = "修改${comments}", produces = "application/json")
     @ApiImplicitParam(name = "${pk.attrname}", value = "${comments}ID", required = true, paramType = "path", dataType = "${pk.attrtype}", defaultValue = "${pk.example}")
@@ -143,7 +157,13 @@ public class ${className}Controller{
     /**
      * 删除单个
      */
-    @PostMapping("/delete")
+#if(${sysLog})
+    @SysLog("删除单个${comments}")
+#end
+    @DeleteMapping("/{${pk.attrname}}")
+#if(${permissions})
+    @RequiresPermissions("${moduleName}:${pathName}:delete")
+#end
 #if(${swagger})
     @ApiOperation(value = "删除单个", notes = "删除单个${comments}", produces = "application/json")
     @ApiImplicitParam(name = "${pk.attrname}", value = "${comments}ID", required = true, paramType = "path", dataType = "${pk.attrtype}", defaultValue = "${pk.example}")
@@ -151,7 +171,7 @@ public class ${className}Controller{
             @ApiResponse(code = 204, message = "删除成功")
     })
 #end
-    public ResultBean<JSONObject> delete(${pk.attrType} ${pk.attrname}) {
+    public ResultBean<JSONObject> delete(@PathVariable("${pk.attrname}") ${pk.attrType} ${pk.attrname}) {
         ${classname}Service.removeById(${pk.attrname});
         ResultBean<JSONObject> resultBean = new ResultBean<>();
         resultBean.setResult(new JSONObject());
@@ -161,7 +181,13 @@ public class ${className}Controller{
     /**
      * 批量删除
      */
-    @PostMapping("batch-delete")
+#if(${sysLog})
+    @SysLog("删除多个${comments}")
+#end
+    @DeleteMapping
+#if(${permissions})
+    @RequiresPermissions("${moduleName}:${pathName}:deletes")
+#end
 #if(${swagger})
     @ApiOperation(value = "删除多个", notes = "一次性删除多个${comments}", produces = "application/json")
     @ApiImplicitParam(name = "${pk.attrname}s", value = "${comments}ID", required = true, paramType = "body", dataType = "${pk.attrtype}[]", defaultValue = "[${pk.example}]")

@@ -1,76 +1,68 @@
 package com.swt.common.utils;
 
+import com.swt.common.exception.RRException;
+
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 通用结果对象
  * @author sys
  * @param <T>
  */
-public class ResultBean<T> implements Serializable {
+public class ResultBean<T> extends HashMap<String, Object> implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	// 请求成功
-	public final static int STATUS_SUCCESS = 0;
-	// 请求失败
-	public final static int STATUS_FAILURE = -1;
-	// 登录超期或未登录
-	public final static int STATUS_NOT_LOGIN = 101;
-	// 请求失败：业务错误，提示信息可直接展示给用户
-	public final static int STATUS_FAILURE_BIZ = 102;
-	// 请求失败：非业务错误（如：空指针、数组越界等代码异常）
-	public final static int STATUS_FAILURE_UNBIZ = 103;
-
-	// 状态值
-	private int code;
-
-	// 提示信息
-	private String msg;
-
-	// 返回结果
-	private T result;
-
-	/**
-	 * 默认构造函数<p>
-	 * 默认生成操作执行成功信息，无返回值
-	 */
 	public ResultBean() {
-		this.code = STATUS_SUCCESS;
-		this.msg = null;
-		this.result = null;
+		put("status", 200);
+		put("message", "success");
 	}
 
-	/**
-	 * 无正常返回
-	 *
-	 * @return
-	 */
-	public boolean fail() {
-		return this.code != STATUS_SUCCESS;
+	public static ResultBean create() {
+		ResultBean resultBean = new ResultBean();
+		resultBean.put("status", 201);
+		resultBean.put("message", "资源创建成功");
+		return resultBean;
 	}
 
-	public int getCode() {
-		return code;
+	public static ResultBean error() {
+		return error(500, "未知异常，请联系管理员");
 	}
 
-	public void setCode(int code) {
-		this.code = code;
+	public static ResultBean error(String message) {
+		return error(500, message);
 	}
 
-	public String getMsg() {
-		return msg;
+	public static ResultBean error(int status, String message) {
+		throw new RRException(message, status);
 	}
 
-	public void setMsg(String msg) {
-		this.msg = msg;
+	public static ResultBean ok(String message) {
+		ResultBean resultBean = new ResultBean();
+		resultBean.put("message", message);
+		return resultBean;
 	}
 
-	public T getResult() {
-		return result;
+	public static ResultBean ok(Map<String, Object> map) {
+		ResultBean resultBean = new ResultBean();
+		resultBean.putAll(map);
+		return resultBean;
 	}
 
-	public void setResult(T result) {
-		this.result = result;
+	public static ResultBean ok() {
+		return new ResultBean();
+	}
+
+	@Override
+	public ResultBean put(String key, Object value) {
+		super.put(key, value);
+		return this;
+	}
+
+	public ResultBean setResult(Object value) {
+		super.put("result", value);
+		return this;
 	}
 }

@@ -3,19 +3,19 @@ package com.swt.modules.sys.controller;
 import com.swt.common.annotation.SysLog;
 import com.swt.common.controller.AbstractController;
 import com.swt.common.responses.Responses;
+import com.swt.common.utils.PageInfo;
 import com.swt.common.utils.PageUtils;
 import com.swt.common.validator.ValidatorUtils;
 import com.swt.modules.sys.entity.SysRoleEntity;
-import com.swt.modules.sys.service.SysRoleDeptService;
-import com.swt.modules.sys.service.SysRoleMenuService;
-import com.swt.modules.sys.service.SysRoleService;
+import com.swt.modules.sys.service.ISysRoleDeptService;
+import com.swt.modules.sys.service.ISysRoleMenuService;
+import com.swt.modules.sys.service.ISysRoleService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * 角色管理
@@ -28,19 +28,19 @@ import java.util.Map;
 @RequestMapping("/sys/role")
 public class SysRoleController extends AbstractController {
 	@Autowired
-	private SysRoleService sysRoleService;
+	private ISysRoleService sysRoleService;
 	@Autowired
-	private SysRoleMenuService sysRoleMenuService;
+	private ISysRoleMenuService sysRoleMenuService;
 	@Autowired
-	private SysRoleDeptService sysRoleDeptService;
+	private ISysRoleDeptService sysRoleDeptService;
 	
 	/**
 	 * 角色列表
 	 */
 	@RequestMapping("/list")
 	@RequiresPermissions("sys:role:list")
-	public Responses<PageUtils> list(@RequestParam Map<String, Object> params){
-		PageUtils page = sysRoleService.queryPage(params);
+	public Responses<PageUtils> list(PageInfo pageInfo, String roleName, String sqlFilter){
+		PageUtils page = sysRoleService.queryPage( pageInfo,  roleName,  sqlFilter);
 
 		return success(page);
 	}

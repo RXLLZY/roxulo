@@ -3,9 +3,9 @@ package com.swt.modules.sys.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.swt.common.utils.MapUtils;
-import com.swt.modules.sys.dao.SysUserRoleDao;
+import com.swt.modules.sys.dao.ISysUserRoleDao;
 import com.swt.modules.sys.entity.SysUserRoleEntity;
-import com.swt.modules.sys.service.SysUserRoleService;
+import com.swt.modules.sys.service.ISysUserRoleService;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -20,7 +20,7 @@ import java.util.List;
  * @date 2016年9月18日 上午9:45:48
  */
 @Service("sysUserRoleService")
-public class SysUserRoleServiceImpl extends ServiceImpl<SysUserRoleDao, SysUserRoleEntity> implements SysUserRoleService {
+public class SysUserRoleServiceImpl extends ServiceImpl<ISysUserRoleDao, SysUserRoleEntity> implements ISysUserRoleService {
 	@Override
 	public void saveOrUpdate(Long userId, List<Long> roleIdList) {
 		//先删除用户与角色关系

@@ -1,45 +1,53 @@
 package com.swt.common.utils;
 
-import java.io.Serializable;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.util.List;
+import java.util.Objects;
 
-public class PageData<T> implements Serializable {
-    private static final long serialVersionUID = 5352430458666644260L;
-
+@JsonIgnoreProperties({"records", "total", "size", "current", "pages", "ascs", "descs", "optimizeCountSql", "isSearchCount", "searchCount"})
+public class PageData<T> extends Page<T> {
+    private static final Long DEFAULT_PAGE_NO = 1L;
+    private static final Long DEFAULT_PAGE_SIZE = 10L;
+    private static final String DESC = "desc";
+    private static final String ASC = "asc";
     private PageInfo pageInfo;
-    private List<T> list;
-    private Integer totalCount = 0;
 
-    public synchronized PageInfo getPageInfo() {
-        if (pageInfo == null) {
-            pageInfo = new PageInfo();
-        }
-
-        return pageInfo;
+    public PageData() {
+        super(DEFAULT_PAGE_NO, DEFAULT_PAGE_SIZE);
+        this.pageInfo = new PageInfo(DEFAULT_PAGE_NO, DEFAULT_PAGE_SIZE);
     }
 
-    public void setPageInfo(PageInfo pageInfo) {
+    public PageData(PageInfo pageInfo) {
+        super(pageInfo.getPageNo(), pageInfo.getPageSize());
+        if(!Objects.isNull(pageInfo.getSidx())){
+            if(DESC.equalsIgnoreCase(pageInfo.getOrder())){
+                super.setDesc();
+            }else{
+                super.setAsc(pageInfo.getSidx());
+            }
+        }
         this.pageInfo = pageInfo;
     }
 
+    public PageData(int pageNo, int pageSize) {
+        super((long)pageNo, (long)pageSize);
+        this.pageInfo = new PageInfo((long)pageNo, (long)pageSize);
+    }
+
     public List<T> getList() {
-        return list;
+        return super.getRecords();
     }
 
-    public void setList(List<T> list) {
-        this.list = list;
+    public Long getTotalCount() {
+        return super.getTotal();
     }
 
-    public Integer getTotalCount() {
-        return totalCount;
-    }
-
-    public void setTotalCount(Integer totalCount) {
-        this.totalCount = totalCount;
+    public PageInfo getPageInfo() {
+        return this.pageInfo;
     }
 
     public Integer getTotalPageCount() {
-        return (int) Math.ceil((double) this.getTotalCount() / this.getPageInfo().getPageSize());
+        return (int)Math.ceil((double)this.getTotalCount() / (double)this.getPageInfo().getPageSize());
     }
-
 }

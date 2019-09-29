@@ -4,16 +4,15 @@ package com.swt.modules.sys.controller;
 import com.swt.common.annotation.SysLog;
 import com.swt.common.controller.AbstractController;
 import com.swt.common.responses.Responses;
+import com.swt.common.utils.PageInfo;
 import com.swt.common.utils.PageUtils;
 import com.swt.common.validator.ValidatorUtils;
 import com.swt.modules.sys.entity.SysConfigEntity;
-import com.swt.modules.sys.service.SysConfigService;
+import com.swt.modules.sys.service.ISysConfigService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Map;
 
 /**
  * 系统配置信息
@@ -26,15 +25,15 @@ import java.util.Map;
 @RequestMapping("/sys/config")
 public class SysConfigController extends AbstractController {
 	@Autowired
-	private SysConfigService sysConfigService;
+	private ISysConfigService sysConfigService;
 	
 	/**
 	 * 所有配置列表
 	 */
 	@RequestMapping("/list")
 	@RequiresPermissions("sys:config:list")
-	public Responses<PageUtils> list(@RequestParam Map<String, Object> params){
-		PageUtils page = sysConfigService.queryPage(params);
+	public Responses<PageUtils> list(PageInfo pageInfo, String paramKey){
+		PageUtils page = sysConfigService.queryPage(pageInfo, paramKey);
 
 		return success(page);
 	}

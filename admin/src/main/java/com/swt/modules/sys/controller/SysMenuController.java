@@ -5,9 +5,9 @@ import com.swt.common.controller.AbstractController;
 import com.swt.common.exception.RRException;
 import com.swt.common.responses.Responses;
 import com.swt.common.utils.Constant;
-import com.swt.common.utils.R;
+import com.swt.common.utils.ResultBean;
 import com.swt.modules.sys.entity.SysMenuEntity;
-import com.swt.modules.sys.service.SysMenuService;
+import com.swt.modules.sys.service.ISysMenuService;
 import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +30,7 @@ import java.util.List;
 @RequestMapping("/sys/menu")
 public class SysMenuController extends AbstractController {
 	@Autowired
-	private SysMenuService sysMenuService;
+	private ISysMenuService sysMenuService;
 
 	/**
 	 * 导航菜单
@@ -127,13 +127,13 @@ public class SysMenuController extends AbstractController {
 	@RequiresPermissions("sys:menu:delete")
 	public Responses<Void> delete(long menuId){
 		if(menuId <= 31){
-			R.error("系统菜单，不能删除");
+			ResultBean.error("系统菜单，不能删除");
 		}
 
 		//判断是否有子菜单或按钮
 		List<SysMenuEntity> menuList = sysMenuService.queryListParentId(menuId);
 		if(menuList.size() > 0){
-			R.error("请先删除子菜单或按钮");
+			ResultBean.error("请先删除子菜单或按钮");
 		}
 
 		sysMenuService.delete(menuId);

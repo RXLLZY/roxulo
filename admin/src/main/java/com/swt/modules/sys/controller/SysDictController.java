@@ -2,17 +2,17 @@ package com.swt.modules.sys.controller;
 
 import com.swt.common.controller.AbstractController;
 import com.swt.common.responses.Responses;
+import com.swt.common.utils.PageInfo;
 import com.swt.common.utils.PageUtils;
 import com.swt.common.validator.ValidatorUtils;
 import com.swt.modules.sys.entity.SysDictEntity;
-import com.swt.modules.sys.service.SysDictService;
+import com.swt.modules.sys.service.ISysDictService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
-import java.util.Map;
 
 /**
  * 数据字典
@@ -24,15 +24,15 @@ import java.util.Map;
 @RequestMapping("sys/dict")
 public class SysDictController extends AbstractController {
     @Autowired
-    private SysDictService sysDictService;
+    private ISysDictService sysDictService;
 
     /**
      * 列表
      */
     @RequestMapping("/list")
     @RequiresPermissions("sys:dict:list")
-    public Responses<PageUtils> list(@RequestParam Map<String, Object> params){
-        PageUtils page = sysDictService.queryPage(params);
+    public Responses<PageUtils> list(PageInfo pageInfo, String name){
+        PageUtils page = sysDictService.queryPage( pageInfo,  name);
 
         return success(page);
     }

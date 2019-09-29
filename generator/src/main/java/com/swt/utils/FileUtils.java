@@ -29,7 +29,8 @@ public class FileUtils {
 
         for (int i = 0; i < array.length; i++) {
             if (array[i].isFile()) {
-                if (array[i].getName().toLowerCase().startsWith(fileName)) {
+                String completeFileName = array[i].getName().toLowerCase();
+                if (completeFileName.startsWith(fileName) || completeFileName.startsWith("i" + fileName)) {
                     fileNames.add(array[i].getPath());
                 }
             } else if (array[i].isDirectory()) {
@@ -50,7 +51,8 @@ public class FileUtils {
     public static List<String> delTargetFile(String path, String viewName, String javaName) {
         List<String> successFileName = new ArrayList<>();
         List<String> viewSuffix = Arrays.asList(".js", ".html");
-        List<String> javaSuffix = Arrays.asList("dao.xml", "controller.java", "dao.java", "entity.java", "service.java", "serviceimpl.java");
+        List<String> javaSuffix = Arrays.asList("controller.java", "dao.xml", ".java", "serviceimpl.java");
+        List<String> interfaceSuffix = Arrays.asList("dao.java", "service.java");
         //获取符合条件的文件名
         List<String> allPath = getFile(path, viewName);
         allPath.addAll(getFile(path, javaName));
@@ -63,6 +65,10 @@ public class FileUtils {
         for (int j = 0; j < javaSuffix.size(); j++) {
             String s = javaSuffix.get(j);
             fileNameList.add(javaName + s);
+        }
+        for (int j = 0; j < interfaceSuffix.size(); j++) {
+            String s = interfaceSuffix.get(j);
+            fileNameList.add("i" + javaName + s);
         }
         //删除正确的文件名
         for (int i = 0; i < allPath.size(); i++) {

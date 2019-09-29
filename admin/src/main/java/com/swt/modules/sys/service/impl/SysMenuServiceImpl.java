@@ -4,11 +4,11 @@ package com.swt.modules.sys.service.impl;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.swt.common.utils.Constant;
 import com.swt.common.utils.MapUtils;
-import com.swt.modules.sys.dao.SysMenuDao;
+import com.swt.modules.sys.dao.ISysMenuDao;
 import com.swt.modules.sys.entity.SysMenuEntity;
-import com.swt.modules.sys.service.SysMenuService;
-import com.swt.modules.sys.service.SysRoleMenuService;
-import com.swt.modules.sys.service.SysUserService;
+import com.swt.modules.sys.service.ISysMenuService;
+import com.swt.modules.sys.service.ISysRoleMenuService;
+import com.swt.modules.sys.service.ISysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,11 +17,11 @@ import java.util.List;
 
 
 @Service("sysMenuService")
-public class SysMenuServiceImpl extends ServiceImpl<SysMenuDao, SysMenuEntity> implements SysMenuService {
+public class SysMenuServiceImpl extends ServiceImpl<ISysMenuDao, SysMenuEntity> implements ISysMenuService {
 	@Autowired
-	private SysUserService sysUserService;
+	private ISysUserService sysUserService;
 	@Autowired
-	private SysRoleMenuService sysRoleMenuService;
+	private ISysRoleMenuService sysRoleMenuService;
 	
 	@Override
 	public List<SysMenuEntity> queryListParentId(Long parentId, List<Long> menuIdList) {

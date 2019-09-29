@@ -1,65 +1,67 @@
 package com.swt.common.utils;
 
+import io.swagger.annotations.ApiModelProperty;
+
 import java.io.Serializable;
 
 public class PageInfo implements Serializable {
-
     private static final long serialVersionUID = -2438150216480179472L;
-    private int pageIndex = 1;
-    private int pageSize = 10;
-    private int pageNo = 1;
+    private static final Long DEFAULT_PAGE_NO = 1L;
+    private static final Long DEFAULT_PAGE_SIZE = 10L;
+
+    @ApiModelProperty(value = "页码", example = "1", hidden = false)
+    private Long pageNo;
+
+    @ApiModelProperty(value = "每页条数", example = "10", hidden = false)
+    private Long pageSize;
+
+    @ApiModelProperty(value = "升降序(asc,desc)", example = "asc", hidden = false)
+    private String order;
+
+    @ApiModelProperty(value = "排序字段", example = "", hidden = false)
+    private String[] sidx;
 
     public PageInfo() {
-    }
-    public PageInfo(int page, int pageSize) {
-        this.pageIndex = page;
-        this.pageSize = pageSize;
+        this.pageNo = DEFAULT_PAGE_NO;
+        this.pageSize = DEFAULT_PAGE_SIZE;
     }
 
-    /**
-     * 修复datagrid查询结果为空时，pageIndex传0的问题
-     *
-     * @return
-     */
-    public int getStart() {
-        if (pageIndex == 0) {
-            return pageIndex * pageSize;
-        } else {
-            return (pageIndex - 1) * pageSize;
-        }
-    }
-
-    public int getEnd() {
-        return pageIndex * pageSize;
-    }
-
-    public int getPageIndex() {
-        return pageIndex;
-    }
-
-    public void setPageIndex(int page) {
-        this.pageIndex = page;
-    }
-
-    public int getPageSize() {
-        if (this.pageSize > 0) {
-            return pageSize;
-        } else {
-            return Integer.MAX_VALUE;
-        }
-    }
-
-    public void setPageSize(int pageSize) {
-        this.pageSize = pageSize;
-    }
-
-
-    public int getPageNo() {
-        return pageNo;
-    }
-
-    public void setPageNo(int pageNo) {
-        this.setPageIndex(pageNo);
+    public PageInfo(long pageNo, long pageSize) {
+        this.pageNo = DEFAULT_PAGE_NO;
+        this.pageSize = DEFAULT_PAGE_SIZE;
         this.pageNo = pageNo;
+        this.pageSize = pageSize;
+    }
+
+    public long getPageNo() {
+        return this.pageNo;
+    }
+
+    public void setPageNo(long pageNo) {
+        this.pageNo = pageNo;
+    }
+
+    public long getPageSize() {
+        return this.pageSize;
+    }
+
+    public void setPageSize(long pageSize) {
+        this.pageSize = pageSize;
+    }
+
+    public String getOrder() {
+        return order;
+    }
+
+    public void setOrder(String order) {
+        this.order = order;
+    }
+
+    public String[] getSidx() {
+        return sidx;
+    }
+
+    public void setSidx(String[] sidx) {
+        this.sidx = sidx;
     }
 }

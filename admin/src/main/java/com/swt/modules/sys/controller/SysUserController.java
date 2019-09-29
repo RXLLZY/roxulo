@@ -4,16 +4,17 @@ package com.swt.modules.sys.controller;
 import com.swt.common.annotation.SysLog;
 import com.swt.common.controller.AbstractController;
 import com.swt.common.responses.Responses;
+import com.swt.common.utils.PageInfo;
 import com.swt.common.utils.PageUtils;
-import com.swt.common.utils.R;
+import com.swt.common.utils.ResultBean;
 import com.swt.common.validator.Assert;
 import com.swt.common.validator.ValidatorUtils;
 import com.swt.common.validator.group.AddGroup;
 import com.swt.common.validator.group.UpdateGroup;
 import com.swt.modules.sys.entity.SysUserEntity;
 import com.swt.modules.sys.form.PasswordForm;
-import com.swt.modules.sys.service.SysUserRoleService;
-import com.swt.modules.sys.service.SysUserService;
+import com.swt.modules.sys.service.ISysUserRoleService;
+import com.swt.modules.sys.service.ISysUserService;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.crypto.hash.Sha256Hash;
@@ -23,7 +24,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 系统用户
@@ -36,17 +36,17 @@ import java.util.Map;
 @RequestMapping("/sys/user")
 public class SysUserController extends AbstractController {
 	@Autowired
-	private SysUserService sysUserService;
+	private ISysUserService sysUserService;
 	@Autowired
-	private SysUserRoleService sysUserRoleService;
+	private ISysUserRoleService sysUserRoleService;
 	
 	/**
 	 * 所有用户列表
 	 */
 	@RequestMapping("/list")
 	@RequiresPermissions("sys:user:list")
-	public Responses<PageUtils> list(@RequestParam Map<String, Object> params){
-		PageUtils page = sysUserService.queryPage(params);
+	public Responses<PageUtils> list(@RequestParam PageInfo pageInfo, String username, String sqlFilter){
+		PageUtils page = sysUserService.queryPage( pageInfo,  username,  sqlFilter);
 
 		return success(page);
 	}
@@ -76,7 +76,7 @@ public class SysUserController extends AbstractController {
 		//更新密码
 		boolean flag = sysUserService.updatePassword(getUserId(), password, newPassword);
 		if(!flag){
-			R.error("原密码不正确");
+			ResultBean.error("原密码不正确");
 		}
 
 		return success();
@@ -133,11 +133,11 @@ public class SysUserController extends AbstractController {
 	@RequiresPermissions("sys:user:delete")
 	public Responses<Void> delete(@RequestBody Long[] userIds){
 		if(ArrayUtils.contains(userIds, 1L)){
-			R.error("系统管理员不能删除");
+			ResultBean.error("系统管理员不能删除");
 		}
 		
 		if(ArrayUtils.contains(userIds, getUserId())){
-			R.error("当前用户不能删除");
+			ResultBean.error("当前用户不能删除");
 		}
 
 		sysUserService.removeByIds(Arrays.asList(userIds));

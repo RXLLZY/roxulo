@@ -4,10 +4,11 @@ import com.swt.common.annotation.SysLog;
 import com.swt.common.controller.AbstractController;
 import com.swt.common.responses.Responses;
 import com.swt.common.utils.ConfigConstant;
+import com.swt.common.utils.PageInfo;
 import com.swt.common.utils.PageUtils;
 import com.swt.common.validator.ValidatorUtils;
 import com.swt.modules.sys.entity.SysFileEntity;
-import com.swt.modules.sys.service.SysFileService;
+import com.swt.modules.sys.service.ISysFileService;
 import io.swagger.annotations.*;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.Map;
 
 
 /**
@@ -33,7 +33,7 @@ import java.util.Map;
 @Api(tags = "静态资源管理",description="静态资源 Controller")
 public class SysFileController extends AbstractController{
     @Autowired
-    private SysFileService sysFileService;
+    private ISysFileService sysFileService;
 
     /**
      * 上传文件
@@ -71,8 +71,8 @@ public class SysFileController extends AbstractController{
             @ApiImplicitParam(name = "sidx", value = "排序字段", required = false, paramType = "query", dataType = "string"),
             @ApiImplicitParam(name = "order", value = "升降序", required = false, paramType = "query", dataType = "string", defaultValue = "asc"),
     })
-    public Responses<PageUtils> list(@RequestParam @ApiParam(hidden = true) Map<String, Object> params) {
-        PageUtils page = sysFileService.queryPage(params);
+    public Responses<PageUtils> list(@RequestParam @ApiParam(hidden = true) PageInfo pageInfo,String originalName) {
+        PageUtils page = sysFileService.queryPage(pageInfo, originalName);
 
         return success(page);
     }

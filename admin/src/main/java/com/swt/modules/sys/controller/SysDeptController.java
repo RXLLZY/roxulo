@@ -3,9 +3,9 @@ package com.swt.modules.sys.controller;
 import com.swt.common.controller.AbstractController;
 import com.swt.common.responses.Responses;
 import com.swt.common.utils.Constant;
-import com.swt.common.utils.R;
+import com.swt.common.utils.ResultBean;
 import com.swt.modules.sys.entity.SysDeptEntity;
-import com.swt.modules.sys.service.SysDeptService;
+import com.swt.modules.sys.service.ISysDeptService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,7 +29,7 @@ import java.util.List;
 @RequestMapping("/sys/dept")
 public class SysDeptController extends AbstractController {
 	@Autowired
-	private SysDeptService sysDeptService;
+	private ISysDeptService sysDeptService;
 	
 	/**
 	 * 列表
@@ -131,7 +131,7 @@ public class SysDeptController extends AbstractController {
 		//判断是否有子部门
 		List<Long> deptList = sysDeptService.queryDetpIdList(deptId);
 		if(deptList.size() > 0){
-			R.error("请先删除子部门");
+			ResultBean.error("请先删除子部门");
 		}
 
 		sysDeptService.removeById(deptId);

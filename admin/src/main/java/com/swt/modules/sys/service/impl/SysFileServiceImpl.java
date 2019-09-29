@@ -5,11 +5,12 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.swt.common.exception.RRException;
 import com.swt.common.utils.ConfigConstant;
+import com.swt.common.utils.PageData;
+import com.swt.common.utils.PageInfo;
 import com.swt.common.utils.PageUtils;
-import com.swt.common.utils.Query;
-import com.swt.modules.sys.dao.SysFileDao;
+import com.swt.modules.sys.dao.ISysFileDao;
 import com.swt.modules.sys.entity.SysFileEntity;
-import com.swt.modules.sys.service.SysFileService;
+import com.swt.modules.sys.service.ISysFileService;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
@@ -19,20 +20,18 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Map;
 
 
 @Service("sysFileService")
-public class SysFileServiceImpl extends ServiceImpl<SysFileDao, SysFileEntity> implements SysFileService {
+public class SysFileServiceImpl extends ServiceImpl<ISysFileDao, SysFileEntity> implements ISysFileService {
 
 
     private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMddHHmmssSSS");
 
     @Override
-    public PageUtils queryPage(Map<String, Object> params) {
-        String originalName = (String)params.get("originalName");
+    public PageUtils queryPage(PageInfo pageInfo, String originalName) {
         IPage<SysFileEntity> page = this.baseMapper.selectPage(
-                new Query<SysFileEntity>(params).getPage(),
+                new PageData<>(pageInfo),
                 new QueryWrapper<SysFileEntity>()
                         .like(StringUtils.isNotBlank(originalName),"original_name", originalName)
         );

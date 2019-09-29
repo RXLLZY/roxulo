@@ -21,31 +21,30 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.google.gson.Gson;
 import com.swt.common.exception.RRException;
+import com.swt.common.utils.PageData;
+import com.swt.common.utils.PageInfo;
 import com.swt.common.utils.PageUtils;
-import com.swt.common.utils.Query;
-import com.swt.modules.sys.dao.SysConfigDao;
+import com.swt.modules.sys.dao.ISysConfigDao;
 import com.swt.modules.sys.entity.SysConfigEntity;
 import com.swt.modules.sys.redis.SysConfigRedis;
-import com.swt.modules.sys.service.SysConfigService;
+import com.swt.modules.sys.service.ISysConfigService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
-import java.util.Map;
 
 @Service("sysConfigService")
-public class SysConfigServiceImpl extends ServiceImpl<SysConfigDao, SysConfigEntity> implements SysConfigService {
+public class SysConfigServiceImpl extends ServiceImpl<ISysConfigDao, SysConfigEntity> implements ISysConfigService {
 	@Autowired
 	private SysConfigRedis sysConfigRedis;
 
 	@Override
-	public PageUtils queryPage(Map<String, Object> params) {
-		String paramKey = (String)params.get("paramKey");
+	public PageUtils queryPage(PageInfo pageInfo, String paramKey) {
 
 		IPage<SysConfigEntity> page = this.baseMapper.selectPage(
-				new Query<SysConfigEntity>(params).getPage(),
+				new PageData<>(pageInfo),
 				new QueryWrapper<SysConfigEntity>()
 					.like(StringUtils.isNotBlank(paramKey),"param_key", paramKey)
 					.eq("status", 1)
