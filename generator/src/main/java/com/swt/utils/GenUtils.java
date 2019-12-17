@@ -82,12 +82,8 @@ public class GenUtils {
         List<ColumnEntity> columsList = new ArrayList<>();
         //列名
         List<String> attrNamesList = new ArrayList<>();
-        //查询关键词
-        String[] searchKey = config.getStringArray("searchKey");
         //资源关键词
         String[] resourceKey = config.getStringArray("resourceKey");
-        //搜索列
-        List<ColumnEntity> searchs = new ArrayList<>(16);
         for (Map<String, String> column : columns) {
             ColumnEntity columnEntity = new ColumnEntity();
             String columnName = column.get("columnName");
@@ -105,7 +101,7 @@ public class GenUtils {
             //列名是否以is_开头
             columnEntity.setStartIs(columnName.startsWith("is_"));
             //列名转换成Java属性名
-            String attrName = toUpperCaseFirstOne(columnEntity.getColumnName());
+            String attrName = commentToJava(columnEntity.getColumnName());
             //大写属性名
             columnEntity.setAttrName(attrName);
             attrNamesList.add(columnName);
@@ -129,13 +125,6 @@ public class GenUtils {
             if ("PRI".equalsIgnoreCase(column.get("columnKey")) && tableEntity.getPk() == null) {
                 columnEntity.setHidden(true);
                 tableEntity.setPk(columnEntity);
-            }
-            //判断名字是否包含name或者title。搜索用
-            for (String s : searchKey) {
-                if(columnName.indexOf(s) > -1 ){
-                    searchs.add(columnEntity);
-                    break;
-                }
             }
             //资源路径判断
             for (String s : resourceKey) {
@@ -161,8 +150,6 @@ public class GenUtils {
         if (!api.endsWith("管理")) {
             api += "管理";
         }
-        //保存搜索列
-        tableEntity.setSearchColumns(searchs);
         //封装模板数据
         Map<String, Object> map = new HashMap<>(16);
         String pathName = tableToPath(tableEntity.getTableName(), table.get("tablePrefix"));
@@ -206,10 +193,10 @@ public class GenUtils {
         map.put("datetime", DateUtils.format(new Date(), DateUtils.DATE_TIME_PATTERN));
 
         //用户信息
-        map.put("CrtUserId", attrNamesList.contains(config.getString("crt_user_id"))?toUpperCaseFirstOne(config.getString("crt_user_id")):"");
-        map.put("OptUserId", attrNamesList.contains(config.getString("opt_user_id"))?toUpperCaseFirstOne(config.getString("opt_user_id")):"");
-        map.put("CrtTime", attrNamesList.contains(config.getString("crt_time"))?toUpperCaseFirstOne(config.getString("crt_time")):"");
-        map.put("OptTime", attrNamesList.contains(config.getString("opt_time"))?toUpperCaseFirstOne(config.getString("opt_time")):"");
+        map.put("CrtUserId", attrNamesList.contains(config.getString("crt_user_id"))?commentToJava(config.getString("crt_user_id")):"");
+        map.put("OptUserId", attrNamesList.contains(config.getString("opt_user_id"))?commentToJava(config.getString("opt_user_id")):"");
+        map.put("CrtTime", attrNamesList.contains(config.getString("crt_time"))?commentToJava(config.getString("crt_time")):"");
+        map.put("OptTime", attrNamesList.contains(config.getString("opt_time"))?commentToJava(config.getString("opt_time")):"");
         VelocityContext context = new VelocityContext(map);
 
         //获取模板列表
@@ -346,8 +333,7 @@ public class GenUtils {
         }
 
         if (template.contains("Dao.xml.vm")) {
-//          return "main" + File.separator + "resources" + File.separator  + config.getString("mapper","mapper")  + File.separator + className + "Dao.xml";
-            return packagePath + config.getString("entity","entity") + File.separator + "daomapper" + File.separator + className + "Dao.xml";
+          return "main" + File.separator + "resources" + File.separator  + config.getString("mapper","mapper")  + File.separator + moduleName + File.separator + className + "Dao.xml";
         }
 
         if (template.contains("list.html.vm")) {

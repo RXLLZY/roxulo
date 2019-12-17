@@ -27,9 +27,6 @@ public class ${className}ServiceImpl extends ServiceImpl<I${className}Dao, ${cla
     public PageData<${className}> queryPage(PageInfo pageInfo, ${className} ${classname}) {
 
         PageData<${className}> resultData = new PageData<>(pageInfo);
-#foreach ($searchColumn in $searchColumns)
-        String ${searchColumn.attrname} = (String) params.get("${searchColumn.attrname}");
-#end
         IPage<${className}> page = this.baseMapper.selectPage(
                 resultData,
                 new QueryWrapper<${className}>()

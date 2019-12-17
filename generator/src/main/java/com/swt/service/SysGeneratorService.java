@@ -16,6 +16,7 @@ import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.zip.ZipOutputStream;
 
 import static com.swt.utils.GenUtils.getConfig;
@@ -70,6 +71,9 @@ public class SysGeneratorService {
             BeanMap beanMap = BeanMap.create(tableNamesWithTableComment);
             //查询表信息
             Map<String, String> table = queryTable(tableName);
+            if(Objects.isNull(table)){
+                continue;
+            }
             table.putAll(beanMap);
             //查询列信息
             List<Map<String, String>> columns = queryColumns(tableName);
@@ -99,6 +103,9 @@ public class SysGeneratorService {
             }
             //查询表信息
             Map<String, String> table = queryTable(tableName);
+            if(Objects.isNull(table)){
+                continue;
+            }
             table.putAll(beanMap);
             //查询列信息
             List<Map<String, String>> columns = queryColumns(tableName);
